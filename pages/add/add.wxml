@@ -1,0 +1,38 @@
+<view class="add-page">
+  <view class="card">
+    <text class="month-label">{{currentYear}}年{{currentMonth}}月</text>
+
+    <view class="form-group">
+      <text class="label">总资产</text>
+      <input class="input-field" type="digit" placeholder="输入本月总资产" value="{{assets}}" bindinput="onAssetsInput" />
+    </view>
+
+    <view class="form-group">
+      <text class="label">总负债</text>
+      <input class="input-field" type="digit" placeholder="输入本月总负债" value="{{liabilities}}" bindinput="onLiabilitiesInput" />
+    </view>
+
+    <view class="preview" wx:if="{{assets || liabilities}}">
+      <text class="preview-label">净资产</text>
+      <text class="preview-amount">{{netWorthText}}</text>
+    </view>
+
+    <view class="btn-group-add">
+      <button class="btn-primary" bindtap="onSubmit">确认录入</button>
+    </view>
+  </view>
+
+  <!-- 历史记录 -->
+  <view class="card">
+    <text style="font-size:15px;font-weight:600;color:#1C1C1E;display:block;margin-bottom:16px;">📋 历史记录</text>
+    <view wx:if="{{snapshots.length === 0}}" style="padding:30px 0;text-align:center;">
+      <text style="font-size:14px;color:#C7C7CC;">暂无记录</text>
+    </view>
+    <view wx:else>
+      <view style="padding:12px 0;border-top:1px solid #F2F2F7;display:flex;justify-content:space-between;align-items:center;" wx:for="{{snapshotsFormatted}}" wx:key="id">
+        <text style="font-size:14px;color:#8E8E93;">{{item.label}}</text>
+        <text style="font-size:16px;font-weight:600;color:#1C1C1E;">{{item.netWorthText}}</text>
+      </view>
+    </view>
+  </view>
+</view>

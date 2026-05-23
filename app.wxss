@@ -1,0 +1,95 @@
+page {
+  background-color: #F2F2F5;
+  color: #1C1C1E;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+view, scroll-view, swiper {
+  box-sizing: border-box;
+}
+
+.card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 28px 24px;
+  margin: 6px 16px;
+}
+
+.btn-primary {
+  background-color: #2E7D32;
+  color: #FFFFFF;
+  border-radius: 12px;
+  padding: 18px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  border: none;
+  width: 100%;
+  letter-spacing: 0.3px;
+}
+
+.btn-primary:active {
+  background-color: #25682A;
+}
+
+.btn-secondary {
+  background-color: #F2F2F7;
+  color: #1C1C1E;
+  border-radius: 12px;
+  padding: 18px 24px;
+  font-size: 15px;
+  font-weight: 500;
+  text-align: center;
+  border: none;
+  width: 100%;
+}
+
+.btn-secondary:active {
+  background-color: #E5E5EA;
+}
+
+.input-field {
+  width: 100%;
+  padding: 18px 16px;
+  background: #F2F2F7;
+  border-radius: 12px;
+  border: none;
+  font-size: 17px;
+  color: #1C1C1E;
+  caret-color: #2E7D32;
+}
+
+.input-field::placeholder {
+  color: #C7C7CC;
+}
+
+.input-field:focus {
+  background: #E8F5E9;
+}
+
+.label {
+  font-size: 13px;
+  color: #8E8E93;
+  margin-bottom: 8px;
+  display: block;
+  font-weight: 500;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 120px;
+  padding-left: 40px;
+  padding-right: 40px;
+  color: #8E8E93;
+}
+
+.empty-state text {
+  font-size: 15px;
+  margin-top: 12px;
+  line-height: 1.6;
+}

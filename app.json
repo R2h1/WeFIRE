@@ -1,0 +1,44 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/add/add",
+    "pages/history/history",
+    "pages/settings/settings",
+    "pages/trend/trend"
+  ],
+  "window": {
+    "navigationBarTitleText": "WeFIRE",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F5F5F5",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#2E7D32",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/home.png",
+        "selectedIconPath": "images/home_selected.png"
+      },
+      {
+        "pagePath": "pages/add/add",
+        "text": "添加",
+        "iconPath": "images/add.png",
+        "selectedIconPath": "images/add_selected.png"
+      },
+      {
+        "pagePath": "pages/history/history",
+        "text": "我的",
+        "iconPath": "images/my.png",
+        "selectedIconPath": "images/my_selected.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

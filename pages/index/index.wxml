@@ -1,0 +1,39 @@
+<view class="home-page">
+  <view wx:if="{{!hasSettings}}" class="empty-state">
+    <text class="empty-icon">🎯</text>
+    <text class="empty-text">还没有设定 FIRE 目标</text>
+    <text class="empty-desc">先设定目标金额和退休年份
+开始追踪你的进度</text>
+    <button class="btn-primary" style="margin-top:28px;width:auto;padding:14px 40px;" bindtap="goToSettings">去设置</button>
+  </view>
+
+  <view wx:else class="home-content">
+    <view class="card progress-card">
+      <text class="progress-icon">🌱</text>
+      <text class="progress-pct">{{progressPercent}}<text class="progress-pct-unit">%</text></text>
+      <view class="bar-bg">
+        <view class="bar-fill" style="width: {{progressPercent}}%;"></view>
+      </view>
+      <text class="progress-target"><text class="target-dot">◉</text> 目标 <text class="progress-target-amount">{{formatTarget}}</text></text>
+      <text wx:if="{{isAchieved}}" class="achieved-badge">🎉 已达成 FIRE 目标</text>
+    </view>
+
+    <view class="card summary-card">
+      <text class="summary-label">📊 当前净资产</text>
+      <text class="summary-amount">{{netWorthText}}</text>
+      <view class="summary-detail">
+        <text class="detail-item"><text class="dot-green">●</text> 资产 <text class="detail-item-value">{{assetsText}}</text></text>
+        <text class="detail-item"><text class="dot-amber">●</text> 负债 <text class="detail-item-value">{{liabilitiesText}}</text></text>
+      </view>
+    </view>
+
+    <view class="card info-card" wx:if="{{projectedYears > 0}}">
+      <text class="info-text">⏳ 按当前储蓄速度，约需 <text class="info-highlight">{{projectedYears}}年</text> 达到 FIRE</text>
+    </view>
+
+    <view class="recent-section" wx:if="{{latestSnapshot}}">
+      <text>🕐 最近更新</text>
+      <text>{{latestSnapshot.year}}年{{latestSnapshot.month}}月</text>
+    </view>
+  </view>
+</view>

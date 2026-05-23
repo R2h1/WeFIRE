@@ -1,0 +1,46 @@
+.add-page {
+  padding-bottom: 30px;
+}
+
+.month-label {
+  display: block;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1C1C1E;
+  text-align: center;
+  margin-bottom: 32px;
+  letter-spacing: 0.5px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.preview {
+  margin-top: 24px;
+  padding: 24px 0 0;
+  border-top: 1px solid #F2F2F7;
+  text-align: center;
+}
+
+.preview-label {
+  font-size: 11px;
+  color: #C7C7CC;
+  display: block;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.preview-amount {
+  font-size: 34px;
+  font-weight: 700;
+  color: #2E7D32;
+  letter-spacing: -1px;
+  line-height: 1.1;
+}
+
+.btn-group-add {
+  margin-top: 32px;
+  padding: 0 16px;
+}

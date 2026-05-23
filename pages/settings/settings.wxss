@@ -1,0 +1,32 @@
+.settings-page {
+  padding-bottom: 30px;
+}
+
+.btn-group {
+  margin: 24px 16px;
+}
+
+.section-divider {
+  height: 1px;
+  background: #E5E5EA;
+  margin: 16px 16px 20px;
+}
+
+.section-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1C1C1E;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.btn-row {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-row .btn-secondary {
+  flex: 1;
+  font-size: 14px;
+  padding: 16px 8px;
+}

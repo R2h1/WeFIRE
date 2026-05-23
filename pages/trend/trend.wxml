@@ -1,0 +1,19 @@
+<view class="trend-page">
+  <view class="card">
+    <canvas type="2d" id="netWorthChart" style="width:100%;height:280px;"></canvas>
+  </view>
+  <view class="card stats-row">
+    <view class="stat-item">
+      <text class="stat-label">首月净资产</text>
+      <text class="stat-value">{{firstNetWorth}}</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-label">当前净资产</text>
+      <text class="stat-value">{{lastNetWorth}}</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-label">月均储蓄</text>
+      <text class="stat-value">{{monthlySavings}}</text>
+    </view>
+  </view>
+</view>
