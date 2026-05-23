@@ -1,10 +1,14 @@
 <view class="settings-page">
   <view class="card">
     <text class="label">目标金额</text>
-    <input class="input-field" type="digit" placeholder="输入你的 FIRE 目标金额" value="{{targetAmount}}" bindinput="onTargetInput" />
+    <view class="ipt-wrapper">
+        <input class="input-field" type="digit" placeholder="输入你的 FIRE 目标金额" value="{{targetAmount}}" bindinput="onTargetInput" />
+      </view>
     <view style="height:20px"></view>
     <text class="label">预计退休年份</text>
-    <input class="input-field" type="digit" placeholder="输入预计退休的年份" value="{{retirementYear}}" bindinput="onYearInput" />
+    <view class="ipt-wrapper">
+        <input class="input-field" type="digit" placeholder="输入预计退休的年份" value="{{retirementYear}}" bindinput="onYearInput" />
+      </view>
   </view>
 
   <view class="btn-group">

@@ -4,12 +4,16 @@
 
     <view class="form-group">
       <text class="label">总资产</text>
-      <input class="input-field" type="digit" placeholder="输入本月总资产" value="{{assets}}" bindinput="onAssetsInput" />
+      <view class="ipt-wrapper">
+        <input class="input-field" type="digit" placeholder="输入本月总资产" value="{{assets}}" bindinput="onAssetsInput" />
+      </view>
     </view>
 
     <view class="form-group">
       <text class="label">总负债</text>
-      <input class="input-field" type="digit" placeholder="输入本月总负债" value="{{liabilities}}" bindinput="onLiabilitiesInput" />
+      <view class="ipt-wrapper">
+        <input class="input-field" type="digit" placeholder="输入本月总负债" value="{{liabilities}}" bindinput="onLiabilitiesInput" />
+      </view>
     </view>
 
     <view class="preview" wx:if="{{assets || liabilities}}">

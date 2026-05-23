@@ -2,9 +2,8 @@
   <view wx:if="{{!hasSettings}}" class="empty-state">
     <text class="empty-icon">🎯</text>
     <text class="empty-text">还没有设定 FIRE 目标</text>
-    <text class="empty-desc">先设定目标金额和退休年份
-开始追踪你的进度</text>
-    <button class="btn-primary" style="margin-top:28px;width:auto;padding:14px 40px;" bindtap="goToSettings">去设置</button>
+    <text class="empty-desc">请到「我的」设置
+    开始追踪你的 FIRE 进度</text>
   </view>
 
   <view wx:else class="home-content">
@@ -34,6 +33,24 @@
     <view class="recent-section" wx:if="{{latestSnapshot}}">
       <text>🕐 最近更新</text>
       <text>{{latestSnapshot.year}}年{{latestSnapshot.month}}月</text>
+    </view>
+
+    <view class="card chart-card" wx:if="{{showChart}}">
+      <canvas type="2d" id="homeChart" style="width:100%;height:200px;"></canvas>
+    </view>
+    <view class="card stats-row" wx:if="{{showChart}}">
+      <view class="stat-item">
+        <text class="stat-label">首月净资产</text>
+        <text class="stat-value">{{chartFirstNetWorth}}</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-label">当前净资产</text>
+        <text class="stat-value">{{chartLastNetWorth}}</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-label">月均储蓄</text>
+        <text class="stat-value">{{chartMonthlySavings}}</text>
+      </view>
     </view>
   </view>
 </view>

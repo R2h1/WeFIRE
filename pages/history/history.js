@@ -66,10 +66,6 @@ Page({
     })
   },
 
-  goToTrend() {
-    wx.navigateTo({ url: '/pages/trend/trend' })
-  },
-
   onExport() {
     backup.exportData()
   },

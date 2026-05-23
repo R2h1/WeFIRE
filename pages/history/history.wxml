@@ -27,11 +27,6 @@
   </view>
 
   <view class="menu-group">
-    <view class="menu-item" bindtap="goToTrend">
-      <text class="menu-icon">📈</text>
-      <text class="menu-text">趋势图</text>
-      <text class="menu-arrow">›</text>
-    </view>
     <view class="menu-item" bindtap="onExport">
       <text class="menu-icon">💾</text>
       <text class="menu-text">导出备份</text>
@@ -59,11 +54,15 @@
     <text class="modal-title">设置 FIRE 目标</text>
     <view class="modal-field">
       <text class="modal-label">目标金额</text>
-      <input class="modal-input" type="digit" placeholder="输入你的 FIRE 目标金额" value="{{editTarget}}" bindinput="onEditTargetInput" />
+      <view class="input-wrapper">
+        <input class="modal-input" type="digit" placeholder="输入你的 FIRE 目标金额" value="{{editTarget}}" bindinput="onEditTargetInput" />
+      </view>
     </view>
     <view class="modal-field">
       <text class="modal-label">预计退休年份</text>
-      <input class="modal-input" type="digit" placeholder="输入预计退休的年份" value="{{editYear}}" bindinput="onEditYearInput" />
+      <view class="input-wrapper">
+        <input class="modal-input" type="digit" placeholder="输入预计退休的年份" value="{{editYear}}" bindinput="onEditYearInput" />
+      </view>
     </view>
     <view class="modal-btns">
       <button class="modal-btn cancel" bindtap="hideModal">取消</button>

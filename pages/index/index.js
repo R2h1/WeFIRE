@@ -1,5 +1,6 @@
 const storage = require('../../utils/storage')
 const fire = require('../../utils/fire')
+const chart = require('../../utils/chart')
 
 Page({
   data: {
@@ -11,7 +12,11 @@ Page({
     assetsText: '',
     liabilitiesText: '',
     projectedYears: 0,
-    latestSnapshot: null
+    latestSnapshot: null,
+    showChart: false,
+    chartFirstNetWorth: '',
+    chartLastNetWorth: '',
+    chartMonthlySavings: ''
   },
 
   onShow() {
@@ -40,6 +45,16 @@ Page({
     const sorted = [...snapshots].sort((a, b) => a.id.localeCompare(b.id))
     const lastManual = sorted.length > 0 ? sorted[sorted.length - 1] : null
 
+    const chartFirstNetWorth = filled.length > 0 ? fire.formatMoney(filled[0].netWorth) : ''
+    const chartLastNetWorth = latest ? fire.formatMoney(latest.netWorth) : ''
+    const chartMonthlySavings = fire.formatMoney(monthlySavings)
+    const showChart = filled.length > 0
+
+    const dataPoints = filled.map(s => ({
+      label: s.month + '月',
+      value: s.netWorth
+    }))
+
     this.setData({
       hasSettings: true,
       progressPercent: progressPercent,
@@ -49,11 +64,21 @@ Page({
       assetsText: fire.formatMoney(latest ? latest.assets : 0),
       liabilitiesText: fire.formatMoney(latest ? latest.liabilities : 0),
       projectedYears: projectedYears,
-      latestSnapshot: lastManual
+      latestSnapshot: lastManual,
+      showChart: showChart,
+      chartFirstNetWorth: chartFirstNetWorth,
+      chartLastNetWorth: chartLastNetWorth,
+      chartMonthlySavings: chartMonthlySavings
+    }, () => {
+      if (dataPoints.length >= 2) {
+        setTimeout(() => {
+          chart.drawLineChart('homeChart', dataPoints)
+        }, 300)
+      }
     })
   },
 
   goToSettings() {
-    wx.navigateTo({ url: '/pages/settings/settings' })
+    wx.switchTab({ url: '/pages/history/history' })
   }
 })

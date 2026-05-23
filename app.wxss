@@ -50,11 +50,15 @@ view, scroll-view, swiper {
   background-color: #E5E5EA;
 }
 
-.input-field {
-  width: 100%;
-  padding: 18px 16px;
+.ipt-wrapper {
   background: #F2F2F7;
   border-radius: 12px;
+  padding: 18px 16px;
+}
+
+.input-field {
+  width: 100%;
+  background: transparent;
   border: none;
   font-size: 17px;
   color: #1C1C1E;
@@ -89,7 +93,105 @@ view, scroll-view, swiper {
 }
 
 .empty-state text {
-  font-size: 15px;
+  font-size: 16px;
   margin-top: 12px;
   line-height: 1.6;
+}
+
+.empty-state 
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  width: 85%;
+  max-width: 340px;
+  background: #FFFFFF;
+  border-radius: 20px;
+  padding: 28px 24px 20px;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1C1C1E;
+  display: block;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.modal-field {
+  margin-bottom: 16px;
+}
+
+.modal-label {
+  font-size: 13px;
+  color: #8E8E93;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.input-wrapper {
+  background: #F2F2F7;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.modal-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  font-size: 17px;
+  color: #1C1C1E;
+  caret-color: #2E7D32;
+}
+
+.modal-input::placeholder {
+  color: #C7C7CC;
+}
+
+.modal-btns {
+  display: flex;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.modal-btn {
+  flex: 1;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  border: none;
+}
+
+.modal-btn.cancel {
+  background: #F2F2F7;
+  color: #1C1C1E;
+}
+
+.modal-btn.cancel:active {
+  background: #E5E5EA;
+}
+
+.modal-btn.confirm {
+  background: #2E7D32;
+  color: #FFFFFF;
+}
+
+.modal-btn.confirm:active {
+  background: #25682A;
 }
