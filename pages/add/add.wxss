@@ -14,7 +14,7 @@
   display: block;
   font-size: 20px;
   font-weight: 700;
-  color: #1C1C1E;
+  color: #1c1c1e;
   text-align: center;
   margin-bottom: 28px;
   letter-spacing: 0.5px;
@@ -50,35 +50,16 @@
 }
 
 .dot-assets {
-  background: #2E7D32;
+  background: #2e7d32;
 }
 
 .dot-liabilities {
-  background: #D32F2F;
-}
-
-.section-add {
-  font-size: 14px;
-  color: #2E7D32;
-  font-weight: 600;
-  padding: 6px 10px;
-  margin: 0;
-  background: none;
-  border: none;
-  line-height: 1;
-}
-
-.section-add::after {
-  border: none;
-}
-
-.section-add:active {
-  opacity: 0.6;
+  background: #d32f2f;
 }
 
 .section-divider {
   height: 1px;
-  background: #F2F2F7;
+  background: #f2f2f7;
   margin: 20px 0;
 }
 
@@ -91,7 +72,7 @@
   align-items: center;
   gap: 10px;
   padding: 12px 0;
-  border-bottom: 1px solid #F2F2F7;
+  border-bottom: 1px solid #f2f2f7;
 }
 
 .entry-row:last-child {
@@ -108,7 +89,7 @@
 .entry-name {
   flex: 1;
   font-size: 14px;
-  color: #1C1C1E;
+  color: #1c1c1e;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -116,7 +97,7 @@
 }
 
 .entry-label {
-  color: #8E8E93;
+  color: #8e8e93;
   font-size: 12px;
 }
 
@@ -124,37 +105,37 @@
   width: 100px;
   min-width: 80px;
   padding: 8px 12px;
-  background: #F2F2F7;
+  background: #f2f2f7;
   border-radius: 8px;
   border: none;
   font-size: 15px;
-  color: #1C1C1E;
+  color: #1c1c1e;
   text-align: right;
-  caret-color: #2E7D32;
+  caret-color: #2e7d32;
   height: 36px;
   box-sizing: border-box;
 }
 
 .entry-amount::placeholder {
-  color: #C7C7CC;
+  color: #c7c7cc;
 }
 
 .entry-amount:focus {
-  background: #E8F5E9;
+  background: #e8f5e9;
   outline: 2px solid rgba(46, 125, 50, 0.2);
   outline-offset: -2px;
 }
 
 .entry-del {
   font-size: 12px;
-  color: #C7C7CC;
+  color: #c7c7cc;
   padding: 6px;
   flex-shrink: 0;
   line-height: 1;
 }
 
 .entry-del:active {
-  color: #FF3B30;
+  color: #ff3b30;
 }
 
 .empty-entries {
@@ -164,7 +145,7 @@
 
 .empty-entries text {
   font-size: 13px;
-  color: #C7C7CC;
+  color: #c7c7cc;
 }
 
 /* ============================================
@@ -174,13 +155,13 @@
 .preview {
   margin-top: 24px;
   padding: 24px 0 0;
-  border-top: 1px solid #F2F2F7;
+  border-top: 1px solid #f2f2f7;
   text-align: center;
 }
 
 .preview-label {
   font-size: 11px;
-  color: #C7C7CC;
+  color: #c7c7cc;
   display: block;
   margin-bottom: 6px;
   letter-spacing: 1px;
@@ -190,7 +171,7 @@
 .preview-amount {
   font-size: 36px;
   font-weight: 700;
-  color: #2E7D32;
+  color: #2e7d32;
   letter-spacing: -1px;
   line-height: 1.1;
 }
@@ -200,25 +181,33 @@
   padding: 0;
 }
 
+/* Picker empty */
+.picker-empty {
+  padding: 30px 0;
+  text-align: center;
+  color: #c7c7cc;
+  font-size: 14px;
+}
+
 /* ============================================
    Picker Modal
    ============================================ */
 
 .picker-content {
-  width: 85%;
-  max-width: 340px;
-  max-height: 70vh;
-  background: #FFFFFF;
-  border-radius: 20px;
+  max-height: 60vh;
   padding: 24px 0 16px;
   display: flex;
   flex-direction: column;
 }
 
+van-popup .picker-content {
+  background: #ffffff;
+}
+
 .picker-title {
   font-size: 17px;
   font-weight: 700;
-  color: #1C1C1E;
+  color: #1c1c1e;
   display: block;
   text-align: center;
   margin-bottom: 4px;
@@ -235,7 +224,7 @@
   align-items: center;
   gap: 10px;
   padding: 14px 0;
-  border-bottom: 1px solid #F2F2F7;
+  border-bottom: 1px solid #f2f2f7;
 }
 
 .picker-item:active {
@@ -250,27 +239,7 @@
 
 .picker-name {
   font-size: 15px;
-  color: #1C1C1E;
-}
-
-.picker-close {
-  margin: 12px 24px 0;
-  padding: 14px;
-  background: #F2F2F7;
-  border-radius: 12px;
-  border: none;
-  font-size: 16px;
-  color: #1C1C1E;
-  font-weight: 600;
-  line-height: 1;
-}
-
-.picker-close::after {
-  border: none;
-}
-
-.picker-close:active {
-  background: #E5E5EA;
+  color: #1c1c1e;
 }
 
 .label-input-content {
@@ -283,7 +252,7 @@
 
 .history-entry {
   padding: 14px 0;
-  border-top: 1px solid #F2F2F7;
+  border-top: 1px solid #f2f2f7;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -295,11 +264,11 @@
 
 .history-entry-label {
   font-size: 14px;
-  color: #8E8E93;
+  color: #8e8e93;
 }
 
 .history-entry-value {
   font-size: 15px;
   font-weight: 600;
-  color: #1C1C1E;
+  color: #1c1c1e;
 }

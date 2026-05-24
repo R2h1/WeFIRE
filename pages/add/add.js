@@ -131,7 +131,7 @@ Page({
   },
 
   onLabelInput(e) {
-    this.setData({ labelInput: e.detail.value })
+    this.setData({ labelInput: e.detail })
   },
 
   onConfirmLabel() {

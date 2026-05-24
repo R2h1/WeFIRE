@@ -8,12 +8,24 @@ Page({
     settings: null,
     targetAmountText: '',
     showModal: false,
+    showYearPicker: false,
     editTarget: '',
-    editYear: '',
+    editYear: null,
+    yearRange: [],
   },
 
   onShow() {
+    this.initYearRange();
     this.loadData();
+  },
+
+  initYearRange() {
+    const current = new Date().getFullYear();
+    const years = [];
+    for (let y = current; y <= current + 60; y++) {
+      years.push(String(y));
+    }
+    this.setData({ yearRange: years, baseYear: current });
   },
 
   loadData() {
@@ -38,20 +50,38 @@ Page({
   },
 
   onEditTargetInput(e) {
-    this.setData({ editTarget: e.detail.value });
+    this.setData({ editTarget: e.detail });
   },
 
-  onEditYearInput(e) {
-    this.setData({ editYear: e.detail.value });
+  onOpenYearPicker() {
+    const idx = Math.max(0, this.data.yearRange.indexOf(this.data.editYear));
+    this.setData({ showModal: false, showYearPicker: true, yearPickerIndex: idx });
   },
 
-  onSaveSettings() {
+  onCloseYearPicker() {
+    this.setData({ showYearPicker: false, showModal: true });
+  },
+
+  onPickerConfirm(e) {
+    const year = e.detail.value[0];
+    this.setData({ editYear: year, showYearPicker: false, showModal: true });
+  },
+
+  onBeforeClose(action, done) {
+    if (action === 'confirm') {
+      this._handleSave(done);
+    } else {
+      done();
+    }
+  },
+
+  _handleSave(done) {
     const { editTarget, editYear } = this.data;
     if (!editTarget || parseFloat(editTarget) <= 0) {
       wx.showToast({ title: '请输入有效目标金额', icon: 'none' });
       return;
     }
-    const year = parseInt(editYear);
+    const year = editYear;
     const currentYear = new Date().getFullYear();
     if (!editYear || isNaN(year) || year < currentYear) {
       wx.showToast({ title: '退休年份不能早于' + currentYear, icon: 'none' });
@@ -64,8 +94,8 @@ Page({
       })
       .then(() => {
         wx.showToast({ title: '保存成功' });
-        this.setData({ showModal: false });
         this.loadData();
+        done();
       });
   },
 
@@ -79,7 +109,8 @@ Page({
     if (!tid || tid === 'YOUR_TEMPLATE_ID_HERE') {
       wx.showModal({
         title: '模板 ID 未配置',
-        content: '请先在 utils/reminder.js 中将 SUBSCRIBE_TEMPLATE_ID 替换为你的真实模板 ID',
+        content:
+          '请先在 utils/reminder.js 中将 SUBSCRIBE_TEMPLATE_ID 替换为你的真实模板 ID',
         showCancel: false,
         confirmText: '知道了',
       });

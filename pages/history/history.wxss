@@ -20,7 +20,7 @@
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: #E8F5E9;
+  background: #e8f5e9;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,20 +30,20 @@
 .avatar-text {
   font-size: 24px;
   font-weight: 700;
-  color: #2E7D32;
+  color: #2e7d32;
 }
 
 .profile-name {
   font-size: 18px;
   font-weight: 700;
-  color: #1C1C1E;
+  color: #1c1c1e;
   display: block;
   margin-bottom: 4px;
 }
 
 .profile-desc {
   font-size: 13px;
-  color: #8E8E93;
+  color: #8e8e93;
   display: block;
 }
 
@@ -72,27 +72,26 @@
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  background: #E8F5E9;
+  background: #e8f5e9;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .icon-target {
-  font-size: 14px;
-  font-weight: 700;
-  color: #2E7D32;
+  background: #e8f5e9;
+  color: #2e7d32;
 }
 
 .settings-title {
   font-size: 16px;
   font-weight: 600;
-  color: #1C1C1E;
+  color: #1c1c1e;
 }
 
 .settings-chevron {
   font-size: 22px;
-  color: #C7C7CC;
+  color: #c7c7cc;
   line-height: 1;
 }
 
@@ -101,7 +100,7 @@
   flex-direction: column;
   gap: 12px;
   padding: 16px;
-  background: #F2F2F7;
+  background: #f2f2f7;
   border-radius: 12px;
 }
 
@@ -113,131 +112,141 @@
 
 .settings-row-label {
   font-size: 13px;
-  color: #8E8E93;
+  color: #8e8e93;
 }
 
 .settings-row-value {
   font-size: 15px;
   font-weight: 600;
-  color: #1C1C1E;
+  color: #1c1c1e;
 }
 
 .settings-empty {
   padding: 16px;
   text-align: center;
-  background: #F2F2F7;
+  background: #f2f2f7;
   border-radius: 12px;
-  color: #C7C7CC;
+  color: #c7c7cc;
   font-size: 14px;
 }
 
 /* ============================================
-   Menu Section
+   Vant Cell overrides for menu
    ============================================ */
 
-.menu-section {
-  margin: 0 16px;
-  background: #FFFFFF;
+van-cell-group {
+  display: block;
+  margin: 8px 16px;
   border-radius: 16px;
   overflow: hidden;
 }
 
-.menu-section + .menu-section {
-  margin-top: 8px;
-}
-
-.menu-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 20px;
-}
-
-.menu-item + .menu-item {
-  border-top: 1px solid #F2F2F7;
-}
-
-.menu-item:active {
-  background: #F2F2F7;
-}
-
-.menu-item-icon {
-  width: 32px;
-  height: 32px;
+.van-cell-icon {
+  width: 30px;
+  height: 30px;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  margin-right: 12px;
   flex-shrink: 0;
 }
 
 .icon-bell {
-  background: #FFF3E0;
-}
-
-.icon-bell text {
-  font-size: 14px;
-  font-weight: 700;
-  color: #E65100;
+  background: #fff3e0;
+  color: #e65100;
 }
 
 .icon-export {
-  background: #E3F2FD;
-}
-
-.icon-export text {
-  font-size: 14px;
-  font-weight: 700;
-  color: #1565C0;
+  background: #e3f2fd;
+  color: #1565c0;
 }
 
 .icon-import {
-  background: #E8F5E9;
-}
-
-.icon-import text {
-  font-size: 14px;
-  font-weight: 700;
-  color: #2E7D32;
+  background: #e8f5e9;
+  color: #2e7d32;
 }
 
 .icon-danger {
-  background: #FFEBEE;
+  background: #ffebee;
+  color: #d32f2f;
 }
 
-.icon-danger text {
-  font-size: 14px;
+.danger-section {
+  margin: 8px 16px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.danger-text {
+  color: #d32f2f;
+}
+
+/* ============================================
+   van-dialog content & field override
+   ============================================ */
+
+.van-dialog-content {
+  padding: 24px 24px 0;
+}
+
+.van-dialog-title {
+  display: block;
+  font-size: 17px;
   font-weight: 700;
-  color: #D32F2F;
+  color: #1c1c1e;
+  text-align: center;
+  margin-bottom: 16px;
 }
 
-.menu-item-text {
-  flex: 1;
-  font-size: 15px;
-  color: #1C1C1E;
+/* Dialog 按钮圆角 */
+.van-dialog {
+  --van-dialog-border-radius: 16px;
 }
 
-.menu-item-action {
-  padding: 0;
-  margin: 0;
-  line-height: 1;
-  background: none;
-  border: none;
-  font-size: 22px;
-  color: #C7C7CC;
-  min-width: 28px;
-  text-align: right;
+.van-dialog .van-button {
+  border-radius: 0 !important;
 }
 
-.menu-item-action::after {
-  border: none;
+.van-dialog .van-button:first-child {
+  border-bottom-left-radius: 16px !important;
 }
 
-/* Danger zone */
-.danger-zone .menu-item-text {
-  color: #D32F2F;
+.van-dialog .van-button:last-child {
+  border-bottom-right-radius: 16px !important;
 }
 
-.danger-zone .settings-icon {
-  background: #FFEBEE;
+.van-dialog-content van-field {
+  --van-field-background: #f2f2f7;
+  padding: 2px 0;
+}
+
+.picker-value {
+  color: #1c1c1e;
+}
+
+.picker-placeholder {
+  color: #c7c7cc;
+}
+
+.picker-arrow {
+  color: #c7c7cc;
+}
+
+/* ============================================
+   Year Picker Popup
+   ============================================ */
+
+van-popup .van-picker {
+  --van-picker-option-font-size: 18px;
+  --van-picker-title-font-size: 16px;
+  --van-picker-title-color: #1c1c1e;
+  --van-picker-cancel-action-color: #8e8e93;
+  --van-picker-confirm-action-color: #2e7d32;
+}
+
+van-popup .van-picker__toolbar {
+  border-bottom: 1px solid #f2f2f7;
 }

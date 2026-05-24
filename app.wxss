@@ -20,14 +20,36 @@
 */
 
 page {
-  background-color: #F2F2F5;
-  color: #1C1C1E;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+  background-color: #f2f2f5;
+  color: #1c1c1e;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue',
+    sans-serif;
   font-size: 15px;
   line-height: 1.6;
+
+  /* Vant Weapp theme */
+  --van-primary-color: #2e7d32;
+  --van-button-primary-background: #2e7d32;
+  --van-button-primary-border-color: #2e7d32;
+  --van-button-radius: 12px;
+  --van-cell-vertical-padding: 16px;
+  --van-cell-horizontal-padding: 20px;
+  --van-cell-font-size: 15px;
+  --van-cell-group-background: transparent;
+  --van-cell-background: #ffffff;
+  --van-cell-border-color: #f2f2f7;
+  --van-field-label-width: 4.5em;
+  --van-dialog-border-radius: 20px;
+  --van-popup-border-radius: 20px;
+  --van-toast-border-radius: 12px;
+  --van-button-default-height: 52px;
+  --van-cell-icon-size: 20px;
 }
 
-view, scroll-view, swiper {
+view,
+scroll-view,
+swiper {
   box-sizing: border-box;
 }
 
@@ -52,7 +74,7 @@ view, scroll-view, swiper {
    ============================================ */
 
 .card {
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 16px;
   padding: 24px 20px;
   margin: 8px 16px;
@@ -67,8 +89,8 @@ view, scroll-view, swiper {
    ============================================ */
 
 .btn-primary {
-  background-color: #2E7D32;
-  color: #FFFFFF;
+  background-color: #2e7d32;
+  color: #ffffff;
   border-radius: 12px;
   padding: 18px 24px;
   font-size: 16px;
@@ -82,13 +104,13 @@ view, scroll-view, swiper {
 }
 
 .btn-primary:active {
-  background-color: #25682A;
+  background-color: #25682a;
   opacity: 0.95;
 }
 
 .btn-secondary {
-  background-color: #F2F2F7;
-  color: #1C1C1E;
+  background-color: #f2f2f7;
+  color: #1c1c1e;
   border-radius: 12px;
   padding: 18px 24px;
   font-size: 15px;
@@ -99,7 +121,7 @@ view, scroll-view, swiper {
 }
 
 .btn-secondary:active {
-  background-color: #E5E5EA;
+  background-color: #e5e5ea;
 }
 
 /* ============================================
@@ -107,13 +129,13 @@ view, scroll-view, swiper {
    ============================================ */
 
 .ipt-wrapper {
-  background: #F2F2F7;
+  background: #f2f2f7;
   border-radius: 12px;
   padding: 16px 18px;
 }
 
 .ipt-wrapper:focus-within {
-  background: #E8F5E9;
+  background: #e8f5e9;
   outline: 2px solid rgba(46, 125, 50, 0.2);
   outline-offset: -2px;
 }
@@ -123,12 +145,12 @@ view, scroll-view, swiper {
   background: transparent;
   border: none;
   font-size: 17px;
-  color: #1C1C1E;
-  caret-color: #2E7D32;
+  color: #1c1c1e;
+  caret-color: #2e7d32;
 }
 
 .input-field::placeholder {
-  color: #C7C7CC;
+  color: #c7c7cc;
 }
 
 /* ============================================
@@ -137,7 +159,7 @@ view, scroll-view, swiper {
 
 .label {
   font-size: 13px;
-  color: #8E8E93;
+  color: #8e8e93;
   margin-bottom: 8px;
   display: block;
   font-weight: 500;
@@ -153,7 +175,7 @@ view, scroll-view, swiper {
   align-items: center;
   justify-content: center;
   padding: 120px 40px;
-  color: #8E8E93;
+  color: #8e8e93;
   text-align: center;
 }
 
@@ -166,13 +188,13 @@ view, scroll-view, swiper {
 .empty-state .empty-title {
   font-size: 18px;
   font-weight: 600;
-  color: #1C1C1E;
+  color: #1c1c1e;
   margin-bottom: 8px;
 }
 
 .empty-state .empty-desc {
   font-size: 15px;
-  color: #8E8E93;
+  color: #8e8e93;
   line-height: 1.6;
 }
 
@@ -192,112 +214,19 @@ view, scroll-view, swiper {
 .section-header-inline .section-title-small {
   font-size: 13px;
   font-weight: 600;
-  color: #8E8E93;
+  color: #8e8e93;
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
 
 /* ============================================
-   Modal
+   Modal / Dialog Shared Styles
    ============================================ */
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  width: 85%;
-  max-width: 340px;
-  background: #FFFFFF;
-  border-radius: 20px;
-  padding: 24px 24px 20px;
-}
-
-.modal-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #1C1C1E;
-  display: block;
-  margin-bottom: 24px;
-  text-align: center;
-}
-
-.modal-field {
-  margin-bottom: 16px;
-}
 
 .modal-label {
   font-size: 13px;
-  color: #8E8E93;
+  color: #8e8e93;
   display: block;
   margin-bottom: 8px;
   font-weight: 500;
-}
-
-.input-wrapper {
-  background: #F2F2F7;
-  border-radius: 12px;
-  padding: 14px 16px;
-}
-
-.input-wrapper:focus-within {
-  background: #E8F5E9;
-  outline: 2px solid rgba(46, 125, 50, 0.2);
-  outline-offset: -2px;
-}
-
-.modal-input {
-  width: 100%;
-  background: transparent;
-  border: none;
-  font-size: 17px;
-  color: #1C1C1E;
-  caret-color: #2E7D32;
-}
-
-.modal-input::placeholder {
-  color: #C7C7CC;
-}
-
-.modal-btns {
-  display: flex;
-  gap: 10px;
-  margin-top: 28px;
-}
-
-.modal-btn {
-  flex: 1;
-  border-radius: 12px;
-  padding: 16px;
-  font-size: 16px;
-  font-weight: 600;
-  text-align: center;
-  border: none;
-}
-
-.modal-btn.cancel {
-  background: #F2F2F7;
-  color: #1C1C1E;
-}
-
-.modal-btn.cancel:active {
-  background: #E5E5EA;
-}
-
-.modal-btn.confirm {
-  background: #2E7D32;
-  color: #FFFFFF;
-}
-
-.modal-btn.confirm:active {
-  background: #25682A;
 }
