@@ -1,30 +1,70 @@
 # CLAUDE.md
 
-本文件为 Claude Code（claude.ai/code）在此仓库中工作时提供指导。
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## 项目概述
+## Project Overview
 
-WeFIRE 是一款极简风格的 FIRE（财务自由、提前退休）进度追踪微信小程序。用户设定目标金额与预计退休年份，每月录入资产与负债快照，系统自动计算净资产与综合进度，并通过进度条、趋势图直观展示距离 FIRE 还有多远。
+WeFIRE is a minimal FIRE (Financial Independence, Retire Early) progress tracking WeChat Mini Program. Users set a target amount and expected retirement year, record monthly asset/liability snapshots, and the app automatically calculates net worth and progress via progress bars and trend charts.
 
-所有数据仅存储在用户手机本地，无需注册账号，支持一键备份与恢复。
+All data is stored locally on the device — no registration, no backend. Supports one-click backup and restore.
 
-## 技术栈
+## Tech Stack
 
-- 微信小程序原生框架
-- 纯本地存储（无后端/无服务器）
+- WeChat Mini Program native framework (WXML + WXSS + JS)
+- Vant Weapp (v1.11.7) — dialogs, fields, popups, pickers, cells, buttons, icons, toasts, loading
+- Pure local storage (`wx.setStorage`/`wx.getStorage` async + sync)
 
-## 项目架构
+## Project Structure
 
-标准微信小程序目录结构：
+```
+app.js / app.json / app.wxss    — Entry, global config, design system & Vant theme vars
+pages/
+  index/                         — Home dashboard: progress bar, net worth summary, trend chart, stats
+  add/                           — Monthly data entry: asset/liability inputs, category picker, history list
+  history/                       — Settings (FIRE target), backup/restore, reminder subscribe, clear data
+utils/
+  storage.js                     — CRUD wrapper for all 4 storage keys
+  fire.js                        — Core FIRE calculations (progress, projected years, missing month filling, money formatting)
+  categories.js                  — Fixed preset asset/liability categories (Chinese financial products)
+  chart.js                       — Canvas 2D line chart (bezier curves, gradient fill)
+  backup.js                      — Export/import data as JSON files
+  reminder.js                    — Monthly subscribe-message reminder
+```
 
-- `app.js` / `app.json` / `app.wxss` — 应用入口、全局配置、全局样式
-- `pages/` — 页面级组件（每个页面包含 `.js` + `.json` + `.wxml` + `.wxss`）
-- `utils/` — 公共工具函数（如存储助手、FIRE 计算逻辑）
-- `components/` — 可复用自定义组件
+No `components/` directory — everything is page-level.
 
-## 关键约束
+## Data Model (Local Storage)
 
-- 微信小程序包大小限制：主包 2MB，单个分包 2MB，总计 20MB
-- 所有本地存储 API 通过 `wx.setStorage` / `wx.getStorage` 异步调用
-- 无 DOM 操作 — 通过 WXML 数据绑定和 `setData()` 更新 UI
-- 备份/恢复可通过 `wx.getFileSystemManager()` 实现文件导出/导入
+Four storage keys:
+
+1. `fire_settings` — `{ targetAmount: number, retirementYear: number }`
+2. `fire_snapshots` — Array of `{ id: "YYYY-MM", year, month, assets, liabilities, netWorth, createdAt }`
+3. `fire_tracked_items` — Array of `{ itemId, presetId, type: "assets"|"liabilities", label?: string }`
+4. `fire_entries` — Object keyed by monthId, each value is array of `{ itemId, presetId, amount }`
+
+## Key Architecture & Data Flow
+
+- **Settings-first**: Home page shows empty state until `fire_settings` is configured in the 我的 tab
+- **Data loading in `onShow()`** (not `onLoad()`), so tab switching refreshes data
+- **Snapshots are derived**: When user submits monthly entries in `add/`, totals are computed and stored as a snapshot. Snapshots are the source of truth for charts and progress
+- **Missing month filling** (`fire.fillMissingMonths`): For charting, gaps between snapshots are filled by carrying forward the last known values so the trend line is continuous
+- **Chart rendering** (`chart.drawLineChart`): Canvas 2D via `wx.createSelectorQuery` + `getContext('2d')`, with bezier curves and gradient fill. Runs in `setTimeout(300ms)` after `setData` to wait for layout
+- **Preset categories**: Fixed list of Chinese financial products (微信零钱, 支付宝, 银行卡, 公积金, 花呗, etc.). Users pick from presets and can add optional labels
+- **Backup format**: JSON `{ version: 1, exportedAt, settings, snapshots }`. Import validates version and snapshots fields
+
+## Design System
+
+Global styles in `app.wxss`:
+- Brand: `#2E7D32` green, mapped to `--van-primary-color`
+- Cards: `16px` border-radius, white `#FFFFFF` background, `8px 16px` margin
+- Typography: `-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif`
+- Spacing scale: 4/8/12/16/20/24/28/32
+- Page background: `#f2f2f5`
+
+## Key Constraints
+
+- Package size: main bundle 2MB, sub-package 2MB, total 20MB
+- All storage via `wx.setStorage`/`wx.getStorage` — async with Promise wrappers in storage.js
+- No DOM — UI via WXML data binding and `setData()`
+- Backup/restore via `wx.getFileSystemManager()` + `wx.shareFileMessage`/`wx.chooseMessageFile`
+- No test framework configured yet
