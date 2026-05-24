@@ -3,7 +3,7 @@ Component({
     active: 0,
     list: [
       { icon: 'wap-home-o', text: '首页', pagePath: '/pages/index/index' },
-      { icon: 'add-o', text: '添加', pagePath: '/pages/add/add' },
+      { icon: 'add-o', text: '录入', pagePath: '/pages/add/add' },
       {
         icon: 'user-circle-o',
         text: '我的',

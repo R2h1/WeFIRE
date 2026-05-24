@@ -20,7 +20,7 @@
       },
       {
         "pagePath": "pages/add/add",
-        "text": "添加"
+        "text": "录入"
       },
       {
         "pagePath": "pages/profile/profile",
