@@ -1,107 +1,243 @@
+/* ============================================
+   History Page (我的)
+   ============================================ */
+
 .history-page {
-  padding-bottom: 30px;
+  padding-bottom: 32px;
+}
+
+/* ============================================
+   Profile Card
+   ============================================ */
+
+.profile-card {
+  text-align: center;
+  padding: 32px 20px 28px;
+  margin-top: 16px;
+}
+
+.profile-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #E8F5E9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+}
+
+.avatar-text {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2E7D32;
+}
+
+.profile-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1C1C1E;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.profile-desc {
+  font-size: 13px;
+  color: #8E8E93;
+  display: block;
+}
+
+/* ============================================
+   Settings Card (FIRE Target)
+   ============================================ */
+
+.settings-card {
+  padding: 20px;
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.settings-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.settings-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #E8F5E9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-target {
+  font-size: 14px;
+  font-weight: 700;
+  color: #2E7D32;
+}
+
+.settings-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1C1C1E;
+}
+
+.settings-chevron {
+  font-size: 22px;
+  color: #C7C7CC;
+  line-height: 1;
+}
+
+.settings-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: #F2F2F7;
+  border-radius: 12px;
+}
+
+.settings-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.settings-row-label {
+  font-size: 13px;
+  color: #8E8E93;
+}
+
+.settings-row-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1C1C1E;
+}
+
+.settings-empty {
+  padding: 16px;
+  text-align: center;
+  background: #F2F2F7;
+  border-radius: 12px;
+  color: #C7C7CC;
+  font-size: 14px;
+}
+
+/* ============================================
+   Menu Section
+   ============================================ */
+
+.menu-section {
+  margin: 0 16px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.menu-section + .menu-section {
+  margin-top: 8px;
 }
 
 .menu-item {
-  background: #FFFFFF;
-  margin: 1px 16px;
-  padding: 16px 20px;
   display: flex;
   align-items: center;
   gap: 12px;
+  padding: 16px 20px;
 }
 
-.menu-item:first-child {
-  border-radius: 16px 16px 0 0;
-}
-
-.menu-item:last-child {
-  border-radius: 0 0 16px 16px;
-}
-
-.menu-item:only-child {
-  border-radius: 16px;
+.menu-item + .menu-item {
+  border-top: 1px solid #F2F2F7;
 }
 
 .menu-item:active {
   background: #F2F2F7;
 }
 
-.menu-icon {
-  font-size: 20px;
-  width: 28px;
-  text-align: center;
+.menu-item-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.menu-text {
+.icon-bell {
+  background: #FFF3E0;
+}
+
+.icon-bell text {
+  font-size: 14px;
+  font-weight: 700;
+  color: #E65100;
+}
+
+.icon-export {
+  background: #E3F2FD;
+}
+
+.icon-export text {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1565C0;
+}
+
+.icon-import {
+  background: #E8F5E9;
+}
+
+.icon-import text {
+  font-size: 14px;
+  font-weight: 700;
+  color: #2E7D32;
+}
+
+.icon-danger {
+  background: #FFEBEE;
+}
+
+.icon-danger text {
+  font-size: 14px;
+  font-weight: 700;
+  color: #D32F2F;
+}
+
+.menu-item-text {
   flex: 1;
   font-size: 15px;
   color: #1C1C1E;
 }
 
-.menu-arrow {
+.menu-item-action {
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  background: none;
+  border: none;
   font-size: 22px;
   color: #C7C7CC;
+  min-width: 28px;
+  text-align: right;
 }
 
-.danger-section {
-  margin-top: 24px;
+.menu-item-action::after {
+  border: none;
 }
 
-.menu-item.danger .menu-text {
-  color: #FF3B30;
+/* Danger zone */
+.danger-zone .menu-item-text {
+  color: #D32F2F;
 }
 
-/* FIRE 目标总览卡片 */
-.settings-summary {
-  padding: 20px 24px;
-}
-
-.summary-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-}
-
-.summary-title {
-  font-size: 15px;
-  font-weight: 600;
-  color: #1C1C1E;
-}
-
-.summary-arrow {
-  font-size: 22px;
-  color: #C7C7CC;
-}
-
-.summary-body {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.summary-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6px 0;
-}
-
-.summary-label {
-  font-size: 14px;
-  color: #8E8E93;
-}
-
-.summary-value {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1C1C1E;
-}
-
-.summary-empty {
-  padding: 8px 0;
-  text-align: center;
-  color: #C7C7CC;
-  font-size: 14px;
+.danger-zone .settings-icon {
+  background: #FFEBEE;
 }

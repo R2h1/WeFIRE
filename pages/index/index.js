@@ -73,6 +73,7 @@ Page({
     }))
 
     this.setData({
+      settings,
       hasSettings: true,
       progressPercent: progressPercent,
       isAchieved: netWorth >= targetAmount,

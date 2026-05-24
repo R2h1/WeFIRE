@@ -1,59 +1,82 @@
 <view class="history-page">
-  <view class="card">
-    <text style="font-size:48px;display:block;text-align:center;">🧑</text>
-    <text style="font-size:17px;font-weight:600;color:#1C1C1E;display:block;text-align:center;">WeFIRE</text>
-    <text style="font-size:14px;color:#8E8E93;display:block;text-align:center;margin-top:4px;">完全本地运行，保护您的财务隐私！</text>
+  <view class="profile-card card">
+    <view class="profile-avatar">
+      <text class="avatar-text">W</text>
+    </view>
+    <text class="profile-name">WeFIRE</text>
+    <text class="profile-desc">本地数据 · 隐私安全</text>
   </view>
 
-  <!-- FIRE 目标总览 -->
-  <view class="card settings-summary" bindtap="openSettingsModal">
-    <view class="summary-header">
-      <text class="summary-title">🎯 FIRE 目标</text>
-      <text class="summary-arrow">›</text>
-    </view>
-    <view wx:if="{{settings}}" class="summary-body">
-      <view class="summary-row">
-        <text class="summary-label">目标金额</text>
-        <text class="summary-value">{{targetAmountText}}</text>
+  <view class="card settings-card" bindtap="openSettingsModal">
+    <view class="settings-header">
+      <view class="settings-header-left">
+        <view class="settings-icon">
+          <text class="icon-target">T</text>
+        </view>
+        <text class="settings-title">FIRE 目标</text>
       </view>
-      <view class="summary-row">
-        <text class="summary-label">退休年份</text>
-        <text class="summary-value">{{settings.retirementYear}}</text>
+      <view class="settings-chevron">
+        <text>›</text>
       </view>
     </view>
-    <view wx:else class="summary-empty">
+    <view wx:if="{{settings}}" class="settings-body">
+      <view class="settings-row">
+        <text class="settings-row-label">目标金额</text>
+        <text class="settings-row-value">{{targetAmountText}}</text>
+      </view>
+      <view class="settings-row">
+        <text class="settings-row-label">退休年份</text>
+        <text class="settings-row-value">{{settings.retirementYear}}年</text>
+      </view>
+    </view>
+    <view wx:else class="settings-empty">
       <text>点击设置 FIRE 目标</text>
     </view>
   </view>
 
-  <view class="menu-group">
+  <view class="menu-section">
     <view class="menu-item" bindtap="onSubscribe">
-      <text class="menu-icon">🔔</text>
-      <text class="menu-text">订阅提醒</text>
-      <text class="menu-arrow">›</text>
+      <view class="menu-item-icon icon-bell">
+        <text>!</text>
+      </view>
+      <text class="menu-item-text">订阅提醒</text>
+      <button class="menu-item-action" plain="true">
+        <text>›</text>
+      </button>
     </view>
     <view class="menu-item" bindtap="onExport">
-      <text class="menu-icon">💾</text>
-      <text class="menu-text">导出备份</text>
-      <text class="menu-arrow">›</text>
+      <view class="menu-item-icon icon-export">
+        <text>↑</text>
+      </view>
+      <text class="menu-item-text">导出备份</text>
+      <button class="menu-item-action" plain="true">
+        <text>›</text>
+      </button>
     </view>
     <view class="menu-item" bindtap="onImport">
-      <text class="menu-icon">📥</text>
-      <text class="menu-text">导入恢复</text>
-      <text class="menu-arrow">›</text>
+      <view class="menu-item-icon icon-import">
+        <text>↓</text>
+      </view>
+      <text class="menu-item-text">导入恢复</text>
+      <button class="menu-item-action" plain="true">
+        <text>›</text>
+      </button>
     </view>
   </view>
 
-  <view class="danger-section">
-    <view class="menu-item danger" bindtap="onClearData">
-      <text class="menu-icon">🗑️</text>
-      <text class="menu-text">清除所有数据</text>
-      <text class="menu-arrow">›</text>
+  <view class="menu-section danger-zone">
+    <view class="menu-item" bindtap="onClearData">
+      <view class="menu-item-icon icon-danger">
+        <text>✕</text>
+      </view>
+      <text class="menu-item-text">清除所有数据</text>
+      <button class="menu-item-action" plain="true">
+        <text>›</text>
+      </button>
     </view>
   </view>
 </view>
 
-<!-- 编辑弹窗 -->
 <view class="modal-overlay" wx:if="{{showModal}}" bindtap="hideModal">
   <view class="modal-content" catchtap="noop">
     <text class="modal-title">设置 FIRE 目标</text>

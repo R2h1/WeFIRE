@@ -1,3 +1,24 @@
+/* ============================================
+   WeFIRE Design System — Global Styles
+   ============================================
+   Color tokens:
+     --green-primary: #2E7D32 (primary brand)
+     --green-dark:    #25682A (pressed)
+     --green-bg:      #E8F5E9 (badge/background)
+     --red-danger:    #FF3B30
+     --red-dark:      #1A1A1A
+     --gray-900:      #1C1C1E (primary text)
+     --gray-600:      #8E8E93 (secondary text)
+     --gray-400:      #C7C7CC (placeholder/disabled)
+     --gray-200:      #E5E5EA (dividers)
+     --gray-100:      #F2F2F7 (surface bg)
+     --gray-50:       #F2F2F5 (page bg)
+     --white:         #FFFFFF
+   Spacing: 4/8/12/16/20/24/28/32
+   Border-radius: 8/12/16/20
+   Typography: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif
+*/
+
 page {
   background-color: #F2F2F5;
   color: #1C1C1E;
@@ -10,12 +31,40 @@ view, scroll-view, swiper {
   box-sizing: border-box;
 }
 
+/* ============================================
+   Layout Utilities
+   ============================================ */
+
+.page {
+  padding-bottom: 32px;
+}
+
+.page-section {
+  margin-top: 16px;
+}
+
+.page-section:first-child {
+  margin-top: 0;
+}
+
+/* ============================================
+   Card
+   ============================================ */
+
 .card {
   background: #FFFFFF;
   border-radius: 16px;
-  padding: 28px 24px;
-  margin: 6px 16px;
+  padding: 24px 20px;
+  margin: 8px 16px;
 }
+
+.card + .card {
+  margin-top: 8px;
+}
+
+/* ============================================
+   Buttons
+   ============================================ */
 
 .btn-primary {
   background-color: #2E7D32;
@@ -28,10 +77,13 @@ view, scroll-view, swiper {
   border: none;
   width: 100%;
   letter-spacing: 0.3px;
+  position: relative;
+  overflow: hidden;
 }
 
 .btn-primary:active {
   background-color: #25682A;
+  opacity: 0.95;
 }
 
 .btn-secondary {
@@ -50,10 +102,20 @@ view, scroll-view, swiper {
   background-color: #E5E5EA;
 }
 
+/* ============================================
+   Input Fields
+   ============================================ */
+
 .ipt-wrapper {
   background: #F2F2F7;
   border-radius: 12px;
-  padding: 18px 16px;
+  padding: 16px 18px;
+}
+
+.ipt-wrapper:focus-within {
+  background: #E8F5E9;
+  outline: 2px solid rgba(46, 125, 50, 0.2);
+  outline-offset: -2px;
 }
 
 .input-field {
@@ -69,9 +131,9 @@ view, scroll-view, swiper {
   color: #C7C7CC;
 }
 
-.input-field:focus {
-  background: #E8F5E9;
-}
+/* ============================================
+   Labels
+   ============================================ */
 
 .label {
   font-size: 13px;
@@ -81,31 +143,71 @@ view, scroll-view, swiper {
   font-weight: 500;
 }
 
+/* ============================================
+   Empty State
+   ============================================ */
+
 .empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 120px;
-  padding-left: 40px;
-  padding-right: 40px;
+  padding: 120px 40px;
   color: #8E8E93;
+  text-align: center;
 }
 
-.empty-state text {
-  font-size: 16px;
-  margin-top: 12px;
+.empty-state .empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+
+.empty-state .empty-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1C1C1E;
+  margin-bottom: 8px;
+}
+
+.empty-state .empty-desc {
+  font-size: 15px;
+  color: #8E8E93;
   line-height: 1.6;
 }
 
-/* Modal */
+/* ============================================
+   Section Header
+   ============================================ */
+
+.section-header-inline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  margin-bottom: 12px;
+  margin-top: 8px;
+}
+
+.section-header-inline .section-title-small {
+  font-size: 13px;
+  font-weight: 600;
+  color: #8E8E93;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ============================================
+   Modal
+   ============================================ */
+
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0,0,0,0.45);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -117,7 +219,7 @@ view, scroll-view, swiper {
   max-width: 340px;
   background: #FFFFFF;
   border-radius: 20px;
-  padding: 28px 24px 20px;
+  padding: 24px 24px 20px;
 }
 
 .modal-title {
@@ -145,6 +247,12 @@ view, scroll-view, swiper {
   background: #F2F2F7;
   border-radius: 12px;
   padding: 14px 16px;
+}
+
+.input-wrapper:focus-within {
+  background: #E8F5E9;
+  outline: 2px solid rgba(46, 125, 50, 0.2);
+  outline-offset: -2px;
 }
 
 .modal-input {
