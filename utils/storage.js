@@ -1,6 +1,8 @@
 const STORAGE_KEYS = {
   SETTINGS: 'fire_settings',
-  SNAPSHOTS: 'fire_snapshots'
+  SNAPSHOTS: 'fire_snapshots',
+  TRACKED_ITEMS: 'fire_tracked_items',
+  ENTRIES: 'fire_entries'
 }
 
 function getSettings() {
@@ -43,6 +45,52 @@ function saveSnapshots(snapshots) {
   })
 }
 
+function getTrackedItems() {
+  try {
+    const data = wx.getStorageSync(STORAGE_KEYS.TRACKED_ITEMS)
+    return data || []
+  } catch (e) {
+    return []
+  }
+}
+
+function saveTrackedItems(items) {
+  return new Promise((resolve, reject) => {
+    wx.setStorage({
+      key: STORAGE_KEYS.TRACKED_ITEMS,
+      data: items,
+      success: resolve,
+      fail: reject
+    })
+  })
+}
+
+function getMonthlyEntries(monthId) {
+  try {
+    const all = wx.getStorageSync(STORAGE_KEYS.ENTRIES)
+    return (all && all[monthId]) || []
+  } catch (e) {
+    return []
+  }
+}
+
+function saveMonthlyEntries(monthId, entries) {
+  try {
+    const all = wx.getStorageSync(STORAGE_KEYS.ENTRIES) || {}
+    all[monthId] = entries
+    return new Promise((resolve, reject) => {
+      wx.setStorage({
+        key: STORAGE_KEYS.ENTRIES,
+        data: all,
+        success: resolve,
+        fail: reject
+      })
+    })
+  } catch (e) {
+    return Promise.reject(e)
+  }
+}
+
 function addSnapshot(snapshot) {
   const snapshots = getSnapshots()
   const existingIndex = snapshots.findIndex(s => s.id === snapshot.id)
@@ -61,5 +109,9 @@ module.exports = {
   getSnapshots,
   saveSnapshots,
   addSnapshot,
+  getTrackedItems,
+  saveTrackedItems,
+  getMonthlyEntries,
+  saveMonthlyEntries,
   STORAGE_KEYS
 }

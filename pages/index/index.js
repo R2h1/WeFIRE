@@ -1,6 +1,7 @@
 const storage = require('../../utils/storage')
 const fire = require('../../utils/fire')
 const chart = require('../../utils/chart')
+const reminder = require('../../utils/reminder')
 
 Page({
   data: {
@@ -21,6 +22,22 @@ Page({
 
   onShow() {
     this.loadData()
+    this.checkReminder()
+  },
+
+  checkReminder() {
+    if (reminder.shouldRemindToday()) {
+      wx.showModal({
+        title: '📅 本月还没记录',
+        content: '今天是本月最后几天，别忘了记录本月的资产和负债数据哦！',
+        confirmText: '去记录',
+        success: (res) => {
+          if (res.confirm) {
+            wx.switchTab({ url: '/pages/add/add' })
+          }
+        }
+      })
+    }
   },
 
   loadData() {

@@ -2,21 +2,40 @@
   <view class="card">
     <text class="month-label">{{currentYear}}年{{currentMonth}}月</text>
 
-    <view class="form-group">
-      <text class="label">总资产</text>
-      <view class="ipt-wrapper">
-        <input class="input-field" type="digit" placeholder="输入本月总资产" value="{{assets}}" bindinput="onAssetsInput" />
-      </view>
+    <!-- 资产 -->
+    <view class="section-header">
+      <text class="section-title assets-title">■ 资产</text>
+      <text class="section-add" bindtap="onAddItem" data-type="assets">+ 添加</text>
+    </view>
+    <view wx:for="{{assetEntries}}" wx:key="itemId" class="entry-row">
+      <text class="entry-icon">{{item.icon}}</text>
+      <text class="entry-name">{{item.name}}<text wx:if="{{item.label}}" class="entry-label"> · {{item.label}}</text></text>
+      <input class="entry-amount" type="digit" placeholder="0" value="{{item.amount}}" data-itemid="{{item.itemId}}" bindinput="onAmountInput" />
+      <text class="entry-del" data-itemid="{{item.itemId}}" bindtap="onRemoveEntry">✕</text>
+    </view>
+    <view wx:if="{{assetEntries.length === 0}}" class="empty-entries">
+      <text>暂无资产分类，点击上方「+ 添加」开始设置</text>
     </view>
 
-    <view class="form-group">
-      <text class="label">总负债</text>
-      <view class="ipt-wrapper">
-        <input class="input-field" type="digit" placeholder="输入本月总负债" value="{{liabilities}}" bindinput="onLiabilitiesInput" />
-      </view>
+    <view class="section-divider"></view>
+
+    <!-- 负债 -->
+    <view class="section-header">
+      <text class="section-title liabilities-title">■ 负债</text>
+      <text class="section-add" bindtap="onAddItem" data-type="liabilities">+ 添加</text>
+    </view>
+    <view wx:for="{{liabilityEntries}}" wx:key="itemId" class="entry-row">
+      <text class="entry-icon">{{item.icon}}</text>
+      <text class="entry-name">{{item.name}}<text wx:if="{{item.label}}" class="entry-label"> · {{item.label}}</text></text>
+      <input class="entry-amount" type="digit" placeholder="0" value="{{item.amount}}" data-itemid="{{item.itemId}}" bindinput="onAmountInput" />
+      <text class="entry-del" data-itemid="{{item.itemId}}" bindtap="onRemoveEntry">✕</text>
+    </view>
+    <view wx:if="{{liabilityEntries.length === 0}}" class="empty-entries">
+      <text>暂无负债分类，点击上方「+ 添加」开始设置</text>
     </view>
 
-    <view class="preview" wx:if="{{assets || liabilities}}">
+    <!-- 预览 -->
+    <view class="preview">
       <text class="preview-label">净资产</text>
       <text class="preview-amount">{{netWorthText}}</text>
     </view>
@@ -37,6 +56,38 @@
         <text style="font-size:14px;color:#8E8E93;">{{item.label}}</text>
         <text style="font-size:16px;font-weight:600;color:#1C1C1E;">{{item.netWorthText}}</text>
       </view>
+    </view>
+  </view>
+</view>
+
+<!-- 添加分类弹窗 -->
+<view class="modal-overlay" wx:if="{{showPicker}}" bindtap="hidePicker">
+  <view class="picker-content" catchtap="noop">
+    <text class="picker-title">选择{{pickerType === 'assets' ? '资产' : '负债'}}分类</text>
+    <scroll-view scroll-y class="picker-list">
+      <view wx:for="{{availablePresets}}" wx:key="id" class="picker-item" data-preset="{{item.id}}" bindtap="onSelectPreset">
+        <text class="picker-icon">{{item.icon}}</text>
+        <text class="picker-name">{{item.name}}</text>
+      </view>
+      <view wx:if="{{availablePresets.length === 0}}" style="padding:30px 0;text-align:center;color:#C7C7CC;">
+        <text>已添加所有可用分类</text>
+      </view>
+    </scroll-view>
+    <button class="picker-close" bindtap="hidePicker">取消</button>
+  </view>
+</view>
+
+<!-- 标签输入弹窗 -->
+<view class="modal-overlay" wx:if="{{showLabelInput}}" bindtap="hideLabelInput">
+  <view class="picker-content label-input-content" catchtap="noop">
+    <text class="picker-title">设置账户标识（可选）</text>
+    <text class="modal-label">为「{{selectedPresetName}}」设置一个名称</text>
+    <view class="ipt-wrapper">
+      <input class="modal-input" type="text" placeholder="输入账户标识" value="{{labelInput}}" bindinput="onLabelInput" />
+    </view>
+    <view class="modal-btns">
+      <button class="modal-btn cancel" bindtap="hideLabelInput">跳过</button>
+      <button class="modal-btn confirm" bindtap="onConfirmLabel">确定</button>
     </view>
   </view>
 </view>

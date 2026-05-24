@@ -98,8 +98,6 @@ view, scroll-view, swiper {
   line-height: 1.6;
 }
 
-.empty-state 
-
 /* Modal */
 .modal-overlay {
   position: fixed;

@@ -1,8 +1,8 @@
 <view class="history-page">
   <view class="card">
-    <text style="font-size:48px;display:block;margin-bottom:8px;text-align:center;">🧑</text>
+    <text style="font-size:48px;display:block;text-align:center;">🧑</text>
     <text style="font-size:17px;font-weight:600;color:#1C1C1E;display:block;text-align:center;">WeFIRE</text>
-    <text style="font-size:14px;color:#8E8E93;display:block;text-align:center;margin-top:4px;">财务独立进度追踪</text>
+    <text style="font-size:14px;color:#8E8E93;display:block;text-align:center;margin-top:4px;">完全本地运行，保护您的财务隐私！</text>
   </view>
 
   <!-- FIRE 目标总览 -->
@@ -27,6 +27,11 @@
   </view>
 
   <view class="menu-group">
+    <view class="menu-item" bindtap="onSubscribe">
+      <text class="menu-icon">🔔</text>
+      <text class="menu-text">订阅提醒</text>
+      <text class="menu-arrow">›</text>
+    </view>
     <view class="menu-item" bindtap="onExport">
       <text class="menu-icon">💾</text>
       <text class="menu-text">导出备份</text>

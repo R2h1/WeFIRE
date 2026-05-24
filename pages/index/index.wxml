@@ -3,7 +3,7 @@
     <text class="empty-icon">🎯</text>
     <text class="empty-text">还没有设定 FIRE 目标</text>
     <text class="empty-desc">请到「我的」设置
-    开始追踪你的 FIRE 进度</text>
+开始追踪你的 FIRE 进度</text>
   </view>
 
   <view wx:else class="home-content">
