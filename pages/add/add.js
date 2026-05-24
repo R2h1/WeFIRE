@@ -32,6 +32,12 @@ Page({
     })
     this.loadData()
     this.loadHistory()
+    this.updateTabBar()
+  },
+
+  updateTabBar() {
+    const tabBar = typeof this.getTabBar === 'function' && this.getTabBar();
+    tabBar && tabBar.setData({ active: 1 });
   },
 
   loadData() {

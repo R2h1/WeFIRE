@@ -9,6 +9,8 @@ Page({
     targetAmountText: '',
     showModal: false,
     showYearPicker: false,
+    showImportModal: false,
+    importJsonText: '',
     editTarget: '',
     editYear: null,
     yearRange: [],
@@ -17,6 +19,12 @@ Page({
   onShow() {
     this.initYearRange();
     this.loadData();
+    this.updateTabBar();
+  },
+
+  updateTabBar() {
+    const tabBar = typeof this.getTabBar === 'function' && this.getTabBar();
+    tabBar && tabBar.setData({ active: 2 });
   },
 
   initYearRange() {
@@ -55,7 +63,10 @@ Page({
 
   onOpenYearPicker() {
     const idx = Math.max(0, this.data.yearRange.indexOf(this.data.editYear));
-    this.setData({ showModal: false, showYearPicker: true, yearPickerIndex: idx });
+    this.setData({
+      showYearPicker: true,
+      yearPickerIndex: idx,
+    });
   },
 
   onCloseYearPicker() {
@@ -63,30 +74,31 @@ Page({
   },
 
   onPickerConfirm(e) {
-    const year = e.detail.value[0];
+    const year = e.detail.value;
     this.setData({ editYear: year, showYearPicker: false, showModal: true });
   },
 
-  onBeforeClose(action, done) {
-    if (action === 'confirm') {
-      this._handleSave(done);
-    } else {
-      done();
-    }
+  onLoad() {
+    this.setData({
+      beforeCloseHandler: (action) => this._handleBeforeClose(action),
+    });
   },
 
-  _handleSave(done) {
+  _handleBeforeClose(action) {
+    if (action !== 'confirm') return true;
+
     const { editTarget, editYear } = this.data;
     if (!editTarget || parseFloat(editTarget) <= 0) {
       wx.showToast({ title: '请输入有效目标金额', icon: 'none' });
-      return;
+      return false;
     }
     const year = editYear;
     const currentYear = new Date().getFullYear();
     if (!editYear || isNaN(year) || year < currentYear) {
       wx.showToast({ title: '退休年份不能早于' + currentYear, icon: 'none' });
-      return;
+      return false;
     }
+
     storage
       .saveSettings({
         targetAmount: parseFloat(editTarget),
@@ -95,8 +107,10 @@ Page({
       .then(() => {
         wx.showToast({ title: '保存成功' });
         this.loadData();
-        done();
+        this.hideModal();
       });
+
+    return false;
   },
 
   onSubscribe() {
@@ -138,7 +152,25 @@ Page({
   },
 
   onImport() {
-    backup.importData().then(() => {
+    this.setData({ showImportModal: true, importJsonText: '' });
+  },
+
+  onImportJsonInput(e) {
+    this.setData({ importJsonText: e.detail });
+  },
+
+  onImportCancel() {
+    this.setData({ showImportModal: false });
+  },
+
+  onImportConfirm() {
+    const json = this.data.importJsonText;
+    if (!json || !json.trim()) {
+      wx.showToast({ title: '请粘贴备份数据', icon: 'none' });
+      return;
+    }
+    backup.importData(json.trim()).then(() => {
+      this.setData({ showImportModal: false });
       this.loadData();
     });
   },

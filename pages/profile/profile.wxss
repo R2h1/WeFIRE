@@ -11,40 +11,47 @@
    ============================================ */
 
 .profile-card {
-  text-align: center;
-  padding: 32px 20px 28px;
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
   margin-top: 16px;
 }
 
 .profile-avatar {
-  width: 64px;
-  height: 64px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: #e8f5e9;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 12px;
+  flex-shrink: 0;
+  margin-right: 14px;
 }
 
 .avatar-text {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   color: #2e7d32;
 }
 
+.profile-info {
+  flex: 1;
+  min-width: 0;
+}
+
 .profile-name {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
   color: #1c1c1e;
   display: block;
-  margin-bottom: 4px;
 }
 
 .profile-desc {
-  font-size: 13px;
+  font-size: 12px;
   color: #8e8e93;
   display: block;
+  margin-top: 2px;
 }
 
 /* ============================================
@@ -189,7 +196,7 @@ van-cell-group {
    ============================================ */
 
 .van-dialog-content {
-  padding: 24px 24px 0;
+  padding: 20px 20px 0;
 }
 
 .van-dialog-title {
@@ -198,23 +205,29 @@ van-cell-group {
   font-weight: 700;
   color: #1c1c1e;
   text-align: center;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
-/* Dialog 按钮圆角 */
+.van-dialog-content van-cell-group {
+  margin: 0;
+}
+
+/* Dialog 按钮圆角 & 均分 */
 .van-dialog {
   --van-dialog-border-radius: 16px;
 }
 
-.van-dialog .van-button {
+.van-dialog__footer .van-dialog__confirm {
+  flex: 1;
+  width: 100%;
   border-radius: 0 !important;
 }
 
-.van-dialog .van-button:first-child {
+.van-dialog__footer .van-button:first-child {
   border-bottom-left-radius: 16px !important;
 }
 
-.van-dialog .van-button:last-child {
+.van-dialog__footer .van-button:last-child {
   border-bottom-right-radius: 16px !important;
 }
 
@@ -223,11 +236,27 @@ van-cell-group {
   padding: 2px 0;
 }
 
+.import-textarea {
+  --van-field-background: #f2f2f7;
+  border-radius: 8px;
+}
+
+.import-tip {
+  font-size: 13px;
+  color: #8e8e93;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
 .picker-value {
+  width: 100%;
+  text-align: right;
   color: #1c1c1e;
 }
 
 .picker-placeholder {
+  width: 100%;
+  text-align: right;
   color: #c7c7cc;
 }
 

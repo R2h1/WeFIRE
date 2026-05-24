@@ -21,7 +21,7 @@ app.js / app.json / app.wxss    — Entry, global config, design system & Vant t
 pages/
   index/                         — Home dashboard: progress bar, net worth summary, trend chart, stats
   add/                           — Monthly data entry: asset/liability inputs, category picker, history list
-  history/                       — Settings (FIRE target), backup/restore, reminder subscribe, clear data
+  profile/                       — Settings (FIRE target), backup/restore, reminder subscribe, clear data
 utils/
   storage.js                     — CRUD wrapper for all 4 storage keys
   fire.js                        — Core FIRE calculations (progress, projected years, missing month filling, money formatting)
@@ -31,7 +31,7 @@ utils/
   reminder.js                    — Monthly subscribe-message reminder
 ```
 
-No `components/` directory — everything is page-level.
+Custom tab bar at `custom-tab-bar/` — uses `van-tabbar` with Vant icons.
 
 ## Data Model (Local Storage)
 
@@ -66,5 +66,5 @@ Global styles in `app.wxss`:
 - Package size: main bundle 2MB, sub-package 2MB, total 20MB
 - All storage via `wx.setStorage`/`wx.getStorage` — async with Promise wrappers in storage.js
 - No DOM — UI via WXML data binding and `setData()`
-- Backup/restore via `wx.getFileSystemManager()` + `wx.shareFileMessage`/`wx.chooseMessageFile`
+- Backup via clipboard (`wx.setClipboardData`), restore via JSON paste dialog
 - No test framework configured yet

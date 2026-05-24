@@ -1,9 +1,5 @@
 {
-  "pages": [
-    "pages/index/index",
-    "pages/add/add",
-    "pages/history/history"
-  ],
+  "pages": ["pages/index/index", "pages/add/add", "pages/profile/profile"],
   "window": {
     "navigationBarTitleText": "WeFIRE",
     "navigationBarBackgroundColor": "#FFFFFF",
@@ -12,6 +8,7 @@
     "backgroundTextStyle": "dark"
   },
   "tabBar": {
+    "custom": true,
     "color": "#999999",
     "selectedColor": "#2E7D32",
     "backgroundColor": "#FFFFFF",
@@ -19,21 +16,15 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首页",
-        "iconPath": "images/home.png",
-        "selectedIconPath": "images/home_selected.png"
+        "text": "首页"
       },
       {
         "pagePath": "pages/add/add",
-        "text": "添加",
-        "iconPath": "images/add.png",
-        "selectedIconPath": "images/add_selected.png"
+        "text": "添加"
       },
       {
-        "pagePath": "pages/history/history",
-        "text": "我的",
-        "iconPath": "images/my.png",
-        "selectedIconPath": "images/my_selected.png"
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
       }
     ]
   },
@@ -48,7 +39,9 @@
     "van-toast": "@vant/weapp/toast/index",
     "van-popup": "@vant/weapp/popup/index",
     "van-loading": "@vant/weapp/loading/index",
-    "van-picker": "@vant/weapp/picker/index"
+    "van-picker": "@vant/weapp/picker/index",
+    "van-tabbar": "@vant/weapp/tabbar/index",
+    "van-tabbar-item": "@vant/weapp/tabbar-item/index"
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json"

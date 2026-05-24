@@ -1,0 +1,119 @@
+<view class="history-page">
+  <view class="profile-card card">
+    <view class="profile-avatar">
+      <text class="avatar-text">W</text>
+    </view>
+    <view class="profile-info">
+      <text class="profile-name">WeFIRE</text>
+      <text class="profile-desc">本地数据 · 隐私安全</text>
+    </view>
+  </view>
+
+  <view class="card settings-card" bindtap="openSettingsModal">
+    <view class="settings-header">
+      <view class="settings-header-left">
+        <view class="settings-icon icon-target">
+          <van-icon name="aim" size="18px" />
+        </view>
+        <text class="settings-title">FIRE 目标</text>
+      </view>
+      <van-icon name="arrow" size="16px" color="#c7c7cc" />
+    </view>
+    <view wx:if="{{settings}}" class="settings-body">
+      <view class="settings-row">
+        <text class="settings-row-label">目标金额</text>
+        <text class="settings-row-value">{{targetAmountText}}</text>
+      </view>
+      <view class="settings-row">
+        <text class="settings-row-label">退休年份</text>
+        <text class="settings-row-value">{{settings.retirementYear}}年</text>
+      </view>
+    </view>
+    <view wx:else class="settings-empty">
+      <text>点击设置 FIRE 目标</text>
+    </view>
+  </view>
+
+  <van-cell-group>
+    <van-cell center is-link bindtap="onSubscribe">
+      <van-icon slot="icon" name="warning-o" size="18px" class="van-cell-icon icon-bell" />
+      <view slot="title">订阅提醒</view>
+    </van-cell>
+    <van-cell center is-link bindtap="onExport">
+      <van-icon slot="icon" name="down" size="18px" class="van-cell-icon icon-export">↑</van-icon>
+      <view slot="title">导出备份</view>
+    </van-cell>
+    <van-cell center is-link bindtap="onImport">
+      <van-icon slot="icon" name="upgrade" size="18px" class="van-cell-icon icon-import">↓</van-icon>
+      <view slot="title">导入恢复</view>
+    </van-cell>
+  </van-cell-group>
+
+  <view class="danger-section">
+    <van-cell center is-link bindtap="onClearData">
+      <van-icon slot="icon" name="delete-o" size="18px" class="van-cell-icon icon-danger"/>
+      <view slot="title" class="danger-text">清除所有数据</view>
+    </van-cell>
+  </view>
+</view>
+
+<!-- 设置 FIRE 目标弹窗 -->
+<van-dialog
+  show="{{showModal}}"
+  use-slot
+  show-cancel-button
+  before-close="{{beforeCloseHandler}}"
+>
+  <view class="van-dialog-content">
+    <text class="van-dialog-title">设置 FIRE 目标</text>
+    <van-cell-group border="{{false}}">
+      <van-field
+        value="{{editTarget}}"
+        label="目标金额"
+        type="digit"
+        placeholder="输入 FIRE 目标金额"
+        bind:input="onEditTargetInput"
+        input-align="right"
+      />
+      <van-field label="退休年份" input-align="right" bindtap="onOpenYearPicker">
+        <view slot="input" class="{{editYear ? 'picker-value' : 'picker-placeholder'}}">{{editYear || '选择退休年份'}}</view>
+        <van-icon slot="right-icon" name="arrow-down" />
+      </van-field>
+    </van-cell-group>
+  </view>
+</van-dialog>
+
+<!-- 导入恢复弹窗 -->
+<van-dialog
+  show="{{showImportModal}}"
+  use-slot
+  show-cancel-button
+  bind:confirm="onImportConfirm"
+  bind:cancel="onImportCancel"
+>
+  <view class="van-dialog-content">
+    <text class="van-dialog-title">导入恢复</text>
+    <view class="import-tip">请粘贴备份的 JSON 数据</view>
+    <van-field
+      value="{{importJsonText}}"
+      type="textarea"
+      placeholder="在此粘贴 JSON 数据..."
+      bind:input="onImportJsonInput"
+      style="import-textarea"
+      autosize="{{ { maxHeight: 200 } }}"
+      border
+    />
+  </view>
+</van-dialog>
+
+<!-- 年份选择器 -->
+<van-popup z-index="2001" show="{{showYearPicker}}" position="bottom" round bind:close="onCloseYearPicker">
+  <van-picker
+    columns="{{yearRange}}"
+    show-toolbar
+    title="选择退休年份"
+    bind:confirm="onPickerConfirm"
+    bind:cancel="onCloseYearPicker"
+  />
+</van-popup>
+
