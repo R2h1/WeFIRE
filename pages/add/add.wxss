@@ -8,28 +8,40 @@
 
 /* ===== Month Header ===== */
 .month-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px 0 4px;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  padding: 10px 16px 4px;
   gap: 4px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(242, 242, 245, 0.3);
+  border-radius: 0 10px 10px 0;
+  margin-left: 0;
 }
 
-.month-label-prefix {
-  font-size: 15px;
-  color: #8e8e93;
+.month-header::after {
+  content: '';
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 0;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .month-label-value {
-  font-size: 17px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
   color: #1c1c1e;
+  letter-spacing: 0.5px;
 }
 
-.month-lock {
-  color: #c7c7cc;
-  font-size: 14px;
-  margin-left: 2px;
+.month-icon {
+  font-size: 20px;
+  color: #8e8e93;
+  margin-right: 4px;
 }
 
 /* ===== Previous Data Tip ===== */
@@ -60,7 +72,8 @@
   padding: 0;
   overflow: hidden;
   margin-bottom: 10px;
-  --van-collapse-item-content-padding: 0 16px 12px;
+  --cell-font-size: 15px;
+  --collapse-item-content-padding: 0 16px 12px;
   --van-collapse-item-content-font-size: 14px;
   --van-collapse-item-content-line-height: 1.5;
   --van-collapse-item-content-text-color: #1c1c1e;
@@ -71,9 +84,6 @@
 }
 
 /* ===== Item Rows ===== */
-.item-row {
-  padding: 4px 0;
-}
 
 .item-active {
   display: flex;
@@ -93,32 +103,15 @@
   margin-right: 12px;
 }
 
-/* Single Item Input */
+/* Single Item Input (van-field) */
 .item-input-wrap {
   margin-left: auto;
-}
-
-.item-input {
-  width: 110px;
-  padding: 8px 12px;
-  background: #f5f5f7;
+  width: 120px;
   border-radius: 8px;
-  border: none;
-  font-size: 15px;
-  color: #1c1c1e;
-  text-align: right;
-  caret-color: #2e7d32;
-  height: 36px;
-  box-sizing: border-box;
-  outline: none;
-}
-
-.item-input::placeholder {
-  color: #c7c7cc;
-}
-
-.item-input:focus {
-  background: #e8f5e9;
+  overflow: hidden;
+  --cell-background-color: #f5f5f7;
+  --cell-vertical-padding: 4px;
+  --cell-horizontal-padding: 12px;
 }
 
 /* Multi Item Summary */

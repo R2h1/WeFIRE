@@ -1,9 +1,8 @@
 <view class="add-page">
   <!-- 月份行 -->
   <view class="month-header">
-    <text class="month-label-prefix">月份：</text>
+    <van-icon name="calendar-o" class="month-icon" />
     <text class="month-label-value">{{monthLabel}}</text>
-    <van-icon name="lock" class="month-lock" />
   </view>
 
   <!-- 提示条 -->
@@ -13,8 +12,8 @@
   </view>
 
   <!-- 四个折叠面板 -->
-  <view wx:for="{{sections}}" wx:key="id" class="card section-card" style="--van-collapse-icon-color: {{item.id === 'liquidAssets' || item.id === 'fixedAssets' ? '#2E7D32' : '#D32F2F'}}">
-    <van-collapse value="{{activeSections}}" bind:change="onCollapseChange" border="{{false}}" style="--van-collapse-icon-color: {{item.id === 'liquidAssets' || item.id === 'fixedAssets' ? '#2E7D32' : '#D32F2F'}}">
+  <view wx:for="{{sections}}" wx:key="id" class="card section-card" style="--cell-text-color: {{item.id === 'liquidAssets' || item.id === 'fixedAssets' ? '#2E7D32' : '#D32F2F'}}">
+    <van-collapse value="{{activeSections}}" bind:change="onCollapseChange" border="{{false}}">
       <van-collapse-item
         name="{{item.id}}"
         title="{{item.label}}"
@@ -28,8 +27,15 @@
               <text class="item-name">{{item.name}}</text>
 
               <view wx:if="{{!item.multi}}" class="item-input-wrap">
-                <input class="item-input" type="digit" placeholder="金额"
-                  value="{{singleValues[item.key]}}" data-key="{{item.key}}" bindinput="onSingleInput" />
+                <van-field
+                  value="{{singleValues[item.key]}}"
+                  type="digit"
+                  placeholder="金额"
+                  data-key="{{item.key}}"
+                  bind:input="onSingleInput"
+                  border="{{false}}"
+                  input-align="right"
+                />
               </view>
 
               <view wx:else class="item-multi" bindtap="onManageInstances" data-key="{{item.key}}">

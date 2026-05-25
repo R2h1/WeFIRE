@@ -204,7 +204,7 @@ Page({
 
   onSingleInput(e) {
     const key = e.currentTarget.dataset.key
-    const val = e.detail.value
+    const val = e.detail
     const singleValues = { ...this.data.singleValues, [key]: val }
     this.setData({ singleValues })
     this.calcNetWorth()
