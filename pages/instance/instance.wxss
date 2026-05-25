@@ -1,0 +1,68 @@
+.instance-page {
+  padding-bottom: 32px;
+}
+
+.instance-page .card {
+  margin-top: 16px;
+}
+
+.instance-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #f2f2f7;
+}
+
+.instance-row:last-child {
+  border-bottom: none;
+}
+
+.instance-row:active {
+  opacity: 0.6;
+}
+
+.instance-info {
+  flex: 1;
+}
+
+.instance-name {
+  font-size: 15px;
+  color: #1c1c1e;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.instance-amount {
+  font-size: 13px;
+  color: #8e8e93;
+}
+
+.instance-arrow {
+  color: #c7c7cc;
+  font-size: 14px;
+}
+
+.add-btn-wrapper {
+  margin: 24px 16px;
+}
+
+.dialog-content {
+  padding: 8px 0;
+}
+
+.dialog-field {
+  border-top: 1px solid #f2f2f7;
+}
+
+.delete-btn-wrapper {
+  padding: 16px 24px;
+  text-align: center;
+}
+
+.empty-state {
+  padding: 40px 0;
+  text-align: center;
+  color: #c7c7cc;
+  font-size: 14px;
+}

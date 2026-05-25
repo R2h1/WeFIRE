@@ -1,3 +1,5 @@
+const config = require('./config')
+
 function calcNetWorth(assets, liabilities) {
   return (assets || 0) - (liabilities || 0)
 }
@@ -11,10 +13,12 @@ function calcProgress(netWorth, targetAmount) {
 
 function calcMonthlySavings(snapshots) {
   if (snapshots.length < 2) return 0
-  const sorted = [...snapshots].sort((a, b) => a.id.localeCompare(b.id))
+  const sorted = [...snapshots].sort((a, b) => getSnapshotId(a).localeCompare(getSnapshotId(b)))
   const first = sorted[0]
   const last = sorted[sorted.length - 1]
-  let monthCount = ((last.year - first.year) * 12) + (last.month - first.month)
+  const firstParts = first.month.split('-')
+  const lastParts = last.month.split('-')
+  let monthCount = ((parseInt(lastParts[0]) - parseInt(firstParts[0])) * 12) + (parseInt(lastParts[1]) - parseInt(firstParts[1]))
   if (monthCount <= 0) return 0
   const netWorthChange = last.netWorth - first.netWorth
   return netWorthChange / monthCount
@@ -26,30 +30,38 @@ function calcProjectedYears(netWorth, monthlySavings, targetAmount) {
   return Math.ceil(remaining / (monthlySavings * 12))
 }
 
+function getSnapshotId(s) {
+  return s.id || s.month || ''
+}
+
 function fillMissingMonths(snapshots) {
   if (snapshots.length < 1) return []
-  const sorted = [...snapshots].sort((a, b) => a.id.localeCompare(b.id))
+  const sorted = [...snapshots].sort((a, b) => getSnapshotId(a).localeCompare(getSnapshotId(b)))
   const result = []
   let lastSnapshot = null
-  const startDate = new Date(sorted[0].year, sorted[0].month - 1)
+  const firstParts = sorted[0].month.split('-')
+  const startDate = new Date(parseInt(firstParts[0]), parseInt(firstParts[1]) - 1)
   const now = new Date()
   const endDate = new Date(now.getFullYear(), now.getMonth())
   const cursor = new Date(startDate)
   while (cursor <= endDate) {
     const year = cursor.getFullYear()
     const month = cursor.getMonth() + 1
-    const id = year + '-' + String(month).padStart(2, '0')
-    const existing = sorted.find(s => s.id === id)
+    const monthId = year + '-' + String(month).padStart(2, '0')
+    const existing = sorted.find(s => getSnapshotId(s) === monthId)
     if (existing) {
       result.push(existing)
       lastSnapshot = existing
     } else if (lastSnapshot) {
+      const totals = config.calcTotalAssets(lastSnapshot)
+      const totalLiab = config.calcTotalLiabilities(lastSnapshot)
       result.push({
-        id: id,
+        id: monthId,
+        month: monthId,
         year: year,
         month: month,
-        assets: lastSnapshot.assets,
-        liabilities: lastSnapshot.liabilities,
+        assets: totals,
+        liabilities: totalLiab,
         netWorth: lastSnapshot.netWorth,
         createdAt: lastSnapshot.createdAt,
         filled: true
@@ -58,6 +70,14 @@ function fillMissingMonths(snapshots) {
     cursor.setMonth(cursor.getMonth() + 1)
   }
   return result
+}
+
+function calcSnapshotTotals(snapshot) {
+  if (!snapshot) return { assets: 0, liabilities: 0 }
+  return {
+    assets: config.calcTotalAssets(snapshot) || snapshot.assets || 0,
+    liabilities: config.calcTotalLiabilities(snapshot) || snapshot.liabilities || 0
+  }
 }
 
 function formatMoney(amount) {
@@ -77,5 +97,6 @@ module.exports = {
   calcMonthlySavings,
   calcProjectedYears,
   fillMissingMonths,
-  formatMoney
+  formatMoney,
+  calcSnapshotTotals
 }

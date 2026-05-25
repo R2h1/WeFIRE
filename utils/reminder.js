@@ -26,7 +26,7 @@ function shouldRemindToday() {
   // Check if already recorded this month
   const snapshots = storage.getSnapshots()
   const monthId = year + '-' + String(month).padStart(2, '0')
-  return !snapshots.some(s => s.id === monthId)
+  return !snapshots.some(s => (s.id || s.month) === monthId)
 }
 
 // == 开发者须知 ====

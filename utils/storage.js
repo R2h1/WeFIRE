@@ -1,117 +1,83 @@
-const STORAGE_KEYS = {
-  SETTINGS: 'fire_settings',
-  SNAPSHOTS: 'fire_snapshots',
-  TRACKED_ITEMS: 'fire_tracked_items',
-  ENTRIES: 'fire_entries'
+const STORAGE_KEY = 'wefire_data'
+
+function getDefaultData() {
+  return {
+    fireTarget: null,
+    fireYear: null,
+    startYear: new Date().getFullYear(),
+    snapshots: []
+  }
+}
+
+function getData() {
+  try {
+    const data = wx.getStorageSync(STORAGE_KEY)
+    if (data && data.snapshots) {
+      return Object.assign(getDefaultData(), data)
+    }
+    // First launch or data missing
+    const defaultData = getDefaultData()
+    wx.setStorageSync(STORAGE_KEY, defaultData)
+    return defaultData
+  } catch (e) {
+    return getDefaultData()
+  }
+}
+
+function saveData(data) {
+  return new Promise((resolve, reject) => {
+    wx.setStorage({
+      key: STORAGE_KEY,
+      data: data,
+      success: resolve,
+      fail: reject
+    })
+  })
 }
 
 function getSettings() {
-  try {
-    const data = wx.getStorageSync(STORAGE_KEYS.SETTINGS)
-    return data || null
-  } catch (e) {
-    return null
+  const data = getData()
+  if (!data.fireTarget) return null
+  return {
+    targetAmount: data.fireTarget,
+    retirementYear: data.fireYear
   }
 }
 
 function saveSettings(settings) {
-  return new Promise((resolve, reject) => {
-    wx.setStorage({
-      key: STORAGE_KEYS.SETTINGS,
-      data: settings,
-      success: resolve,
-      fail: reject
-    })
-  })
+  const data = getData()
+  data.fireTarget = settings.targetAmount
+  data.fireYear = settings.retirementYear
+  return saveData(data)
 }
 
 function getSnapshots() {
-  try {
-    const data = wx.getStorageSync(STORAGE_KEYS.SNAPSHOTS)
-    return data || []
-  } catch (e) {
-    return []
-  }
+  const data = getData()
+  return data.snapshots || []
 }
 
-function saveSnapshots(snapshots) {
-  return new Promise((resolve, reject) => {
-    wx.setStorage({
-      key: STORAGE_KEYS.SNAPSHOTS,
-      data: snapshots,
-      success: resolve,
-      fail: reject
-    })
-  })
-}
-
-function getTrackedItems() {
-  try {
-    const data = wx.getStorageSync(STORAGE_KEYS.TRACKED_ITEMS)
-    return data || []
-  } catch (e) {
-    return []
-  }
-}
-
-function saveTrackedItems(items) {
-  return new Promise((resolve, reject) => {
-    wx.setStorage({
-      key: STORAGE_KEYS.TRACKED_ITEMS,
-      data: items,
-      success: resolve,
-      fail: reject
-    })
-  })
-}
-
-function getMonthlyEntries(monthId) {
-  try {
-    const all = wx.getStorageSync(STORAGE_KEYS.ENTRIES)
-    return (all && all[monthId]) || []
-  } catch (e) {
-    return []
-  }
-}
-
-function saveMonthlyEntries(monthId, entries) {
-  try {
-    const all = wx.getStorageSync(STORAGE_KEYS.ENTRIES) || {}
-    all[monthId] = entries
-    return new Promise((resolve, reject) => {
-      wx.setStorage({
-        key: STORAGE_KEYS.ENTRIES,
-        data: all,
-        success: resolve,
-        fail: reject
-      })
-    })
-  } catch (e) {
-    return Promise.reject(e)
-  }
-}
-
-function addSnapshot(snapshot) {
-  const snapshots = getSnapshots()
-  const existingIndex = snapshots.findIndex(s => s.id === snapshot.id)
-  if (existingIndex > -1) {
-    snapshots[existingIndex] = snapshot
+function saveSnapshot(snapshot) {
+  const data = getData()
+  const idx = data.snapshots.findIndex(s => s.month === snapshot.month)
+  if (idx > -1) {
+    data.snapshots[idx] = snapshot
   } else {
-    snapshots.push(snapshot)
+    data.snapshots.push(snapshot)
   }
-  snapshots.sort((a, b) => a.id.localeCompare(b.id))
-  return saveSnapshots(snapshots)
+  data.snapshots.sort((a, b) => a.month.localeCompare(b.month))
+  // Update startYear
+  if (data.snapshots.length > 0) {
+    const firstMonth = data.snapshots[0].month
+    data.startYear = parseInt(firstMonth.split('-')[0])
+  }
+  return saveData(data)
 }
 
 module.exports = {
+  getData,
+  saveData,
   getSettings,
   saveSettings,
   getSnapshots,
-  saveSnapshots,
-  addSnapshot,
-  getTrackedItems,
-  saveTrackedItems,
-  getMonthlyEntries,
-  saveMonthlyEntries,
-  STORAGE_KEYS
+  saveSnapshot
 }

@@ -52,7 +52,7 @@
     <view class="card chart-card" wx:if="{{showChart}}">
       <view class="chart-header">
         <text class="chart-title">净资产趋势</text>
-        <text wx:if="{{latestSnapshot}}" class="chart-date">{{latestSnapshot.year}}.{{latestSnapshot.month}}</text>
+        <text wx:if="{{latestSnapshot}}" class="chart-date">{{chartDateLabel}}</text>
       </view>
       <canvas type="2d" id="homeChart" class="chart-canvas"></canvas>
     </view>

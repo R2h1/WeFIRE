@@ -1,5 +1,5 @@
 {
-  "pages": ["pages/index/index", "pages/add/add", "pages/profile/profile"],
+  "pages": ["pages/index/index", "pages/add/add", "pages/instance/instance", "pages/profile/profile"],
   "window": {
     "navigationBarTitleText": "WeFIRE",
     "navigationBarBackgroundColor": "#FFFFFF",

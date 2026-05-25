@@ -3,109 +3,105 @@
    ============================================ */
 
 .add-page {
-  padding-bottom: 32px;
+  padding: 0 0 160px;
+}
+
+/* ===== Month Header ===== */
+.month-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0 4px;
+  gap: 4px;
+}
+
+.month-label-prefix {
+  font-size: 15px;
+  color: #8e8e93;
+}
+
+.month-label-value {
+  font-size: 17px;
+  font-weight: 600;
+  color: #1c1c1e;
+}
+
+.month-lock {
+  color: #c7c7cc;
+  font-size: 14px;
+  margin-left: 2px;
+}
+
+/* ===== Previous Data Tip ===== */
+.prev-data-tip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #e8f5e9;
+  margin: 12px 16px 0;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  color: #2e7d32;
+}
+
+.clear-link {
+  color: #d32f2f;
+  font-weight: 600;
+  padding: 4px 8px;
+  flex-shrink: 0;
+}
+
+.clear-link:active {
+  opacity: 0.6;
+}
+
+.section-card {
+  padding: 0;
+  overflow: hidden;
+  margin-bottom: 10px;
+  --van-collapse-item-content-padding: 0 16px 12px;
+  --van-collapse-item-content-font-size: 14px;
+  --van-collapse-item-content-line-height: 1.5;
+  --van-collapse-item-content-text-color: #1c1c1e;
 }
 
 .add-page .card:first-child {
   margin-top: 16px;
 }
 
-.month-label {
-  display: block;
-  font-size: 20px;
-  font-weight: 700;
-  color: #1c1c1e;
-  text-align: center;
-  margin-bottom: 28px;
-  letter-spacing: 0.5px;
+/* ===== Item Rows ===== */
+.item-row {
+  padding: 4px 0;
 }
 
-/* ============================================
-   Section Header
-   ============================================ */
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-  margin-top: 8px;
-}
-
-.section-title {
+.item-active {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-}
-
-.section-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.dot-assets {
-  background: #2e7d32;
-}
-
-.dot-liabilities {
-  background: #d32f2f;
-}
-
-.section-divider {
-  height: 1px;
-  background: #f2f2f7;
-  margin: 20px 0;
-}
-
-/* ============================================
-   Entry Row
-   ============================================ */
-
-.entry-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 0;
+  padding: 8px 0;
   border-bottom: 1px solid #f2f2f7;
 }
 
-.entry-row:last-child {
+.item-active:last-child {
   border-bottom: none;
 }
 
-.entry-icon {
-  font-size: 16px;
-  width: 24px;
-  text-align: center;
-  flex-shrink: 0;
-}
-
-.entry-name {
-  flex: 1;
-  font-size: 14px;
+.item-name {
+  font-size: 15px;
   color: #1c1c1e;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
+  flex-shrink: 0;
+  margin-right: 12px;
 }
 
-.entry-label {
-  color: #8e8e93;
-  font-size: 12px;
+/* Single Item Input */
+.item-input-wrap {
+  margin-left: auto;
 }
 
-.entry-amount {
-  width: 100px;
-  min-width: 80px;
+.item-input {
+  width: 110px;
   padding: 8px 12px;
-  background: #f2f2f7;
+  background: #f5f5f7;
   border-radius: 8px;
   border: none;
   font-size: 15px;
@@ -114,161 +110,196 @@
   caret-color: #2e7d32;
   height: 36px;
   box-sizing: border-box;
+  outline: none;
 }
 
-.entry-amount::placeholder {
+.item-input::placeholder {
   color: #c7c7cc;
 }
 
-.entry-amount:focus {
+.item-input:focus {
   background: #e8f5e9;
-  outline: 2px solid rgba(46, 125, 50, 0.2);
-  outline-offset: -2px;
 }
 
-.entry-del {
+/* Multi Item Summary */
+.item-multi {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  padding: 4px 8px 4px 12px;
+  background: #f5f5f7;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.item-multi:active {
+  opacity: 0.6;
+}
+
+.multi-badge {
   font-size: 12px;
-  color: #c7c7cc;
-  padding: 6px;
-  flex-shrink: 0;
-  line-height: 1;
-}
-
-.entry-del:active {
-  color: #ff3b30;
-}
-
-.empty-entries {
-  padding: 24px 0;
-  text-align: center;
-}
-
-.empty-entries text {
-  font-size: 13px;
-  color: #c7c7cc;
-}
-
-/* ============================================
-   Preview
-   ============================================ */
-
-.preview {
-  margin-top: 24px;
-  padding: 24px 0 0;
-  border-top: 1px solid #f2f2f7;
-  text-align: center;
-}
-
-.preview-label {
-  font-size: 11px;
-  color: #c7c7cc;
-  display: block;
-  margin-bottom: 6px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.preview-amount {
-  font-size: 36px;
-  font-weight: 700;
   color: #2e7d32;
-  letter-spacing: -1px;
-  line-height: 1.1;
+  font-weight: 600;
 }
 
-.btn-group-add {
-  margin-top: 32px;
-  padding: 0;
+.multi-total {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1c1c1e;
 }
 
-/* Picker empty */
-.picker-empty {
-  padding: 30px 0;
-  text-align: center;
+.multi-arrow {
   color: #c7c7cc;
   font-size: 14px;
 }
 
-/* ============================================
-   Picker Modal
-   ============================================ */
-
-.picker-content {
-  max-height: 60vh;
-  padding: 24px 0 16px;
-  display: flex;
-  flex-direction: column;
+/* ===== Section Empty State ===== */
+.section-empty {
+  padding: 24px 0;
+  text-align: center;
 }
 
-van-popup .picker-content {
+.section-empty text {
+  font-size: 14px;
+  color: #c7c7cc;
+}
+
+/* ===== Section Add Button ===== */
+.section-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px 0 6px;
+  cursor: pointer;
+}
+
+.section-add-btn:active {
+  opacity: 0.6;
+}
+
+.add-btn-icon {
+  color: #2e7d32;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.add-btn-text {
+  font-size: 14px;
+  color: #2e7d32;
+  font-weight: 500;
+}
+
+/* ===== Fixed Bottom Bar ===== */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   background: #ffffff;
+  border-top: 1px solid #f0f0f0;
+  padding: 12px 16px;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 100;
+}
+
+.bottom-bar-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.bottom-bar-label {
+  font-size: 12px;
+  color: #8e8e93;
+}
+
+.bottom-bar-amount {
+  font-size: 22px;
+  font-weight: 700;
+  color: #2e7d32;
+  letter-spacing: -0.5px;
+}
+
+.submit-btn {
+  min-width: 140px;
+}
+
+/* ===== Category Picker Popup ===== */
+.picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px 12px;
+  border-bottom: 1px solid #f2f2f7;
 }
 
 .picker-title {
   font-size: 17px;
-  font-weight: 700;
+  font-weight: 600;
   color: #1c1c1e;
-  display: block;
-  text-align: center;
-  margin-bottom: 4px;
-  padding: 0 24px;
+}
+
+.picker-close {
+  color: #c7c7cc;
+  font-size: 20px;
+  padding: 4px;
 }
 
 .picker-list {
-  max-height: 40vh;
-  padding: 0 24px;
+  padding: 8px 20px 32px;
+  max-height: 360px;
+  overflow-y: auto;
 }
 
 .picker-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
   padding: 14px 0;
   border-bottom: 1px solid #f2f2f7;
+  cursor: pointer;
+}
+
+.picker-item:last-child {
+  border-bottom: none;
 }
 
 .picker-item:active {
   opacity: 0.6;
 }
 
-.picker-icon {
-  font-size: 18px;
-  width: 28px;
-  text-align: center;
+.picker-item-active {
+  opacity: 0.5;
 }
 
-.picker-name {
-  font-size: 15px;
-  color: #1c1c1e;
-}
-
-.label-input-content {
-  padding: 24px 24px 20px;
-}
-
-/* ============================================
-   History list inside Add page
-   ============================================ */
-
-.history-entry {
-  padding: 14px 0;
-  border-top: 1px solid #f2f2f7;
+.picker-item-left {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 10px;
 }
 
-.history-entry:first-child {
-  border-top: none;
+.picker-icon-on {
+  color: #2e7d32;
+  font-size: 18px;
 }
 
-.history-entry-label {
-  font-size: 14px;
-  color: #8e8e93;
+.picker-icon-off {
+  color: #c7c7cc;
+  font-size: 18px;
 }
 
-.history-entry-value {
-  font-size: 15px;
-  font-weight: 600;
+.picker-item-name {
+  font-size: 16px;
   color: #1c1c1e;
+}
+
+.picker-item-status {
+  font-size: 13px;
+  color: #2e7d32;
+  font-weight: 500;
 }

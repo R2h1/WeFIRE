@@ -1,5 +1,6 @@
 const storage = require('../../utils/storage');
 const fire = require('../../utils/fire');
+const config = require('../../utils/config');
 const chart = require('../../utils/chart');
 const reminder = require('../../utils/reminder');
 
@@ -18,6 +19,7 @@ Page({
     chartFirstNetWorth: '',
     chartLastNetWorth: '',
     chartMonthlySavings: '',
+    chartDateLabel: '',
   },
 
   onShow() {
@@ -69,8 +71,18 @@ Page({
       targetAmount,
     );
 
-    const sorted = [...snapshots].sort((a, b) => a.id.localeCompare(b.id));
+    const sorted = [...snapshots].sort((a, b) => (a.id || a.month).localeCompare(b.id || b.month));
     const lastManual = sorted.length > 0 ? sorted[sorted.length - 1] : null;
+
+    let chartDateLabel = ''
+    if (lastManual) {
+      if (lastManual.year) {
+        chartDateLabel = lastManual.year + '.' + String(lastManual.month).padStart(2, '0')
+      } else {
+        const parts = lastManual.month.split('-')
+        chartDateLabel = parts[0] + '.' + parts[1]
+      }
+    }
 
     const chartFirstNetWorth =
       filled.length > 0 ? fire.formatMoney(filled[0].netWorth) : '';
@@ -79,7 +91,7 @@ Page({
     const showChart = filled.length > 0;
 
     const dataPoints = filled.map((s) => ({
-      label: s.month + '月',
+      label: (typeof s.month === 'string' ? parseInt(s.month.split('-')[1]) : s.month) + '月',
       value: s.netWorth,
     }));
 
@@ -91,14 +103,15 @@ Page({
         isAchieved: netWorth >= targetAmount,
         formatTarget: fire.formatMoney(targetAmount),
         netWorthText: fire.formatMoney(netWorth),
-        assetsText: fire.formatMoney(latest ? latest.assets : 0),
-        liabilitiesText: fire.formatMoney(latest ? latest.liabilities : 0),
+        assetsText: latest ? fire.formatMoney(config.calcTotalAssets(latest)) : '¥0',
+        liabilitiesText: latest ? fire.formatMoney(config.calcTotalLiabilities(latest)) : '¥0',
         projectedYears: projectedYears,
         latestSnapshot: lastManual,
         showChart: showChart,
         chartFirstNetWorth: chartFirstNetWorth,
         chartLastNetWorth: chartLastNetWorth,
         chartMonthlySavings: chartMonthlySavings,
+        chartDateLabel: chartDateLabel,
       },
       () => {
         if (dataPoints.length >= 2) {

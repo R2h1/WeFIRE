@@ -1,0 +1,59 @@
+<view class="instance-page">
+  <view class="card">
+    <view wx:if="{{instances.length === 0}}" class="empty-state">
+      <text>暂无记录，点击下方添加</text>
+    </view>
+    <view wx:else>
+      <view wx:for="{{instances}}" wx:key="id" class="instance-row" data-index="{{index}}" bindtap="onEdit">
+        <view class="instance-info">
+          <text class="instance-name">{{item.name}}</text>
+          <text class="instance-amount">
+            <text wx:for="{{fields}}" wx:key="key">
+              <text wx:if="{{fields.length > 1}}">{{item.label}} </text>
+              ¥{{item[field.key]}}
+              <text wx:if="{{index < fields.length - 1}}"> </text>
+            </text>
+          </text>
+        </view>
+        <van-icon name="arrow" class="instance-arrow" />
+      </view>
+    </view>
+  </view>
+
+  <view class="add-btn-wrapper">
+    <van-button type="primary" round block bindtap="onAdd">+ 添加</van-button>
+  </view>
+
+  <van-dialog
+    use-slot
+    title="{{editingIndex > -1 ? '编辑' : '添加'}}{{itemConfig.name}}"
+    show="{{showDialog}}"
+    bind:close="onDialogClose"
+    confirm-button-text="保存"
+    bind:confirm="onSaveInstance"
+  >
+    <view class="dialog-content">
+      <van-field
+        value="{{editName}}"
+        label="名称"
+        placeholder="输入名称"
+        bind:input="onNameInput"
+        border="{{false}}"
+      />
+      <view wx:for="{{fields}}" wx:key="key" class="dialog-field">
+        <van-field
+          value="{{editValues[item.key]}}"
+          label="{{item.label}}"
+          type="digit"
+          placeholder="输入{{item.label}}"
+          data-key="{{item.key}}"
+          bind:input="onValueInput"
+          border="{{false}}"
+        />
+      </view>
+      <view wx:if="{{editingIndex > -1}}" class="delete-btn-wrapper">
+        <van-button type="danger" plain size="small" data-index="{{editingIndex}}" bindtap="onDelete">删除</van-button>
+      </view>
+    </view>
+  </van-dialog>
+</view>

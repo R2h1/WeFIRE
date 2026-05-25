@@ -1,229 +1,394 @@
 const storage = require('../../utils/storage')
+const config = require('../../utils/config')
 const fire = require('../../utils/fire')
-const { getPresetsByType, getPreset } = require('../../utils/categories')
 
 Page({
   data: {
-    currentYear: 0,
-    currentMonth: 0,
     monthId: '',
-    assetEntries: [],
-    liabilityEntries: [],
-    netWorthText: '',
-    showPicker: false,
-    pickerType: 'assets',
-    availablePresets: [],
-    showLabelInput: false,
-    selectedPresetId: '',
-    selectedPresetName: '',
-    labelInput: '',
-    trackedItems: [],
-    snapshots: [],
-    snapshotsFormatted: []
+    monthLabel: '',
+    sections: [],
+    activeItems: {},
+    singleValues: {},
+    multiSummaries: {},
+    activeSections: [],
+    iconMap: {
+      liquidAssets: 'gold-coin-o',
+      fixedAssets: 'home-o',
+      shortLiabilities: 'bill-o',
+      longLiabilities: 'debit-pay'
+    },
+    loadedFromPrev: false,
+    netWorthText: '¥0',
+    hasAnyItem: false,
+    sectionEmpty: {},
+    sectionTotals: {},
+    showCategoryPicker: false,
+    pickerSection: '',
+    pickerCategories: [],
+    pickerLabel: ''
   },
 
   onShow() {
     const now = new Date()
-    const monthId = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0')
+    const year = now.getFullYear()
+    const month = now.getMonth() + 1
+    const monthId = year + '-' + String(month).padStart(2, '0')
     this.setData({
-      currentYear: now.getFullYear(),
-      currentMonth: now.getMonth() + 1,
-      monthId: monthId
+      monthId,
+      monthLabel: year + '年' + month + '月',
+      sections: config.SECTIONS
     })
-    this.loadData()
-    this.loadHistory()
+    if (!this.loadDraft()) {
+      this.loadData()
+    }
+    this.refreshMultiSummaries()
+    this.calcNetWorth()
     this.updateTabBar()
   },
 
   updateTabBar() {
-    const tabBar = typeof this.getTabBar === 'function' && this.getTabBar();
-    tabBar && tabBar.setData({ active: 1 });
+    const tabBar = typeof this.getTabBar === 'function' && this.getTabBar()
+    tabBar && tabBar.setData({ active: 1 })
   },
 
   loadData() {
-    const trackedItems = storage.getTrackedItems()
-    const saved = storage.getMonthlyEntries(this.data.monthId)
+    const data = storage.getData()
+    const monthId = this.data.monthId
+    const snapshot = data.snapshots.find(s => s.month === monthId)
 
-    const assetEntries = []
-    const liabilityEntries = []
-
-    trackedItems.forEach(ti => {
-      const preset = getPreset(ti.presetId)
-      if (!preset) return
-      const savedEntry = saved.find(e => e.itemId === ti.itemId)
-      const entry = {
-        itemId: ti.itemId,
-        presetId: ti.presetId,
-        name: preset.name,
-        icon: preset.icon,
-        type: ti.type,
-        label: ti.label,
-        amount: savedEntry ? String(savedEntry.amount) : ''
-      }
-      if (ti.type === 'assets') {
-        assetEntries.push(entry)
-      } else {
-        liabilityEntries.push(entry)
-      }
-    })
-
-    this.setData({ trackedItems, assetEntries, liabilityEntries })
-    this.calcNetWorth()
-  },
-
-  loadHistory() {
-    const snapshots = storage.getSnapshots()
-    snapshots.sort((a, b) => b.id.localeCompare(a.id))
-    const snapshotsFormatted = snapshots.map(s => ({
-      ...s,
-      netWorthText: fire.formatMoney(s.netWorth),
-      label: s.year + '.' + String(s.month).padStart(2, '0')
-    }))
-    this.setData({ snapshots, snapshotsFormatted })
-  },
-
-  calcNetWorth() {
-    let totalAssets = 0
-    let totalLiabilities = 0
-    this.data.assetEntries.forEach(e => {
-      totalAssets += parseFloat(e.amount) || 0
-    })
-    this.data.liabilityEntries.forEach(e => {
-      totalLiabilities += parseFloat(e.amount) || 0
-    })
-    const netWorth = totalAssets - totalLiabilities
-    this.setData({ netWorthText: fire.formatMoney(netWorth) })
-  },
-
-  onAmountInput(e) {
-    const itemId = e.currentTarget.dataset.itemid
-    const val = e.detail.value
-    const assetEntries = [...this.data.assetEntries]
-    const liabilityEntries = [...this.data.liabilityEntries]
-    const entry = [...assetEntries, ...liabilityEntries].find(en => en.itemId === itemId)
-    if (entry) {
-      entry.amount = val
+    if (snapshot) {
+      this.populateFromSnapshot(snapshot, false)
+      this.setData({ loadedFromPrev: false })
+    } else {
+      this.loadFromPrevious(data, monthId)
     }
-    this.setData({ assetEntries, liabilityEntries })
     this.calcNetWorth()
   },
 
-  onAddItem(e) {
-    const type = e.currentTarget.dataset.type || 'assets'
-    const tracked = this.data.trackedItems.filter(t => t.type === type)
-    const usedPresetIds = tracked.map(t => t.presetId)
-    const available = getPresetsByType(type).filter(p => !usedPresetIds.includes(p.id))
-    this.setData({ showPicker: true, pickerType: type, availablePresets: available })
+  loadFromPrevious(data, monthId) {
+    const prev = [...data.snapshots].reverse().find(s => s.month < monthId)
+    if (prev) {
+      const template = JSON.parse(JSON.stringify(prev))
+      template.month = monthId
+      this.populateFromSnapshot(template, true)
+      this.setData({ loadedFromPrev: true })
+    } else {
+      this.resetForm()
+    }
   },
 
-  hidePicker() {
-    this.setData({ showPicker: false })
+  populateFromSnapshot(snapshot, isTemplate) {
+    const activeItems = {}
+    const singleValues = {}
+    const multiSummaries = {}
+
+    config.SECTIONS.forEach(section => {
+      section.items.forEach(item => {
+        const alwaysActive = !!section.itemsStartActive
+        const val = config.getSnapshotField(snapshot, section.id, item.key)
+        const hasData = item.multi
+          ? (Array.isArray(val) && val.length > 0)
+          : (parseFloat(val) !== 0 || (isTemplate && val !== undefined))
+
+        activeItems[item.key] = alwaysActive || hasData || false
+
+        if (!item.multi) {
+          singleValues[item.key] = activeItems[item.key] ? String(val || 0) : ''
+        } else {
+          const arr = Array.isArray(val) ? val : []
+          let total = 0
+          if (item.key === 'wechatAccounts') {
+            total = arr.reduce((s, inst) => s + (parseFloat(inst.balance) || 0) + (parseFloat(inst.changeFund) || 0), 0)
+          } else {
+            const fieldKey = item.fields[0].key
+            total = arr.reduce((s, inst) => s + (parseFloat(inst[fieldKey]) || 0), 0)
+          }
+          multiSummaries[item.key] = {
+            count: arr.length,
+            total,
+            totalText: fire.formatMoney(total)
+          }
+        }
+      })
+    })
+
+    this.setData({ activeItems, singleValues, multiSummaries })
+    this.updateHasAnyItem()
   },
 
-  onSelectPreset(e) {
-    const presetId = e.currentTarget.dataset.preset
-    const preset = getPreset(presetId)
+  resetForm() {
+    const activeItems = {}
+    const singleValues = {}
+    const multiSummaries = {}
+    config.SECTIONS.forEach(section => {
+      section.items.forEach(item => {
+        const alwaysActive = !!section.itemsStartActive
+        activeItems[item.key] = alwaysActive
+        if (!item.multi) {
+          singleValues[item.key] = alwaysActive ? '0' : ''
+        } else {
+          multiSummaries[item.key] = { count: 0, total: 0, totalText: '¥0' }
+        }
+      })
+    })
     this.setData({
-      showPicker: false,
-      showLabelInput: true,
-      selectedPresetId: presetId,
-      selectedPresetName: preset ? preset.name : '',
-      labelInput: ''
+      activeItems,
+      singleValues,
+      multiSummaries,
+      activeSections: [],
+      loadedFromPrev: false
+    })
+    this.updateHasAnyItem()
+  },
+
+  // ===== Category Picker =====
+
+  onAddCategory(e) {
+    const sectionId = e.currentTarget.dataset.section
+    const section = config.SECTIONS.find(s => s.id === sectionId)
+    if (!section) return
+
+    const pickerCategories = section.items.map(item => ({
+      key: item.key,
+      name: item.name,
+      active: !!this.data.activeItems[item.key]
+    }))
+
+    this.setData({
+      showCategoryPicker: true,
+      pickerSection: sectionId,
+      pickerCategories,
+      pickerLabel: section.addText || section.label
     })
   },
 
-  hideLabelInput() {
-    this.setData({ showLabelInput: false })
+  onPickerItemTap(e) {
+    const key = e.currentTarget.dataset.key
+    const item = config.getItemConfig(key)
+    if (!item) return
+    const section = config.getSectionByItemKey(key)
+    if (!section || !section.addEnabled) return
+
+    const active = !this.data.activeItems[key]
+    const activeItems = { ...this.data.activeItems, [key]: active }
+
+    if (!item.multi) {
+      const singleValues = { ...this.data.singleValues }
+      singleValues[key] = active ? '0' : ''
+      this.setData({ activeItems, singleValues })
+    } else {
+      this.setData({ activeItems })
+    }
+
+    const pickerCategories = this.data.pickerCategories.map(pc => ({
+      ...pc,
+      active: pc.key === key ? active : pc.active
+    }))
+    this.setData({ pickerCategories })
+
+    this.updateHasAnyItem()
+    this.calcNetWorth()
   },
 
-  onLabelInput(e) {
-    this.setData({ labelInput: e.detail })
+  onPickerClose() {
+    this.setData({ showCategoryPicker: false })
   },
 
-  onConfirmLabel() {
-    this.addTrackedItem(this.data.selectedPresetId, this.data.labelInput)
-    this.setData({ showLabelInput: false })
+  // ===== Section Toggle (van-collapse) =====
+
+  onCollapseChange(e) {
+    this.setData({ activeSections: e.detail })
   },
 
-  addTrackedItem(presetId, label) {
-    const preset = getPreset(presetId)
-    if (!preset) return
-    const trackedItems = storage.getTrackedItems()
-    const itemId = presetId + '_' + Date.now()
-    trackedItems.push({
-      itemId: itemId,
-      presetId: presetId,
-      type: preset.type,
-      label: label || ''
+  // ===== Single Input =====
+
+  onSingleInput(e) {
+    const key = e.currentTarget.dataset.key
+    const val = e.detail.value
+    const singleValues = { ...this.data.singleValues, [key]: val }
+    this.setData({ singleValues })
+    this.calcNetWorth()
+  },
+
+  // ===== Multi Item Management =====
+
+  onManageInstances(e) {
+    this.saveDraft()
+    const key = e.currentTarget.dataset.key
+    wx.navigateTo({
+      url: '/pages/instance/instance?category=' + key + '&month=' + this.data.monthId
     })
-    storage.saveTrackedItems(trackedItems).then(() => {
-      this.loadData()
-    })
   },
 
-  onRemoveEntry(e) {
-    const itemId = e.currentTarget.dataset.itemid
+  refreshMultiSummaries() {
+    const data = storage.getData()
+    const snapshot = data.snapshots.find(s => s.month === this.data.monthId)
+    if (!snapshot) return
+    const multiSummaries = { ...this.data.multiSummaries }
+    config.SECTIONS.forEach(section => {
+      section.items.forEach(item => {
+        if (!item.multi) return
+        if (!this.data.activeItems[item.key]) return
+        const val = config.getSnapshotField(snapshot, section.id, item.key)
+        const arr = Array.isArray(val) ? val : []
+        let total = 0
+        if (item.key === 'wechatAccounts') {
+          total = arr.reduce((s, inst) => s + (parseFloat(inst.balance) || 0) + (parseFloat(inst.changeFund) || 0), 0)
+        } else {
+          const fieldKey = item.fields[0].key
+          total = arr.reduce((s, inst) => s + (parseFloat(inst[fieldKey]) || 0), 0)
+        }
+        multiSummaries[item.key] = {
+          count: arr.length,
+          total,
+          totalText: fire.formatMoney(total)
+        }
+      })
+    })
+    this.setData({ multiSummaries })
+  },
+
+  // ===== Draft =====
+
+  saveDraft() {
+    try {
+      wx.setStorageSync('add_draft', {
+        monthId: this.data.monthId,
+        activeItems: this.data.activeItems,
+        singleValues: this.data.singleValues
+      })
+    } catch (e) {}
+  },
+
+  loadDraft() {
+    try {
+      const draft = wx.getStorageSync('add_draft')
+      if (draft && draft.monthId === this.data.monthId) {
+        this.setData({
+          activeItems: draft.activeItems,
+          singleValues: draft.singleValues,
+          loadedFromPrev: false
+        })
+        this.updateHasAnyItem()
+        return true
+      }
+    } catch (e) {}
+    return false
+  },
+
+  clearDraft() {
+    try {
+      wx.removeStorageSync('add_draft')
+    } catch (e) {}
+  },
+
+  // ===== Clear Form =====
+
+  onClearForm() {
     wx.showModal({
-      title: '移除此分类？',
-      content: '移除后不会影响已保存的历史记录',
+      title: '清空重填',
+      content: '确定要清空所有已填入的数据吗？',
       success: (res) => {
         if (res.confirm) {
-          let trackedItems = storage.getTrackedItems()
-          trackedItems = trackedItems.filter(t => t.itemId !== itemId)
-          storage.saveTrackedItems(trackedItems).then(() => {
-            this.loadData()
-          })
+          this.clearDraft()
+          this.resetForm()
+          this.calcNetWorth()
         }
       }
     })
   },
 
-  onSubmit() {
-    const assetEntries = this.data.assetEntries
-    const liabilityEntries = this.data.liabilityEntries
+  // ===== Computations =====
 
-    if (assetEntries.length === 0 && liabilityEntries.length === 0) {
-      wx.showToast({ title: '请先添加分类并填写金额', icon: 'none' })
+  updateHasAnyItem() {
+    const hasAnyItem = Object.values(this.data.activeItems).some(v => v === true)
+    const sectionEmpty = {}
+    config.SECTIONS.forEach(s => {
+      sectionEmpty[s.id] = !s.items.some(i => this.data.activeItems[i.key])
+    })
+    this.setData({ hasAnyItem, sectionEmpty })
+  },
+
+  calcNetWorth() {
+    const snapshot = this.buildSnapshot()
+    const netWorth = config.calcNetWorth(snapshot)
+    const sectionTotals = this.computeSectionTotals()
+    this.setData({
+      netWorthText: fire.formatMoney(netWorth),
+      sectionTotals
+    })
+  },
+
+  computeSectionTotals() {
+    const { activeItems, singleValues, multiSummaries } = this.data
+    const sectionTotals = {}
+    config.SECTIONS.forEach(section => {
+      let total = 0
+      section.items.forEach(item => {
+        if (!activeItems[item.key]) return
+        if (!item.multi) {
+          total += parseFloat(singleValues[item.key]) || 0
+        } else {
+          total += multiSummaries[item.key]?.total || 0
+        }
+      })
+      sectionTotals[section.id] = fire.formatMoney(total)
+    })
+    return sectionTotals
+  },
+
+  buildSnapshot() {
+    const snapshot = config.createEmptySnapshot(this.data.monthId)
+    const { activeItems, singleValues } = this.data
+
+    config.SECTIONS.forEach(section => {
+      section.items.forEach(item => {
+        if (!activeItems[item.key]) return
+        if (!item.multi) {
+          config.setSnapshotField(snapshot, item.key, parseFloat(singleValues[item.key]) || 0)
+        }
+      })
+    })
+
+    return snapshot
+  },
+
+  // ===== Submit =====
+
+  onSubmit() {
+    if (!this.data.hasAnyItem) {
+      wx.showToast({ title: '请先添加资产或负债', icon: 'none' })
       return
     }
 
-    let totalAssets = 0
-    let totalLiabilities = 0
-    const allEntries = []
+    const snapshot = this.buildSnapshot()
 
-    assetEntries.forEach(e => {
-      const amt = parseFloat(e.amount) || 0
-      totalAssets += amt
-      allEntries.push({ itemId: e.itemId, presetId: e.presetId, amount: amt })
-    })
-    liabilityEntries.forEach(e => {
-      const amt = parseFloat(e.amount) || 0
-      totalLiabilities += amt
-      allEntries.push({ itemId: e.itemId, presetId: e.presetId, amount: amt })
+    const data = storage.getData()
+    const existing = data.snapshots.find(s => s.month === this.data.monthId)
+    config.SECTIONS.forEach(section => {
+      section.items.forEach(item => {
+        if (!item.multi) return
+        if (existing) {
+          const existingVal = config.getSnapshotField(existing, section.id, item.key)
+          if (Array.isArray(existingVal)) {
+            config.setSnapshotField(snapshot, item.key, existingVal)
+          }
+        }
+      })
     })
 
-    const netWorth = totalAssets - totalLiabilities
-    const { currentYear, currentMonth, monthId } = this.data
+    snapshot.netWorth = config.calcNetWorth(snapshot)
+    const netWorthText = fire.formatMoney(snapshot.netWorth)
 
     wx.showModal({
       title: '确认录入',
-      content: '本月净资产：' + fire.formatMoney(netWorth) + '\n确认记录本次数据？',
+      content: '本月净资产：' + netWorthText + '\n确认记录本次数据？',
       success: (res) => {
         if (res.confirm) {
-          storage.saveMonthlyEntries(monthId, allEntries).then(() => {
-            const snapshot = {
-              id: monthId,
-              year: currentYear,
-              month: currentMonth,
-              assets: totalAssets,
-              liabilities: totalLiabilities,
-              netWorth: netWorth,
-              createdAt: new Date().toISOString()
-            }
-            storage.addSnapshot(snapshot).then(() => {
-              wx.showToast({ title: '记录成功' })
-              wx.switchTab({ url: '/pages/index/index' })
-            })
+          storage.saveSnapshot(snapshot).then(() => {
+            this.clearDraft()
+            wx.showToast({ title: '本月记录已保存' })
+            wx.switchTab({ url: '/pages/index/index' })
           })
         }
       }

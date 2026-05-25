@@ -37,7 +37,8 @@ Page({
   },
 
   loadData() {
-    const settings = storage.getSettings();
+    const data = storage.getData();
+    const settings = data.fireTarget ? { targetAmount: data.fireTarget, retirementYear: data.fireYear } : null;
     this.setData({
       settings,
       targetAmountText: settings ? fire.formatMoney(settings.targetAmount) : '',
@@ -100,9 +101,10 @@ Page({
     }
 
     storage
-      .saveSettings({
-        targetAmount: parseFloat(editTarget),
-        retirementYear: year,
+      .saveData({
+        ...storage.getData(),
+        fireTarget: parseFloat(editTarget),
+        fireYear: year
       })
       .then(() => {
         wx.showToast({ title: '保存成功' });

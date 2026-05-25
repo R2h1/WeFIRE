@@ -1,14 +1,14 @@
+const storage = require('./storage')
+
 function exportData() {
-  const settings = wx.getStorageSync('fire_settings')
-  const snapshots = wx.getStorageSync('fire_snapshots')
-  const data = {
-    version: 1,
+  const data = storage.getData()
+  const exportObj = {
+    version: 2,
     exportedAt: new Date().toISOString(),
-    settings: settings || null,
-    snapshots: snapshots || []
+    data: data
   }
   wx.setClipboardData({
-    data: JSON.stringify(data),
+    data: JSON.stringify(exportObj),
     success() {
       wx.showToast({ title: '已复制到剪贴板' })
     },
@@ -20,17 +20,14 @@ function exportData() {
 
 function importData(jsonStr) {
   try {
-    const data = JSON.parse(jsonStr)
-    if (!data.version || !data.snapshots) {
-      wx.showToast({ title: '数据格式错误', icon: 'none' })
-      return Promise.reject(new Error('Invalid format'))
+    const parsed = JSON.parse(jsonStr)
+    if (parsed.version === 2 && parsed.data) {
+      return storage.saveData(parsed.data).then(() => {
+        wx.showToast({ title: '恢复成功' })
+      })
     }
-    if (data.settings) {
-      wx.setStorageSync('fire_settings', data.settings)
-    }
-    wx.setStorageSync('fire_snapshots', data.snapshots)
-    wx.showToast({ title: '恢复成功' })
-    return Promise.resolve(data)
+    wx.showToast({ title: '数据格式错误', icon: 'none' })
+    return Promise.reject(new Error('Invalid format'))
   } catch (e) {
     wx.showToast({ title: 'JSON 解析失败', icon: 'none' })
     return Promise.reject(e)
