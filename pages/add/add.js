@@ -25,7 +25,16 @@ Page({
     showCategoryPicker: false,
     pickerSection: '',
     pickerCategories: [],
-    pickerLabel: ''
+    pickerLabel: '',
+    showInstancePopup: false,
+    instanceCategory: '',
+    instanceConfig: null,
+    instances: [],
+    instanceFields: [],
+  },
+
+  _generateId() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 8)
   },
 
   onShow() {
@@ -213,11 +222,109 @@ Page({
   // ===== Multi Item Management =====
 
   onManageInstances(e) {
-    this.saveDraft()
     const key = e.currentTarget.dataset.key
-    wx.navigateTo({
-      url: '/pages/instance/instance?category=' + key + '&month=' + this.data.monthId
+    const itemConfig = config.getItemConfig(key)
+    if (!itemConfig || !itemConfig.multi) return
+
+    const data = storage.getData()
+    const snapshot = data.snapshots.find(s => s.month === this.data.monthId)
+    const rawInstances = snapshot ? (config.getSnapshotField(snapshot, '', key) || []) : []
+    const instances = JSON.parse(JSON.stringify(rawInstances)).map(inst => {
+      const obj = { id: inst.id, name: inst.name || '' }
+      itemConfig.fields.forEach((f, fi) => {
+        obj['f' + fi] = String(parseFloat(inst[f.key]) || 0)
+      })
+      return obj
     })
+
+    this.setData({
+      showInstancePopup: true,
+      instanceCategory: key,
+      instanceConfig: itemConfig,
+      instances,
+      instanceFields: itemConfig.fields
+    })
+    this._toggleTabBar(false)
+  },
+
+  _toggleTabBar(visible) {
+    const tabBar = typeof this.getTabBar === 'function' && this.getTabBar()
+    tabBar && tabBar.setData({ hidden: !visible })
+  },
+
+  onInstancePopupClose() {
+    this.setData({ showInstancePopup: false })
+    this._toggleTabBar(true)
+    this.refreshMultiSummaries()
+    this.calcNetWorth()
+  },
+
+  onInstanceAdd() {
+    const { instanceConfig, instances, instanceFields } = this.data
+    if (instanceConfig.limit !== -1 && instances.length >= instanceConfig.limit) {
+      wx.showToast({ title: '已达到上限' + instanceConfig.limit + '个', icon: 'none' })
+      return
+    }
+    const instance = { id: this._generateId(), name: '', f0: '0' }
+    if (instanceFields.length > 1) instance.f1 = '0'
+    const newInstances = [...instances, instance]
+    this.setData({ instances: newInstances })
+    this._saveInstanceChanges(newInstances)
+  },
+
+  onInstNameInput(e) {
+    const index = e.currentTarget.dataset.index
+    const val = e.detail
+    const newInstances = [...this.data.instances]
+    newInstances[index] = { ...newInstances[index], name: val }
+    this.setData({ instances: newInstances })
+    this._saveInstanceChanges(newInstances)
+  },
+
+  onInstValueInput(e) {
+    const index = e.currentTarget.dataset.index
+    const field = e.currentTarget.dataset.field
+    const val = e.detail
+    const newInstances = [...this.data.instances]
+    newInstances[index] = { ...newInstances[index], [field]: val }
+    this.setData({ instances: newInstances })
+    this._saveInstanceChanges(newInstances)
+  },
+
+  onInstDelete(e) {
+    const index = e.currentTarget.dataset.index
+    const name = this.data.instances[index].name || '未命名'
+    wx.showModal({
+      title: '确认删除',
+      content: '删除「' + name + '」？',
+      success: (res) => {
+        if (res.confirm) {
+          const newInstances = [...this.data.instances]
+          newInstances.splice(index, 1)
+          this.setData({ instances: newInstances })
+          this._saveInstanceChanges(newInstances)
+        }
+      }
+    })
+  },
+
+  _saveInstanceChanges(instances) {
+    const fields = this.data.instanceFields || []
+    const clean = instances.map(inst => {
+      const obj = { id: inst.id, name: inst.name }
+      fields.forEach((f, fi) => { obj[f.key] = parseFloat(inst['f' + fi]) || 0 })
+      return obj
+    })
+    const data = storage.getData()
+    let snapshot = data.snapshots.find(s => s.month === this.data.monthId)
+    if (!snapshot) {
+      snapshot = config.createEmptySnapshot(this.data.monthId)
+      data.snapshots.push(snapshot)
+    }
+    config.setSnapshotField(snapshot, this.data.instanceCategory, clean)
+    snapshot.netWorth = config.calcNetWorth(snapshot)
+    data.snapshots.sort((a, b) => a.month.localeCompare(b.month))
+    storage.saveData(data)
   },
 
   refreshMultiSummaries() {
@@ -311,6 +418,19 @@ Page({
 
   calcNetWorth() {
     const snapshot = this.buildSnapshot()
+    const data = storage.getData()
+    const existing = data.snapshots.find(s => s.month === this.data.monthId)
+    config.SECTIONS.forEach(section => {
+      section.items.forEach(item => {
+        if (!item.multi) return
+        if (existing) {
+          const val = config.getSnapshotField(existing, section.id, item.key)
+          if (Array.isArray(val)) {
+            config.setSnapshotField(snapshot, item.key, val)
+          }
+        }
+      })
+    })
     const netWorth = config.calcNetWorth(snapshot)
     const sectionTotals = this.computeSectionTotals()
     this.setData({

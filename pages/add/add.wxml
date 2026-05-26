@@ -30,7 +30,8 @@
                 <van-field
                   value="{{singleValues[item.key]}}"
                   type="digit"
-                  placeholder="金额"
+                  placeholder="{{item.placeholder}}"
+                  maxlength="{{12}}"
                   data-key="{{item.key}}"
                   bind:input="onSingleInput"
                   border="{{false}}"
@@ -39,11 +40,12 @@
               </view>
 
               <view wx:else class="item-multi" bindtap="onManageInstances" data-key="{{item.key}}">
-                <text wx:if="{{multiSummaries[item.key].count > 0}}" class="multi-badge">
-                  {{multiSummaries[item.key].count}}个
-                </text>
-                <text class="multi-total">{{multiSummaries[item.key].totalText}}</text>
-                <van-icon name="arrow" class="multi-arrow" />
+                <block wx:if="{{multiSummaries[item.key].count > 0}}">
+                  <text class="multi-total">{{multiSummaries[item.key].totalText}}</text>
+                  <text class="multi-badge">{{multiSummaries[item.key].count}}个</text>
+                  <van-icon name="arrow" class="multi-arrow" />
+                </block>
+                <text wx:else class="multi-badge">0个</text>
               </view>
             </view>
           </view>
@@ -70,9 +72,7 @@
       <text class="bottom-bar-amount">{{netWorthText}}</text>
     </view>
     <view class="bottom-bar-right">
-      <van-button type="primary" round bindtap="onSubmit" disabled="{{!hasAnyItem}}" class="submit-btn">
-        完成本月录入
-      </van-button>
+      <van-button type="primary" bindtap="onSubmit" round disabled="{{!hasAnyItem}}" class="submit-btn" size="small" custom-style="max-width:90px">完成录入</van-button>
     </view>
   </view>
 
@@ -104,4 +104,74 @@
       </view>
     </view>
   </van-popup>
+
+  <!-- 实例管理弹窗 -->
+  <van-popup
+    show="{{showInstancePopup}}"
+    position="bottom"
+    bind:close="onInstancePopupClose"
+    round
+    z-index="{{2000}}"
+  >
+    <view class="instance-popup">
+      <view class="picker-header">
+        <text class="picker-title">{{instanceConfig.name}}管理</text>
+        <van-icon name="close" class="picker-close" bindtap="onInstancePopupClose" />
+      </view>
+
+      <view class="instance-popup-body">
+        <view wx:if="{{instances.length === 0}}" class="instance-empty">
+          <text>暂无记录，点击下方添加</text>
+        </view>
+        <view wx:else>
+          <view wx:for="{{instances}}" wx:for-item="inst" wx:for-index="instIndex" wx:key="id" class="inst-row">
+            <view class="inst-name-wrap">
+              <van-field
+                value="{{inst.name}}"
+                data-index="{{instIndex}}"
+                bind:input="onInstNameInput"
+                maxlength="{{10}}"
+                placeholder="名称"
+                input-align="left"
+                border="{{false}}"
+              />
+            </view>
+            <view class="inst-right">
+              <view class="inst-amount-wrap">
+                <van-field
+                  value="{{inst.f0}}"
+                  type="digit"
+                  data-index="{{instIndex}}"
+                  data-field="f0"
+                  maxlength="{{12}}"
+                  bind:input="onInstValueInput"
+                  placeholder="{{instanceFields[0].label}}"
+                  input-align="right"
+                  border="{{false}}"
+                />
+              </view>
+              <view wx:if="{{instanceFields.length > 1}}" class="inst-amount-wrap">
+                <van-field
+                  value="{{inst.f1}}"
+                  type="digit"
+                  data-index="{{instIndex}}"
+                  data-field="f1"
+                  bind:input="onInstValueInput"
+                  placeholder="{{instanceFields[1].label}}"
+                  input-align="right"
+                  border="{{false}}"
+                />
+              </view>
+              <van-icon name="delete-o" class="inst-delete" bindtap="onInstDelete" data-index="{{instIndex}}" />
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="instance-add-btn">
+        <van-button type="primary" round block bindtap="onInstanceAdd">+ 添加</van-button>
+      </view>
+    </view>
+  </van-popup>
+
 </view>

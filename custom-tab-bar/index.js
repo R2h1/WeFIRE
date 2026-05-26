@@ -1,4 +1,7 @@
 Component({
+  properties: {
+    hidden: { type: Boolean, value: false }
+  },
   data: {
     active: 0,
     list: [

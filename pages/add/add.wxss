@@ -3,7 +3,7 @@
    ============================================ */
 
 .add-page {
-  padding: 0 0 160px;
+  padding: 0 0 calc(64px + 100px);
 }
 
 /* ===== Month Header ===== */
@@ -17,7 +17,7 @@
   top: 0;
   z-index: 10;
   background: rgba(242, 242, 245, 0.3);
-  border-radius: 0 10px 10px 0;
+  border-radius: 0 8px 8px 0;
   margin-left: 0;
 }
 
@@ -40,7 +40,7 @@
 
 .month-icon {
   font-size: 20px;
-  color: #8e8e93;
+  color: #2e7d32;
   margin-right: 4px;
 }
 
@@ -100,29 +100,27 @@
   font-size: 15px;
   color: #1c1c1e;
   flex-shrink: 0;
+  width: 100px;
+  word-break: break-all;
+  line-height: 1.4;
   margin-right: 12px;
 }
 
 /* Single Item Input (van-field) */
 .item-input-wrap {
   margin-left: auto;
-  width: 120px;
-  border-radius: 8px;
-  overflow: hidden;
-  --cell-background-color: #f5f5f7;
+  width: 100px;
+  border-bottom: 1px solid #e5e5e5;
   --cell-vertical-padding: 4px;
-  --cell-horizontal-padding: 12px;
+  --cell-horizontal-padding: 0;
 }
 
 /* Multi Item Summary */
 .item-multi {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 6px;
   margin-left: auto;
-  padding: 4px 8px 4px 12px;
-  background: #f5f5f7;
-  border-radius: 8px;
   cursor: pointer;
 }
 
@@ -131,9 +129,8 @@
 }
 
 .multi-badge {
-  font-size: 12px;
-  color: #2e7d32;
-  font-weight: 600;
+  font-size: 11px;
+  color: #8e8e93;
 }
 
 .multi-total {
@@ -187,13 +184,15 @@
 /* ===== Fixed Bottom Bar ===== */
 .bottom-bar {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: calc(56px + env(safe-area-inset-bottom));
+  left: 8px;
+  right: 8px;
   background: #ffffff;
-  border-top: 1px solid #f0f0f0;
-  padding: 12px 16px;
-  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  border-radius: 14px;
+  box-shadow:
+    0 -2px 12px rgba(0, 0, 0, 0.06),
+    0 4px 16px rgba(0, 0, 0, 0.08);
+  padding: 8px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -203,23 +202,22 @@
 .bottom-bar-left {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
 }
 
 .bottom-bar-label {
-  font-size: 12px;
+  font-size: 10px;
   color: #8e8e93;
 }
 
 .bottom-bar-amount {
-  font-size: 22px;
+  font-size: 17px;
   font-weight: 700;
   color: #2e7d32;
   letter-spacing: -0.5px;
 }
 
 .submit-btn {
-  min-width: 140px;
 }
 
 /* ===== Category Picker Popup ===== */
@@ -295,4 +293,65 @@
   font-size: 13px;
   color: #2e7d32;
   font-weight: 500;
+}
+
+/* ===== Instance Popup ===== */
+.instance-popup {
+  min-height: 40vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.instance-popup-body {
+  flex: 1;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.instance-empty {
+  padding: 40px 0;
+  text-align: center;
+  color: #c7c7cc;
+  font-size: 14px;
+}
+
+.instance-add-btn {
+  padding: 0px 20px 8px;
+}
+
+.inst-row {
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.inst-name-wrap {
+  flex: 0 0 100px;
+  border-bottom: 1px solid #e5e5e5;
+  --cell-vertical-padding: 4px;
+  --cell-horizontal-padding: 0;
+}
+
+.inst-right {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.inst-amount-wrap {
+  width: 100px;
+  border-bottom: 1px solid #e5e5e5;
+  --cell-vertical-padding: 4px;
+  --cell-horizontal-padding: 0;
+}
+
+.inst-delete {
+  font-size: 18px;
+  color: #c7c7cc;
+  padding: 8px 0 8px 16px;
+  flex-shrink: 0;
+}
+
+.inst-delete:active {
+  opacity: 0.6;
 }
