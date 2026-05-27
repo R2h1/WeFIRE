@@ -29,9 +29,9 @@ page {
   line-height: 1.6;
 
   /* Vant Weapp theme */
-  --van-primary-color: #2e7d32;
-  --van-button-primary-background: #2e7d32;
-  --van-button-primary-border-color: #2e7d32;
+  --van-primary-color: #E07B54;
+  --van-button-primary-background: #E07B54;
+  --van-button-primary-border-color: #E07B54;
   --van-button-radius: 12px;
   --van-cell-vertical-padding: 16px;
   --van-cell-horizontal-padding: 20px;

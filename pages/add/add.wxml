@@ -1,178 +1,155 @@
 <view class="add-page">
   <!-- 月份行 -->
-  <view class="month-header">
-    <van-icon name="calendar-o" class="month-icon" />
-    <text class="month-label-value">{{monthLabel}}</text>
+  <view class="month-row">
+    <text>月份：</text>
+    <text class="month-value">{{monthLabel}}</text>
   </view>
 
-  <!-- 提示条 -->
+  <!-- 上月数据提示条 -->
   <view wx:if="{{loadedFromPrev}}" class="prev-data-tip">
-    <text>已加载上月数据，确认无变化可直接保存</text>
-    <text class="clear-link" bindtap="onClearForm">清空重填</text>
+    <text>已加载上月数据，可直接保存</text>
+    <text class="clear-link" bindtap="onClearForm">清空</text>
   </view>
 
-  <!-- 四个折叠面板 -->
-  <view wx:for="{{sections}}" wx:key="id" class="card section-card" style="--cell-text-color: {{item.id === 'liquidAssets' || item.id === 'fixedAssets' ? '#2E7D32' : '#D32F2F'}}">
-    <van-collapse value="{{activeSections}}" bind:change="onCollapseChange" border="{{false}}">
-      <van-collapse-item
-        name="{{item.id}}"
-        title="{{item.label}}"
-        icon="{{iconMap[item.id]}}"
-        value="{{sectionTotals[item.id]}}"
-      >
-        <!-- 大类行 -->
-        <block wx:for="{{item.items}}" wx:key="key">
-          <view wx:if="{{activeItems[item.key]}}" class="item-row">
-            <view class="item-active">
-              <text class="item-name">{{item.name}}</text>
+  <!-- 分区循环 -->
+  <block wx:for="{{sectionGroups}}" wx:key="id">
+    <view class="section-title section-title--{{item.titleClass}}">{{item.label}}</view>
 
-              <view wx:if="{{!item.multi}}" class="item-input-wrap">
-                <van-field
-                  value="{{singleValues[item.key]}}"
-                  type="digit"
-                  placeholder="{{item.placeholder}}"
-                  maxlength="{{12}}"
-                  data-key="{{item.key}}"
-                  bind:input="onSingleInput"
-                  border="{{false}}"
-                  input-align="right"
-                />
-              </view>
-
-              <view wx:else class="item-multi" bindtap="onManageInstances" data-key="{{item.key}}">
-                <block wx:if="{{multiSummaries[item.key].count > 0}}">
-                  <text class="multi-total">{{multiSummaries[item.key].totalText}}</text>
-                  <text class="multi-badge">{{multiSummaries[item.key].count}}个</text>
-                  <van-icon name="arrow" class="multi-arrow" />
-                </block>
-                <text wx:else class="multi-badge">0个</text>
-              </view>
-            </view>
-          </view>
-        </block>
-
-        <!-- 空状态 -->
-        <view wx:if="{{sectionEmpty[item.id]}}" class="section-empty">
-          <text>暂无记录，点击下方添加</text>
-        </view>
-
-        <!-- 添加按钮 -->
-        <view wx:if="{{item.addEnabled}}" class="section-add-btn" bindtap="onAddCategory" data-section="{{item.id}}">
-          <van-icon name="plus" class="add-btn-icon" />
-          <text class="add-btn-text">{{item.addText}}</text>
-        </view>
-      </van-collapse-item>
-    </van-collapse>
-  </view>
-
-  <!-- 底部固定保存栏 -->
-  <view class="bottom-bar">
-    <view class="bottom-bar-left">
-      <text class="bottom-bar-label">本月净资产</text>
-      <text class="bottom-bar-amount">{{netWorthText}}</text>
-    </view>
-    <view class="bottom-bar-right">
-      <van-button type="primary" bindtap="onSubmit" round disabled="{{!hasAnyItem}}" class="submit-btn" size="small" custom-style="max-width:90px">完成录入</van-button>
-    </view>
-  </view>
-
-  <!-- 添加大类弹窗 -->
-  <van-popup
-    show="{{showCategoryPicker}}"
-    position="bottom"
-    bind:close="onPickerClose"
-    round
-  >
-    <view class="picker-header">
-      <text class="picker-title">{{pickerLabel}}</text>
-      <van-icon name="close" class="picker-close" bindtap="onPickerClose" />
-    </view>
-    <view class="picker-list">
+    <!-- 单实例卡片横排 -->
+    <view wx:if="{{item.singleItems.length}}" class="single-row">
       <view
-        wx:for="{{pickerCategories}}"
+        wx:for="{{item.singleItems}}"
+        wx:for-item="sItem"
         wx:key="key"
-        class="picker-item {{item.active ? 'picker-item-active' : ''}}"
-        bindtap="onPickerItemTap"
-        data-key="{{item.key}}"
+        class="single-card"
+        hover-class="single-card-hover"
+        data-section-id="{{item.id}}"
+        data-key="{{sItem.key}}"
+        bindtap="onSingleCardTap"
       >
-        <view class="picker-item-left">
-          <van-icon wx:if="{{item.active}}" name="success" class="picker-icon-on" />
-          <van-icon wx:else name="circle" class="picker-icon-off" />
-          <text class="picker-item-name">{{item.name}}</text>
-        </view>
-        <text wx:if="{{item.active}}" class="picker-item-status">已添加</text>
+        <view class="s-card-name">{{sItem.name}}</view>
+        <view wx:if="{{!sItem.editing}}" class="s-card-value">{{sItem.displayValue}}</view>
+        <input
+          wx:else
+          type="digit"
+          value="{{sItem.editValue}}"
+          data-section-id="{{item.id}}"
+          data-key="{{sItem.key}}"
+          bindinput="onSingleInput"
+          bindblur="onSingleBlur"
+          focus="{{sItem.editing}}"
+          placeholder="0"
+        />
       </view>
     </view>
-  </van-popup>
 
-  <!-- 实例管理弹窗 -->
+    <!-- 多实例卡片 -->
+    <view
+      wx:for="{{item.multiItems}}"
+      wx:for-item="mItem"
+      wx:key="key"
+      class="multi-card {{mItem.expanded ? 'expanded' : ''}}"
+      data-section-id="{{item.id}}"
+      data-key="{{mItem.key}}"
+    >
+      <view
+        class="mc-header"
+        hover-class="mc-header-hover"
+        data-section-id="{{item.id}}"
+        data-key="{{mItem.key}}"
+        bindtap="onMultiToggle"
+      >
+        <text class="mc-name">{{mItem.name}}</text>
+        <view class="mc-right">
+          <text class="mc-value">{{mItem.totalText}}</text>
+          <text class="mc-meta">{{mItem.count}}个</text>
+          <text class="mc-arrow">›</text>
+        </view>
+      </view>
+      <view class="mc-expand {{mItem.expanded ? 'show' : ''}}">
+        <view wx:if="{{mItem.instances.length === 0}}" class="inst-empty">
+          <text>暂无记录，点击下方添加</text>
+        </view>
+        <block wx:else>
+          <view
+            wx:for="{{mItem.instances}}"
+            wx:for-item="inst"
+            wx:key="id"
+            class="inst-row"
+            hover-class="inst-row-hover"
+            data-section-id="{{item.id}}"
+            data-key="{{mItem.key}}"
+            data-index="{{index}}"
+            bindtap="onEditInstance"
+          >
+            <text class="inst-name">{{inst.name}}</text>
+            <text class="inst-val">{{inst.displayValue}}</text>
+          </view>
+        </block>
+        <view
+          class="add-inst"
+          data-section-id="{{item.id}}"
+          data-key="{{mItem.key}}"
+          bindtap="onAddInstance"
+        >+ 添加{{mItem.name}}</view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 底部固定栏 -->
+  <view class="bottom-bar">
+    <view>
+      <view class="nw-label">本月净资产</view>
+      <view class="nw-value">{{netWorthText}}</view>
+    </view>
+    <view class="save-btn" hover-class="save-btn-hover" bindtap="onSubmit">保存</view>
+  </view>
+
+  <!-- Toast -->
+  <view class="add-toast {{toastShow ? 'show' : ''}}">{{toastMsg}}</view>
+
+  <!-- 实例编辑弹窗 -->
   <van-popup
     show="{{showInstancePopup}}"
     position="bottom"
     bind:close="onInstancePopupClose"
     round
-    z-index="{{2000}}" close-on-click-overlay="{{false}}"
+    z-index="{{2000}}"
+    close-on-click-overlay="{{false}}"
   >
-    <view class="instance-popup">
-      <view class="picker-header">
-        <text class="picker-title">{{instanceConfig.name}}管理</text>
-        <text class="picker-add" bindtap="onInstanceAdd">+ 添加</text>
+    <view class="modal-sheet">
+      <view class="modal-title">{{modalMode === 'edit' ? '编辑' : '添加'}}{{instanceConfig.name}}</view>
+
+      <view class="modal-form-group">
+        <text class="form-label">名称</text>
+        <input
+          class="form-input"
+          value="{{modalName}}"
+          bindinput="onModalNameInput"
+          placeholder="输入名称"
+          maxlength="{{10}}"
+        />
       </view>
 
-      <view class="instance-popup-body">
-        <view wx:if="{{instances.length === 0}}" class="instance-empty">
-          <text>暂无记录，点击下方添加</text>
-        </view>
-        <view wx:else>
-          <view wx:for="{{instances}}" wx:for-item="inst" wx:for-index="instIndex" wx:key="id" class="inst-row">
-            <view class="inst-name-wrap">
-              <van-field
-                value="{{inst.name}}"
-                data-index="{{instIndex}}"
-                bind:input="onInstNameInput"
-                maxlength="{{10}}"
-                placeholder="名称"
-                input-align="left"
-                border="{{false}}"
-              />
-            </view>
-            <view class="inst-right">
-              <view class="inst-amount-wrap">
-                <van-field
-                  value="{{inst.f0}}"
-                  type="digit"
-                  data-index="{{instIndex}}"
-                  data-field="f0"
-                  maxlength="{{12}}"
-                  bind:input="onInstValueInput"
-                  placeholder="{{instanceFields[0].label}}"
-                  input-align="right"
-                  border="{{false}}"
-                />
-              </view>
-              <view wx:if="{{instanceFields.length > 1}}" class="inst-amount-wrap">
-                <van-field
-                  value="{{inst.f1}}"
-                  type="digit"
-                  data-index="{{instIndex}}"
-                  data-field="f1"
-                  bind:input="onInstValueInput"
-                  placeholder="{{instanceFields[1].label}}"
-                  input-align="right"
-                  border="{{false}}"
-                />
-              </view>
-              <van-icon name="delete-o" class="inst-delete" bindtap="onInstDelete" data-index="{{instIndex}}" />
-            </view>
-          </view>
-        </view>
+      <view wx:for="{{instanceFields}}" wx:key="key" class="modal-form-group">
+        <text class="form-label">{{item.label}}</text>
+        <input
+          class="form-input"
+          type="digit"
+          value="{{modalFieldValues[item.key]}}"
+          data-field="{{item.key}}"
+          bindinput="onModalFieldInput"
+          placeholder="0"
+          maxlength="{{12}}"
+        />
       </view>
 
-      <view class="instance-footer">
-        <van-button round block bindtap="onInstancePopupClose" custom-style="flex:1;width:auto; min-width: 150px">取消</van-button>
-        <van-button type="primary" round block bindtap="onInstanceConfirm" custom-style="flex:1;width:auto; min-width: 150px">确定</van-button>
+      <view class="modal-btn-row">
+        <view class="btn btn-cancel" hover-class="btn-cancel-hover" bindtap="onModalCancel">取消</view>
+        <view class="btn btn-primary" hover-class="btn-primary-hover" bindtap="onModalConfirm">保存</view>
       </view>
+
+      <view wx:if="{{modalMode === 'edit'}}" class="btn-danger" bindtap="onModalDelete">删除该记录</view>
     </view>
   </van-popup>
-
 </view>
