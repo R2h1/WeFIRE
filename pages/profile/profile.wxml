@@ -9,7 +9,7 @@
     </view>
   </view>
 
-  <view class="card settings-card" bindtap="openSettingsModal">
+  <view class="card settings-card" bindtap="openSettingsModal" hover-class="settings-card-hover">
     <view class="settings-header">
       <view class="settings-header-left">
         <view class="settings-icon icon-target">

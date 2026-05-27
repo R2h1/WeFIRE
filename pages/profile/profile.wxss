@@ -1,19 +1,38 @@
 /* ============================================
-   History Page (我的)
+   我的 — 拟物态暖橙风格
    ============================================ */
 
 .history-page {
-  padding-bottom: 32px;
+  --card-bg: #FBF9F7;
+  --shadow-dark: #D6CFC7;
+  --shadow-light: #FFFFFF;
+  --text: #2D2A26;
+  --text-secondary: #8B827A;
+  --accent: #EA580C;
+  --accent-soft: #FFF5F0;
+  --danger: #C06C5C;
+  --radius: 14px;
+
+  background: #E6E0DA;
+  min-height: 100vh;
+  padding: 0 14px 32px;
 }
 
-/* ============================================
-   Profile Card
-   ============================================ */
+/* ===== 卡片通用拟物态 ===== */
+.history-page .card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  margin: 10px 0;
+  box-shadow:
+    4px 4px 10px var(--shadow-dark),
+    -4px -4px 10px var(--shadow-light);
+}
 
+/* ===== 头像卡片 ===== */
 .profile-card {
   display: flex;
   align-items: center;
-  padding: 16px 20px;
+  padding: 18px 20px;
   margin-top: 16px;
 }
 
@@ -21,7 +40,7 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: #e8f5e9;
+  background: var(--accent-soft);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,7 +51,7 @@
 .avatar-text {
   font-size: 20px;
   font-weight: 700;
-  color: #2e7d32;
+  color: var(--accent);
 }
 
 .profile-info {
@@ -43,23 +62,27 @@
 .profile-name {
   font-size: 17px;
   font-weight: 700;
-  color: #1c1c1e;
+  color: var(--text);
   display: block;
 }
 
 .profile-desc {
   font-size: 12px;
-  color: #8e8e93;
+  color: var(--text-secondary);
   display: block;
   margin-top: 2px;
 }
 
-/* ============================================
-   Settings Card (FIRE Target)
-   ============================================ */
-
+/* ===== FIRE 目标卡片 ===== */
 .settings-card {
   padding: 20px;
+}
+
+.settings-card-hover {
+  box-shadow:
+    inset 3px 3px 8px rgba(0, 0, 0, 0.05),
+    inset -3px -3px 8px rgba(255, 255, 255, 0.7);
+  background: #F8F5F2;
 }
 
 .settings-header {
@@ -79,26 +102,22 @@
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  background: #e8f5e9;
+  background: var(--accent-soft);
+  color: var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.icon-target {
-  background: #e8f5e9;
-  color: #2e7d32;
-}
-
 .settings-title {
   font-size: 16px;
   font-weight: 600;
-  color: #1c1c1e;
+  color: var(--text);
 }
 
 .settings-chevron {
   font-size: 22px;
-  color: #c7c7cc;
+  color: #BFB5AA;
   line-height: 1;
 }
 
@@ -106,9 +125,9 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 16px;
+  padding: 14px 16px;
   background: #f2f2f7;
-  border-radius: 12px;
+  border-radius: 10px;
 }
 
 .settings-row {
@@ -119,33 +138,37 @@
 
 .settings-row-label {
   font-size: 13px;
-  color: #8e8e93;
+  color: var(--text-secondary);
 }
 
 .settings-row-value {
   font-size: 15px;
   font-weight: 600;
-  color: #1c1c1e;
+  color: var(--text);
 }
 
 .settings-empty {
   padding: 16px;
   text-align: center;
   background: #f2f2f7;
-  border-radius: 12px;
-  color: #c7c7cc;
+  border-radius: 10px;
+  color: #BFB5AA;
   font-size: 14px;
 }
 
-/* ============================================
-   Vant Cell overrides for menu
-   ============================================ */
-
-van-cell-group {
+/* ===== 菜单项 ===== */
+.history-page van-cell-group {
   display: block;
-  margin: 8px 16px;
-  border-radius: 16px;
+  margin: 10px 0;
+  border-radius: var(--radius);
   overflow: hidden;
+  box-shadow:
+    4px 4px 10px var(--shadow-dark),
+    -4px -4px 10px var(--shadow-light);
+}
+
+.history-page van-cell-group van-cell {
+  background: var(--card-bg);
 }
 
 .van-cell-icon {
@@ -162,39 +185,44 @@ van-cell-group {
 }
 
 .icon-bell {
-  background: #fff3e0;
-  color: #e65100;
+  background: #FFF5F0;
+  color: var(--accent);
 }
 
 .icon-export {
-  background: #e3f2fd;
-  color: #1565c0;
+  background: #EDE8E3;
+  color: var(--text-secondary);
 }
 
 .icon-import {
-  background: #e8f5e9;
-  color: #2e7d32;
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
 .icon-danger {
-  background: #ffebee;
-  color: #d32f2f;
+  background: #FFEBEE;
+  color: var(--danger);
 }
 
+/* 危险操作区 */
 .danger-section {
-  margin: 8px 16px;
-  border-radius: 16px;
+  margin: 10px 0;
+  border-radius: var(--radius);
   overflow: hidden;
+  box-shadow:
+    4px 4px 10px var(--shadow-dark),
+    -4px -4px 10px var(--shadow-light);
+}
+
+.danger-section van-cell {
+  background: var(--card-bg);
 }
 
 .danger-text {
-  color: #d32f2f;
+  color: var(--danger);
 }
 
-/* ============================================
-   van-dialog content & field override
-   ============================================ */
-
+/* ===== Dialog 弹窗 ===== */
 .van-dialog-content {
   padding: 20px 20px 0;
 }
@@ -203,16 +231,16 @@ van-cell-group {
   display: block;
   font-size: 17px;
   font-weight: 700;
-  color: #1c1c1e;
+  color: var(--text);
   text-align: center;
   margin-bottom: 12px;
 }
 
 .van-dialog-content van-cell-group {
   margin: 0;
+  box-shadow: none;
 }
 
-/* Dialog 按钮圆角 & 均分 */
 .van-dialog {
   --van-dialog-border-radius: 16px;
 }
@@ -243,39 +271,32 @@ van-cell-group {
 
 .import-tip {
   font-size: 13px;
-  color: #8e8e93;
+  color: var(--text-secondary);
   text-align: center;
   margin-bottom: 12px;
 }
 
+/* ===== Picker ===== */
 .picker-value {
   width: 100%;
   text-align: right;
-  color: #1c1c1e;
+  color: var(--text);
 }
 
 .picker-placeholder {
   width: 100%;
   text-align: right;
-  color: #c7c7cc;
+  color: #BFB5AA;
 }
-
-.picker-arrow {
-  color: #c7c7cc;
-}
-
-/* ============================================
-   Year Picker Popup
-   ============================================ */
 
 van-popup .van-picker {
   --van-picker-option-font-size: 18px;
   --van-picker-title-font-size: 16px;
-  --van-picker-title-color: #1c1c1e;
-  --van-picker-cancel-action-color: #8e8e93;
-  --van-picker-confirm-action-color: #2e7d32;
+  --van-picker-title-color: var(--text);
+  --van-picker-cancel-action-color: var(--text-secondary);
+  --van-picker-confirm-action-color: var(--accent);
 }
 
 van-popup .van-picker__toolbar {
-  border-bottom: 1px solid #f2f2f7;
+  border-bottom: 1px solid #EBE5DE;
 }
