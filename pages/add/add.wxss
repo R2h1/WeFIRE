@@ -258,7 +258,7 @@
 /* ===== 底部固定栏 ===== */
 .bottom-bar {
   position: fixed;
-  bottom: calc(24px + env(safe-area-inset-bottom));
+  bottom: calc(48px + env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
