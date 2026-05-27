@@ -111,12 +111,12 @@
     position="bottom"
     bind:close="onInstancePopupClose"
     round
-    z-index="{{2000}}"
+    z-index="{{2000}}" close-on-click-overlay="{{false}}"
   >
     <view class="instance-popup">
       <view class="picker-header">
         <text class="picker-title">{{instanceConfig.name}}管理</text>
-        <van-icon name="close" class="picker-close" bindtap="onInstancePopupClose" />
+        <text class="picker-add" bindtap="onInstanceAdd">+ 添加</text>
       </view>
 
       <view class="instance-popup-body">
@@ -168,8 +168,8 @@
         </view>
       </view>
 
-           <view class="instance-footer">
-        <van-button round block bindtap="onInstanceAdd" custom-style="flex:1;width:auto; min-width: 150px">+ 添加</van-button>
+      <view class="instance-footer">
+        <van-button round block bindtap="onInstancePopupClose" custom-style="flex:1;width:auto; min-width: 150px">取消</van-button>
         <van-button type="primary" round block bindtap="onInstanceConfirm" custom-style="flex:1;width:auto; min-width: 150px">确定</van-button>
       </view>
     </view>

@@ -237,6 +237,7 @@ Page({
       return obj
     })
 
+    this._initialInstances = JSON.parse(JSON.stringify(instances))
     this.setData({
       showInstancePopup: true,
       instanceCategory: key,
@@ -253,8 +254,22 @@ Page({
   },
 
   onInstancePopupClose() {
-    this.setData({ showInstancePopup: false })
-    this._toggleTabBar(true)
+    const changed = JSON.stringify(this.data.instances) !== JSON.stringify(this._initialInstances)
+    if (changed) {
+      wx.showModal({
+        title: '确认取消',
+        content: '有未保存的修改，确定放弃吗？',
+        success: (res) => {
+          if (res.confirm) {
+            this.setData({ showInstancePopup: false })
+            this._toggleTabBar(true)
+          }
+        }
+      })
+    } else {
+      this.setData({ showInstancePopup: false })
+      this._toggleTabBar(true)
+    }
   },
 
   onInstanceConfirm() {

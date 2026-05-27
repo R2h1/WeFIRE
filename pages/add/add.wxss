@@ -235,6 +235,13 @@
   color: #1c1c1e;
 }
 
+.picker-add {
+  color: #2e7d32;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 4px 8px;
+}
+
 .picker-close {
   color: #c7c7cc;
   font-size: 20px;
@@ -297,6 +304,7 @@
 
 /* ===== Instance Popup ===== */
 .instance-popup {
+  max-height: 40vh;
   min-height: 40vh;
   display: flex;
   flex-direction: column;
@@ -304,6 +312,8 @@
 
 .instance-popup-body {
   flex: 1;
+  min-height: 0;
+  height: 0;
   max-height: 360px;
   overflow-y: auto;
 }
@@ -320,7 +330,7 @@
   justify-content: center;
   display: flex;
   gap: 24px;
-  padding: 8px 20px 12px;
+  padding: 8px 20px 8px;
 }
 
 .inst-row {
