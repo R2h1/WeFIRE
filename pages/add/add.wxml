@@ -168,8 +168,9 @@
         </view>
       </view>
 
-      <view class="instance-add-btn">
-        <van-button type="primary" round block bindtap="onInstanceAdd">+ 添加</van-button>
+           <view class="instance-footer">
+        <van-button round block bindtap="onInstanceAdd" custom-style="flex:1;width:auto; min-width: 150px">+ 添加</van-button>
+        <van-button type="primary" round block bindtap="onInstanceConfirm" custom-style="flex:1;width:auto; min-width: 150px">确定</van-button>
       </view>
     </view>
   </van-popup>

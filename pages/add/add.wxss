@@ -315,8 +315,12 @@
   font-size: 14px;
 }
 
-.instance-add-btn {
-  padding: 0px 20px 8px;
+.instance-footer {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  gap: 24px;
+  padding: 8px 20px 12px;
 }
 
 .inst-row {

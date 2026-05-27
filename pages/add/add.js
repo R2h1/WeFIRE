@@ -255,6 +255,12 @@ Page({
   onInstancePopupClose() {
     this.setData({ showInstancePopup: false })
     this._toggleTabBar(true)
+  },
+
+  onInstanceConfirm() {
+    this._saveInstanceChanges(this.data.instances)
+    this.setData({ showInstancePopup: false })
+    this._toggleTabBar(true)
     this.refreshMultiSummaries()
     this.calcNetWorth()
   },
@@ -269,7 +275,6 @@ Page({
     if (instanceFields.length > 1) instance.f1 = '0'
     const newInstances = [...instances, instance]
     this.setData({ instances: newInstances })
-    this._saveInstanceChanges(newInstances)
   },
 
   onInstNameInput(e) {
@@ -278,7 +283,6 @@ Page({
     const newInstances = [...this.data.instances]
     newInstances[index] = { ...newInstances[index], name: val }
     this.setData({ instances: newInstances })
-    this._saveInstanceChanges(newInstances)
   },
 
   onInstValueInput(e) {
@@ -288,7 +292,6 @@ Page({
     const newInstances = [...this.data.instances]
     newInstances[index] = { ...newInstances[index], [field]: val }
     this.setData({ instances: newInstances })
-    this._saveInstanceChanges(newInstances)
   },
 
   onInstDelete(e) {
@@ -302,7 +305,6 @@ Page({
           const newInstances = [...this.data.instances]
           newInstances.splice(index, 1)
           this.setData({ instances: newInstances })
-          this._saveInstanceChanges(newInstances)
         }
       }
     })

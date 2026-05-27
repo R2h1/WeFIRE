@@ -14,7 +14,7 @@ const SECTIONS = [
       },
       {
         key: 'bankCards',
-        name: '银行卡',
+        name: '银行',
         multi: true,
         limit: 10,
         fields: [{ key: 'balance', label: '余额' }],
