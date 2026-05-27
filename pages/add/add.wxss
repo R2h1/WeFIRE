@@ -3,32 +3,28 @@
    ============================================ */
 
 .add-page {
-  --bg: #F3EFEC;
-  --card-bg: #FBF9F7;
-  --shadow-dark: #D6CFC7;
-  --shadow-light: #FFFFFF;
-  --text: #2D2A26;
-  --text-secondary: #8B827A;
-  --text-muted: #BFB5AA;
-  --accent: #EA580C;
-  --accent-soft: #FFF5F0;
+  --bg: #f3efec;
+  --card-bg: #fbf9f7;
+  --shadow-dark: #d6cfc7;
+  --shadow-light: #ffffff;
+  --text: #2d2a26;
+  --text-secondary: #8b827a;
+  --text-muted: #bfb5aa;
+  --accent: #ea580c;
+  --accent-soft: #fff5f0;
   --accent-glow: rgba(234, 88, 12, 0.25);
-  --danger: #C06C5C;
+  --danger: #c06c5c;
   --radius-sm: 10px;
   --radius: 14px;
 
-  background: #E6E0DA;
+  background: #e6e0da;
   min-height: 100vh;
-  padding: 0 14px 110px;
+  padding: 0 14px calc(52px + 64px + env(safe-area-inset-bottom));
 }
 
 /* ===== 月份行 ===== */
 .month-row {
-  display: flex;
-  align-items: baseline;
-  padding: 10px 2px;
-  gap: 5px;
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-secondary);
   letter-spacing: 0.3px;
 }
@@ -156,7 +152,7 @@
   box-shadow:
     inset 3px 3px 8px rgba(0, 0, 0, 0.05),
     inset -3px -3px 8px rgba(255, 255, 255, 0.7);
-  background: #F8F5F2;
+  background: #f8f5f2;
 }
 
 .mc-header {
@@ -188,7 +184,7 @@
 .mc-meta {
   font-size: 10px;
   color: var(--text-muted);
-  background: #EDE8E3;
+  background: #ede8e3;
   padding: 3px 7px;
   border-radius: 20px;
   letter-spacing: 0.2px;
@@ -208,7 +204,7 @@
 .mc-expand {
   display: none;
   margin-top: 10px;
-  border-top: 1px solid #EBE5DE;
+  border-top: 1px solid #ebe5de;
   padding-top: 8px;
 }
 
@@ -262,7 +258,7 @@
 /* ===== 底部固定栏 ===== */
 .bottom-bar {
   position: fixed;
-  bottom: 0;
+  bottom: calc(24px + env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
@@ -272,11 +268,17 @@
   padding: 10px 16px;
   padding-bottom: max(10px, env(safe-area-inset-bottom));
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   z-index: 100;
   border-radius: 16px 16px 0 0;
   box-sizing: border-box;
+}
+
+.bottom-bar-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
 }
 
 .nw-label {
@@ -298,7 +300,7 @@
   background: var(--accent);
   color: #fff;
   border: none;
-  padding: 12px 24px;
+  padding: 12px 36px;
   border-radius: 25px;
   font-size: 14px;
   font-weight: 600;
@@ -327,22 +329,37 @@
 }
 
 .modal-sheet {
-  background: #FBF9F7;
+  background: #fbf9f7;
   width: 100%;
   max-width: 414px;
   border-radius: 20px 20px 0 0;
-  padding: 20px 18px;
-  padding-bottom: max(20px, env(safe-area-inset-bottom));
+  padding: 20px 18px 0px;
   box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.1);
 }
 
 .modal-title {
   font-size: 15px;
   font-weight: 700;
-  text-align: center;
-  margin-bottom: 16px;
   color: var(--text);
   letter-spacing: 0.3px;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.modal-header .modal-title {
+  margin-bottom: 0;
+}
+
+.modal-delete {
+  font-size: 13px;
+  color: var(--danger);
+  font-weight: 500;
+  padding: 4px 8px;
 }
 
 .modal-form-group {
@@ -361,14 +378,14 @@
 .form-input {
   width: 100%;
   height: 44px;
-  border: 1.5px solid #E0D9D1;
+  border: 1.5px solid #e0d9d1;
   border-radius: var(--radius-sm);
   padding: 0 12px;
   font-size: 15px;
   color: var(--text);
   outline: none;
   font-family: 'SF Mono', 'Menlo', 'Consolas', 'PingFang SC', monospace;
-  background: #FFF;
+  background: #fff;
   box-sizing: border-box;
   line-height: 44px;
 }
@@ -393,9 +410,13 @@
   letter-spacing: 0.3px;
 }
 
-.btn-cancel {
-  background: #EDE8E3;
-  color: var(--text-secondary);
+.btn-danger {
+  background: #ede8e3;
+  color: var(--danger);
+}
+
+.btn-danger-hover {
+  opacity: 0.7;
 }
 
 .btn-primary {
@@ -404,16 +425,8 @@
   box-shadow: 0 3px 10px var(--accent-glow);
 }
 
-.btn-danger {
-  background: transparent;
-  color: var(--danger);
-  font-size: 12px;
-  width: 100%;
-  text-align: center;
-  margin-top: 8px;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-  padding: 8px;
+.modal-close {
+  padding: 4px;
 }
 
 /* ===== Toast ===== */
@@ -449,7 +462,8 @@
   opacity: 0.6;
 }
 
-.btn-cancel-hover {
+.btn-danger-hover {
+  transform: scale(0.97);
   opacity: 0.7;
 }
 

@@ -1,10 +1,4 @@
 <view class="add-page">
-  <!-- 月份行 -->
-  <view class="month-row">
-    <text>月份：</text>
-    <text class="month-value">{{monthLabel}}</text>
-  </view>
-
   <!-- 上月数据提示条 -->
   <view wx:if="{{loadedFromPrev}}" class="prev-data-tip">
     <text>已加载上月数据，可直接保存</text>
@@ -98,8 +92,8 @@
 
   <!-- 底部固定栏 -->
   <view class="bottom-bar">
-    <view>
-      <view class="nw-label">本月净资产</view>
+    <view class="bottom-bar-left">
+      <view class="nw-label">{{monthLabel}} · 净资产</view>
       <view class="nw-value">{{netWorthText}}</view>
     </view>
     <view class="save-btn" hover-class="save-btn-hover" bindtap="onSubmit">保存</view>
@@ -118,7 +112,12 @@
     close-on-click-overlay="{{false}}"
   >
     <view class="modal-sheet">
-      <view class="modal-title">{{modalMode === 'edit' ? '编辑' : '添加'}}{{instanceConfig.name}}</view>
+      <view class="modal-header">
+        <view class="modal-title">{{modalMode === 'edit' ? '编辑' : '添加'}}{{instanceConfig.name}}</view>
+        <view class="modal-close" bindtap="onModalCancel">
+          <van-icon name="cross" size="18px" color="#8B827A" />
+        </view>
+      </view>
 
       <view class="modal-form-group">
         <text class="form-label">名称</text>
@@ -145,11 +144,9 @@
       </view>
 
       <view class="modal-btn-row">
-        <view class="btn btn-cancel" hover-class="btn-cancel-hover" bindtap="onModalCancel">取消</view>
+        <view wx:if="{{modalMode === 'edit'}}" class="btn btn-danger" hover-class="btn-danger-hover" bindtap="onModalDelete">删除</view>
         <view class="btn btn-primary" hover-class="btn-primary-hover" bindtap="onModalConfirm">保存</view>
       </view>
-
-      <view wx:if="{{modalMode === 'edit'}}" class="btn-danger" bindtap="onModalDelete">删除该记录</view>
     </view>
   </van-popup>
 </view>

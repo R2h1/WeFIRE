@@ -29,9 +29,9 @@ page {
   line-height: 1.6;
 
   /* Vant Weapp theme */
-  --van-primary-color: #EA580C;
-  --van-button-primary-background: #EA580C;
-  --van-button-primary-border-color: #EA580C;
+  --van-primary-color: #ea580c;
+  --van-button-primary-background: #ea580c;
+  --van-button-primary-border-color: #ea580c;
   --van-button-radius: 12px;
   --van-cell-vertical-padding: 16px;
   --van-cell-horizontal-padding: 20px;
@@ -89,7 +89,7 @@ swiper {
    ============================================ */
 
 .btn-primary {
-  background-color: #2e7d32;
+  background-color: #ea580c;
   color: #ffffff;
   border-radius: 12px;
   padding: 18px 24px;
@@ -104,7 +104,6 @@ swiper {
 }
 
 .btn-primary:active {
-  background-color: #25682a;
   opacity: 0.95;
 }
 
