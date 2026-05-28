@@ -136,6 +136,11 @@
   align-items: center;
 }
 
+.settings-row + .settings-row {
+  padding-top: 12px;
+  border-top: 1px solid #e5e5ea;
+}
+
 .settings-row-label {
   font-size: 13px;
   color: var(--text-secondary);
@@ -220,6 +225,15 @@
 
 .danger-text {
   color: var(--danger);
+}
+
+/* ===== 版本信息 ===== */
+.version-info {
+  text-align: center;
+  font-size: 11px;
+  color: #BFB5AA;
+  padding: 24px 0 16px;
+  letter-spacing: 0.3px;
 }
 
 /* ===== Dialog 弹窗 ===== */

@@ -57,11 +57,15 @@
   </view>
 </view>
 
+<view class="version-info">WeFIRE v1.0.0 · 财务独立，提早退休</view>
+
 <!-- 设置 FIRE 目标弹窗 -->
 <van-dialog
   show="{{showModal}}"
   use-slot
   show-cancel-button
+  transition="fade"
+  confirm-button-color="#EA580C"
   before-close="{{beforeCloseHandler}}"
 >
   <view class="van-dialog-content">
@@ -88,6 +92,8 @@
   show="{{showImportModal}}"
   use-slot
   show-cancel-button
+  transition="fade"
+  confirm-button-color="#EA580C"
   bind:confirm="onImportConfirm"
   bind:cancel="onImportCancel"
 >
