@@ -1,5 +1,5 @@
 {
-  "pages": ["pages/index/index", "pages/add/add", "pages/charts/charts", "pages/instance/instance", "pages/profile/profile"],
+  "pages": ["pages/index/index", "pages/add/add", "pages/bookkeeping/bookkeeping", "pages/charts/charts", "pages/instance/instance", "pages/profile/profile"],
   "window": {
     "navigationBarTitleText": "WeFIRE",
     "navigationBarBackgroundColor": "#FFFFFF",
@@ -21,6 +21,10 @@
       {
         "pagePath": "pages/add/add",
         "text": "录入"
+      },
+      {
+        "pagePath": "pages/bookkeeping/bookkeeping",
+        "text": "记账"
       },
       {
         "pagePath": "pages/charts/charts",

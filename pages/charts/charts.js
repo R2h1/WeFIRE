@@ -34,7 +34,7 @@ Page({
 
   updateTabBar() {
     const tabBar = typeof this.getTabBar === 'function' && this.getTabBar();
-    tabBar && tabBar.setData({ active: 2 });
+    tabBar && tabBar.setData({ active: 3 });
   },
 
   loadData() {

@@ -1,0 +1,7 @@
+<view class="placeholder-page">
+  <view class="placeholder-card">
+    <van-icon name="todo-list-o" size="36px" color="#bfb5aa" />
+    <text class="placeholder-title">记账</text>
+    <text class="placeholder-sub">敬请期待</text>
+  </view>
+</view>
