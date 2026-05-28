@@ -2,75 +2,61 @@
    我的 — 拟物态暖橙风格
    ============================================ */
 
-.history-page {
-  --card-bg: #FBF9F7;
-  --shadow-dark: #D6CFC7;
-  --shadow-light: #FFFFFF;
-  --text: #2D2A26;
-  --text-secondary: #8B827A;
-  --accent: #EA580C;
-  --accent-soft: #FFF5F0;
-  --danger: #C06C5C;
+.profile-page {
+  --card-bg: #fbf9f7;
+  --shadow-dark: #d6cfc7;
+  --shadow-light: #ffffff;
+  --text: #2d2a26;
+  --text-secondary: #8b827a;
+  --accent: #ea580c;
+  --accent-soft: #fff5f0;
+  --danger: #c06c5c;
   --radius: 14px;
 
-  background: #E6E0DA;
+  background: #e6e0da;
   min-height: 100vh;
-  padding: 0 14px 32px;
+  padding: 10px 14px 32px;
 }
 
 /* ===== 卡片通用拟物态 ===== */
-.history-page .card {
+.profile-page .card {
   background: var(--card-bg);
   border-radius: var(--radius);
-  margin: 10px 0;
+  margin: 0 0 10px;
   box-shadow:
     4px 4px 10px var(--shadow-dark),
     -4px -4px 10px var(--shadow-light);
 }
 
-/* ===== 头像卡片 ===== */
-.profile-card {
+/* ===== 品牌标识 ===== */
+.brand-section {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 18px 20px;
-  margin-top: 16px;
+  padding: 20px;
 }
 
-.profile-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--accent-soft);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-right: 14px;
-}
-
-.avatar-text {
-  font-size: 20px;
+.brand-name {
+  font-size: 22px;
   font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.5px;
+}
+
+.brand-name .highlight {
   color: var(--accent);
 }
 
-.profile-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.profile-name {
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--text);
-  display: block;
-}
-
-.profile-desc {
+.brand-tagline {
   font-size: 12px;
   color: var(--text-secondary);
-  display: block;
-  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.shield-icon {
+  font-size: 13px;
 }
 
 /* ===== FIRE 目标卡片 ===== */
@@ -82,7 +68,7 @@
   box-shadow:
     inset 3px 3px 8px rgba(0, 0, 0, 0.05),
     inset -3px -3px 8px rgba(255, 255, 255, 0.7);
-  background: #F8F5F2;
+  background: #f8f5f2;
 }
 
 .settings-header {
@@ -117,7 +103,7 @@
 
 .settings-chevron {
   font-size: 22px;
-  color: #BFB5AA;
+  color: #bfb5aa;
   line-height: 1;
 }
 
@@ -157,12 +143,12 @@
   text-align: center;
   background: #f2f2f7;
   border-radius: 10px;
-  color: #BFB5AA;
+  color: #bfb5aa;
   font-size: 14px;
 }
 
 /* ===== 菜单项 ===== */
-.history-page van-cell-group {
+.profile-page van-cell-group {
   display: block;
   margin: 10px 0;
   border-radius: var(--radius);
@@ -172,7 +158,7 @@
     -4px -4px 10px var(--shadow-light);
 }
 
-.history-page van-cell-group van-cell {
+.profile-page van-cell-group van-cell {
   background: var(--card-bg);
 }
 
@@ -190,12 +176,12 @@
 }
 
 .icon-bell {
-  background: #FFF5F0;
+  background: #fff5f0;
   color: var(--accent);
 }
 
 .icon-export {
-  background: #EDE8E3;
+  background: #ede8e3;
   color: var(--text-secondary);
 }
 
@@ -205,7 +191,7 @@
 }
 
 .icon-danger {
-  background: #FFEBEE;
+  background: #ffebee;
   color: var(--danger);
 }
 
@@ -231,8 +217,8 @@
 .version-info {
   text-align: center;
   font-size: 11px;
-  color: #BFB5AA;
-  padding: 24px 0 16px;
+  color: #bfb5aa;
+  padding: 8px 0 16px;
   letter-spacing: 0.3px;
 }
 
@@ -300,7 +286,7 @@
 .picker-placeholder {
   width: 100%;
   text-align: right;
-  color: #BFB5AA;
+  color: #bfb5aa;
 }
 
 van-popup .van-picker {
@@ -312,5 +298,5 @@ van-popup .van-picker {
 }
 
 van-popup .van-picker__toolbar {
-  border-bottom: 1px solid #EBE5DE;
+  border-bottom: 1px solid #ebe5de;
 }

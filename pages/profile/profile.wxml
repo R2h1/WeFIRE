@@ -1,11 +1,8 @@
-<view class="history-page">
-  <view class="profile-card card">
-    <view class="profile-avatar">
-      <text class="avatar-text">W</text>
-    </view>
-    <view class="profile-info">
-      <text class="profile-name">WeFIRE</text>
-      <text class="profile-desc">本地数据 · 隐私安全</text>
+<view class="profile-page">
+  <view class="brand-section">
+    <view class="brand-name">We<text class="highlight">FIRE</text></view>
+    <view class="brand-tagline">
+      <text class="shield-icon">🛡</text> 本地数据 · 隐私安全
     </view>
   </view>
 
@@ -55,9 +52,8 @@
       <view slot="title" class="danger-text">清除所有数据</view>
     </van-cell>
   </view>
+  <view class="version-info">WeFIRE v1.0.0 · 财务独立，提早退休</view>
 </view>
-
-<view class="version-info">WeFIRE v1.0.0 · 财务独立，提早退休</view>
 
 <!-- 设置 FIRE 目标弹窗 -->
 <van-dialog
