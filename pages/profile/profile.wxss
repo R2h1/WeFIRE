@@ -3,16 +3,6 @@
    ============================================ */
 
 .profile-page {
-  --card-bg: #fbf9f7;
-  --shadow-dark: #d6cfc7;
-  --shadow-light: #ffffff;
-  --text: #2d2a26;
-  --text-secondary: #8b827a;
-  --accent: #ea580c;
-  --accent-soft: #fff5f0;
-  --danger: #c06c5c;
-  --radius: 14px;
-
   background: #e6e0da;
   min-height: 100vh;
   padding: 10px 14px 32px;

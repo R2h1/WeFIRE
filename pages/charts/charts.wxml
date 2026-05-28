@@ -1,0 +1,122 @@
+<view class="charts-page">
+  <!-- No settings empty state -->
+  <view wx:if="{{!hasSettings}}" class="empty-state">
+    <view class="empty-card">
+      <view class="empty-icon-bg">
+        <text class="empty-icon-text">📊</text>
+      </view>
+      <text class="empty-title">还未设定 FIRE 目标</text>
+      <text class="empty-subtitle">请先到「我的」设置目标金额和退休年份</text>
+    </view>
+  </view>
+
+  <!-- No data empty state -->
+  <view wx:elif="{{!hasData}}" class="empty-state">
+    <view class="empty-card">
+      <view class="empty-icon-bg">
+        <text class="empty-icon-text">📊</text>
+      </view>
+      <text class="empty-title">暂无数据</text>
+      <text class="empty-subtitle">录入首月数据后将在此查看资产趋势与统计</text>
+    </view>
+  </view>
+
+  <!-- Data view -->
+  <view wx:else class="charts-content">
+    <!-- Net Worth Trend Chart -->
+    <view class="card chart-card" wx:if="{{showChart}}">
+      <view class="chart-header">
+        <text class="chart-title">净资产趋势</text>
+        <text class="chart-date">{{chartDateLabel}}</text>
+      </view>
+      <canvas type="2d" id="chartsTrend" class="chart-canvas"></canvas>
+    </view>
+
+    <!-- Chart Stats Row -->
+    <view class="stats-row" wx:if="{{showChart}}">
+      <view class="stat-item">
+        <text class="stat-label">首月</text>
+        <text class="stat-value">{{chartFirstNetWorth}}</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-label">当前</text>
+        <text class="stat-value">{{chartLastNetWorth}}</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-label">月均储蓄</text>
+        <text class="stat-value">{{chartMonthlySavings}}</text>
+      </view>
+    </view>
+
+    <!-- Asset/Liability Composition -->
+    <view class="card composition-card">
+      <text class="section-title">资产构成</text>
+      <view class="comp-row">
+        <view class="comp-item">
+          <text class="comp-label">总资产</text>
+          <text class="comp-value">{{assetsText}}</text>
+        </view>
+        <view class="comp-item">
+          <text class="comp-label">流动资产</text>
+          <text class="comp-value">{{liquidAssetsText}}</text>
+        </view>
+        <view class="comp-item">
+          <text class="comp-label">固定资产</text>
+          <text class="comp-value">{{fixedAssetsText}}</text>
+        </view>
+      </view>
+      <view class="comp-divider"></view>
+      <text class="section-title">负债构成</text>
+      <view class="comp-row">
+        <view class="comp-item">
+          <text class="comp-label">总负债</text>
+          <text class="comp-value comp-liability">{{liabilitiesText}}</text>
+        </view>
+        <view class="comp-item">
+          <text class="comp-label">短期负债</text>
+          <text class="comp-value comp-liability">{{shortLiabilitiesText}}</text>
+        </view>
+        <view class="comp-item">
+          <text class="comp-label">长期负债</text>
+          <text class="comp-value comp-liability">{{longLiabilitiesText}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Monthly Change Stats -->
+    <view class="card stats-card" wx:if="{{monthlyStats.length > 0}}">
+      <text class="section-title">月度变化</text>
+      <view class="monthly-list">
+        <view wx:for="{{monthlyStats}}" wx:key="month" class="monthly-row">
+          <text class="monthly-month">{{item.month}}</text>
+          <text class="monthly-nw">{{item.netWorth}}</text>
+          <text class="monthly-change {{item.changePos ? 'change-up' : 'change-down'}}">{{item.change}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- History List -->
+    <view class="card history-card" wx:if="{{historyList.length > 0}}">
+      <text class="section-title">历史记录</text>
+      <view class="history-list">
+        <view wx:for="{{historyList}}" wx:key="month" class="history-row">
+          <view class="history-hd">
+            <text class="history-month">{{item.month}}</text>
+          </view>
+          <view class="history-bd">
+            <view class="history-item">
+              <text class="history-label">净资产</text>
+              <text class="history-value">{{item.netWorth}}</text>
+            </view>
+            <view class="history-item">
+              <text class="history-label">资产 / 负债</text>
+              <text class="history-value">{{item.assets}} / {{item.liabilities}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

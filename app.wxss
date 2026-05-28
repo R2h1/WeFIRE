@@ -1,32 +1,51 @@
 /* ============================================
-   WeFIRE Design System — Global Styles
+   WeFIRE Design System — Global Styles (Neumorphic)
    ============================================
    Color tokens:
-     --green-primary: #2E7D32 (primary brand)
-     --green-dark:    #25682A (pressed)
-     --green-bg:      #E8F5E9 (badge/background)
-     --red-danger:    #FF3B30
-     --red-dark:      #1A1A1A
-     --gray-900:      #1C1C1E (primary text)
-     --gray-600:      #8E8E93 (secondary text)
-     --gray-400:      #C7C7CC (placeholder/disabled)
-     --gray-200:      #E5E5EA (dividers)
-     --gray-100:      #F2F2F7 (surface bg)
-     --gray-50:       #F2F2F5 (page bg)
-     --white:         #FFFFFF
+     --accent:        #ea580c (efficiency orange)
+     --accent-soft:   #fff5f0
+     --accent-glow:   rgba(234, 88, 12, 0.25)
+     --danger:        #c06c5c
+     --card-bg:       #fbf9f7
+     --shadow-dark:   #d6cfc7
+     --shadow-light:  #ffffff
+     --text:          #2d2a26
+     --text-secondary:#8b827a
+     --text-muted:    #bfb5aa
+     --progress-bg:   #e8e2db
+     --radius-sm:     10px
+     --radius:        14px
+     --radius-lg:     18px
+     --radius-xl:     22px
    Spacing: 4/8/12/16/20/24/28/32
-   Border-radius: 8/12/16/20
-   Typography: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif
+   Typography: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif
 */
 
 page {
-  background-color: #f2f2f5;
-  color: #1c1c1e;
+  background-color: #e6e0da;
+  color: #2d2a26;
   font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue',
+    -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue',
     sans-serif;
   font-size: 15px;
   line-height: 1.6;
+
+  /* Global neumorphic tokens */
+  --card-bg: #fbf9f7;
+  --shadow-dark: #d6cfc7;
+  --shadow-light: #ffffff;
+  --text: #2d2a26;
+  --text-secondary: #8b827a;
+  --text-muted: #bfb5aa;
+  --accent: #ea580c;
+  --accent-soft: #fff5f0;
+  --accent-glow: rgba(234, 88, 12, 0.25);
+  --danger: #c06c5c;
+  --progress-bg: #e8e2db;
+  --radius-sm: 10px;
+  --radius: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 22px;
 
   /* Vant Weapp theme */
   --van-primary-color: #ea580c;
@@ -37,8 +56,8 @@ page {
   --van-cell-horizontal-padding: 20px;
   --van-cell-font-size: 15px;
   --van-cell-group-background: transparent;
-  --van-cell-background: #ffffff;
-  --van-cell-border-color: #f2f2f7;
+  --van-cell-background: #fbf9f7;
+  --van-cell-border-color: #ebe5de;
   --van-field-label-width: 4.5em;
   --van-dialog-border-radius: 20px;
   --van-popup-border-radius: 20px;
@@ -70,18 +89,21 @@ swiper {
 }
 
 /* ============================================
-   Card
+   Card — Neumorphic
    ============================================ */
 
 .card {
-  background: #ffffff;
-  border-radius: 16px;
+  background: var(--card-bg);
+  border-radius: var(--radius);
   padding: 24px 20px;
   margin: 8px 16px;
+  box-shadow:
+    4px 4px 10px var(--shadow-dark),
+    -4px -4px 10px var(--shadow-light);
 }
 
 .card + .card {
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 /* ============================================
@@ -89,29 +111,29 @@ swiper {
    ============================================ */
 
 .btn-primary {
-  background-color: #ea580c;
+  background-color: var(--accent);
   color: #ffffff;
-  border-radius: 12px;
-  padding: 18px 24px;
-  font-size: 16px;
+  border-radius: 25px;
+  padding: 16px 24px;
+  font-size: 15px;
   font-weight: 600;
   text-align: center;
   border: none;
   width: 100%;
   letter-spacing: 0.3px;
-  position: relative;
-  overflow: hidden;
+  box-shadow: 0 4px 14px var(--accent-glow);
 }
 
 .btn-primary:active {
-  opacity: 0.95;
+  opacity: 0.9;
+  transform: scale(0.97);
 }
 
 .btn-secondary {
-  background-color: #f2f2f7;
-  color: #1c1c1e;
-  border-radius: 12px;
-  padding: 18px 24px;
+  background-color: #ede8e3;
+  color: var(--text);
+  border-radius: 25px;
+  padding: 16px 24px;
   font-size: 15px;
   font-weight: 500;
   text-align: center;
@@ -120,7 +142,7 @@ swiper {
 }
 
 .btn-secondary:active {
-  background-color: #e5e5ea;
+  background-color: #e0d9d1;
 }
 
 /* ============================================
@@ -129,13 +151,13 @@ swiper {
 
 .ipt-wrapper {
   background: #f2f2f7;
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   padding: 16px 18px;
 }
 
 .ipt-wrapper:focus-within {
-  background: #e8f5e9;
-  outline: 2px solid rgba(46, 125, 50, 0.2);
+  background: var(--accent-soft);
+  outline: 2px solid rgba(234, 88, 12, 0.2);
   outline-offset: -2px;
 }
 
@@ -144,12 +166,12 @@ swiper {
   background: transparent;
   border: none;
   font-size: 17px;
-  color: #1c1c1e;
-  caret-color: #2e7d32;
+  color: var(--text);
+  caret-color: var(--accent);
 }
 
 .input-field::placeholder {
-  color: #c7c7cc;
+  color: var(--text-muted);
 }
 
 /* ============================================
@@ -158,7 +180,7 @@ swiper {
 
 .label {
   font-size: 13px;
-  color: #8e8e93;
+  color: var(--text-secondary);
   margin-bottom: 8px;
   display: block;
   font-weight: 500;
@@ -174,26 +196,26 @@ swiper {
   align-items: center;
   justify-content: center;
   padding: 120px 40px;
-  color: #8e8e93;
+  color: var(--text-secondary);
   text-align: center;
 }
 
 .empty-state .empty-icon {
   font-size: 48px;
   margin-bottom: 16px;
-  opacity: 0.6;
+  opacity: 0.8;
 }
 
 .empty-state .empty-title {
   font-size: 18px;
   font-weight: 600;
-  color: #1c1c1e;
+  color: var(--text);
   margin-bottom: 8px;
 }
 
 .empty-state .empty-desc {
   font-size: 15px;
-  color: #8e8e93;
+  color: var(--text-secondary);
   line-height: 1.6;
 }
 
@@ -213,7 +235,7 @@ swiper {
 .section-header-inline .section-title-small {
   font-size: 13px;
   font-weight: 600;
-  color: #8e8e93;
+  color: var(--text-secondary);
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
@@ -224,7 +246,7 @@ swiper {
 
 .modal-label {
   font-size: 13px;
-  color: #8e8e93;
+  color: var(--text-secondary);
   display: block;
   margin-bottom: 8px;
   font-weight: 500;

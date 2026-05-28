@@ -12,7 +12,7 @@ function drawLineChart(canvasId, dataPoints) {
     ctx.scale(dpr, dpr)
 
     if (dataPoints.length < 2) {
-      ctx.fillStyle = '#999999'
+      ctx.fillStyle = '#BFB5AA'
       ctx.font = '14px -apple-system, sans-serif'
       ctx.textAlign = 'center'
       ctx.fillText('至少需要2条记录', width / 2, height / 2)
@@ -28,12 +28,11 @@ function drawLineChart(canvasId, dataPoints) {
     const range = maxVal - minVal || 1
     const stepX = chartW / (Math.max(dataPoints.length - 1, 1))
 
-    // Helper: map data to pixel coords
     function toX(i) { return pad.left + stepX * i }
     function toY(v) { return pad.top + chartH - ((v - minVal) / range) * chartH }
 
-    // --- Horizontal grid lines (subtle) ---
-    ctx.strokeStyle = '#F0F0F0'
+    // --- Horizontal grid lines ---
+    ctx.strokeStyle = '#E8E2DB'
     ctx.lineWidth = 1
     const gridCount = 3
     for (let i = 0; i <= gridCount; i++) {
@@ -43,9 +42,8 @@ function drawLineChart(canvasId, dataPoints) {
       ctx.lineTo(width - pad.right, y)
       ctx.stroke()
 
-      // Y-axis labels
       const val = maxVal - (range / gridCount) * i
-      ctx.fillStyle = '#AAAAAA'
+      ctx.fillStyle = '#BFB5AA'
       ctx.font = '10px -apple-system, sans-serif'
       ctx.textAlign = 'right'
       ctx.textBaseline = 'middle'
@@ -54,8 +52,8 @@ function drawLineChart(canvasId, dataPoints) {
 
     // --- Gradient fill under line ---
     const gradient = ctx.createLinearGradient(0, pad.top, 0, pad.top + chartH)
-    gradient.addColorStop(0, 'rgba(46, 125, 50, 0.15)')
-    gradient.addColorStop(1, 'rgba(46, 125, 50, 0.01)')
+    gradient.addColorStop(0, 'rgba(234, 88, 12, 0.12)')
+    gradient.addColorStop(1, 'rgba(234, 88, 12, 0.01)')
 
     ctx.beginPath()
     ctx.moveTo(toX(0), pad.top + chartH)
@@ -64,7 +62,6 @@ function drawLineChart(canvasId, dataPoints) {
       const y = toY(dp.value)
       if (i === 0) ctx.lineTo(x, y)
       else {
-        // Smooth curve
         const prevX = toX(i - 1)
         const prevY = toY(dataPoints[i - 1].value)
         const cpx = (prevX + x) / 2
@@ -78,7 +75,7 @@ function drawLineChart(canvasId, dataPoints) {
 
     // --- Line ---
     ctx.beginPath()
-    ctx.strokeStyle = '#2E7D32'
+    ctx.strokeStyle = '#ea580c'
     ctx.lineWidth = 2.5
     ctx.lineJoin = 'round'
     ctx.lineCap = 'round'
@@ -101,27 +98,24 @@ function drawLineChart(canvasId, dataPoints) {
       const x = toX(i)
       const y = toY(dp.value)
 
-      // White outer circle
       ctx.beginPath()
       ctx.fillStyle = '#FFFFFF'
       ctx.arc(x, y, 4.5, 0, Math.PI * 2)
       ctx.fill()
 
-      // Green inner dot
       ctx.beginPath()
-      ctx.fillStyle = '#2E7D32'
+      ctx.fillStyle = '#ea580c'
       ctx.arc(x, y, 3, 0, Math.PI * 2)
       ctx.fill()
     })
 
     // --- X-axis labels ---
     ctx.textBaseline = 'top'
-    // Show at most 6 labels to avoid crowding
     const labelInterval = Math.max(1, Math.floor(dataPoints.length / 6))
     dataPoints.forEach((dp, i) => {
       if (i % labelInterval !== 0 && i !== dataPoints.length - 1) return
       const x = toX(i)
-      ctx.fillStyle = '#AAAAAA'
+      ctx.fillStyle = '#BFB5AA'
       ctx.font = '10px -apple-system, sans-serif'
       ctx.textAlign = 'center'
       ctx.fillText(dp.label, x, pad.top + chartH + 8)

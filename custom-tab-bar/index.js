@@ -7,11 +7,8 @@ Component({
     list: [
       { icon: 'wap-home-o', text: '首页', pagePath: '/pages/index/index' },
       { icon: 'add-o', text: '录入', pagePath: '/pages/add/add' },
-      {
-        icon: 'user-circle-o',
-        text: '我的',
-        pagePath: '/pages/profile/profile',
-      },
+      { icon: 'chart-trending-o', text: '图表', pagePath: '/pages/charts/charts' },
+      { icon: 'user-circle-o', text: '我的', pagePath: '/pages/profile/profile' },
     ],
   },
   methods: {

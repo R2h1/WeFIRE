@@ -1,77 +1,77 @@
 <view class="home-page">
+  <!-- Empty State -->
   <view wx:if="{{!hasSettings}}" class="empty-state">
-    <text class="empty-icon">🎯</text>
-    <text class="empty-title">还没有设定 FIRE 目标</text>
-    <text class="empty-desc">请到「我的」设置目标金额和退休年份</text>
+    <view class="empty-card">
+      <view class="empty-icon-bg">
+        <text class="empty-icon-text">🎯</text>
+      </view>
+      <text class="empty-title">还未设定 FIRE 目标</text>
+      <text class="empty-subtitle">设定目标后即可查看进度与资产趋势</text>
+      <view class="empty-btn" hover-class="empty-btn-hover" bindtap="onTapEmptyState">开始规划</view>
+    </view>
   </view>
 
+  <!-- Main Content -->
   <view wx:else class="home-content">
-    <view class="card progress-card">
-      <view class="pct-row">
-        <text class="pct-value">{{progressPercent}}<text class="pct-unit">%</text></text>
-        <view wx:if="{{isAchieved}}" class="achieved-chip">✓ 已达成</view>
+    <!-- Hero Card -->
+    <view class="card hero-card">
+      <text class="hero-label">距 FIRE 还有</text>
+      <view class="hero-pct-row">
+        <text class="hero-pct-value">{{progressPercent}}</text>
+        <text class="hero-pct-unit">%</text>
+        <view wx:if="{{isAchieved}}" class="hero-achieved-chip">已达成</view>
       </view>
-      <view class="bar-track">
-        <view class="bar-fill" style="width: {{progressPercent}}%;"></view>
+      <view class="hero-bar-track">
+        <view class="hero-bar-fill" style="width: {{progressPercent}}%;"></view>
       </view>
-      <view class="progress-meta">
-        <text class="meta-label">目标</text>
-        <text class="meta-value">{{formatTarget}}</text>
-        <text class="meta-label meta-sep">·</text>
-        <text class="meta-label">退休</text>
-        <text class="meta-value">{{settings.retirementYear}}年</text>
-      </view>
-    </view>
-
-    <view class="card summary-card">
-      <text class="summary-label">净资产</text>
-      <text class="summary-amount">{{netWorthText}}</text>
-      <view class="summary-detail">
-        <view class="summary-detail-item">
-          <view class="detail-dot dot-green"></view>
-          <text class="detail-label">资产</text>
-          <text class="detail-value">{{assetsText}}</text>
+      <view class="hero-separator"></view>
+      <view class="hero-meta-row">
+        <view class="hero-meta-item" bindtap="onTapNetWorth">
+          <text class="hero-meta-label">净资产</text>
+          <view class="hero-meta-value-row">
+            <text class="hero-meta-value">{{netWorthText}}</text>
+            <view wx:if="{{netWorthChangePct}}" class="hero-change-chip {{netWorthChangePos ? 'change-up' : 'change-down'}}">
+              <text>{{netWorthChangePos ? '↑' : '↓'}}{{netWorthChangePct}}%</text>
+            </view>
+          </view>
         </view>
-        <view class="summary-divider"></view>
-        <view class="summary-detail-item">
-          <view class="detail-dot dot-amber"></view>
-          <text class="detail-label">负债</text>
-          <text class="detail-value">{{liabilitiesText}}</text>
+        <view class="hero-meta-item">
+          <text class="hero-meta-label">FIRE 目标</text>
+          <text class="hero-meta-value">{{formatTarget}}</text>
+          <text class="hero-meta-sub">{{retirementYearText}}</text>
         </view>
       </view>
     </view>
 
-    <view class="card info-card" wx:if="{{projectedYears > 0}}">
-      <text class="info-icon">⟳</text>
-      <view class="info-body">
-        <text class="info-text">预计还需 <text class="info-highlight">{{projectedYears}}年</text> 达成 FIRE</text>
-        <text class="info-sub">基于月均储蓄估算</text>
+    <!-- Summary Strips -->
+    <view class="summary-strips">
+      <view class="strip-card">
+        <text class="strip-label">总资产</text>
+        <text class="strip-value">{{assetsText}}</text>
+        <view class="strip-breakdown">
+          <text class="strip-sub-label">流动</text>
+          <text class="strip-sub-value">{{liquidAssetsText}}</text>
+          <text class="strip-sub-sep">/</text>
+          <text class="strip-sub-label">固定</text>
+          <text class="strip-sub-value">{{fixedAssetsText}}</text>
+        </view>
+      </view>
+      <view class="strip-card">
+        <text class="strip-label">总负债</text>
+        <text class="strip-value">{{liabilitiesText}}</text>
+        <view class="strip-breakdown">
+          <text class="strip-sub-label">短期</text>
+          <text class="strip-sub-value">{{shortLiabilitiesText}}</text>
+          <text class="strip-sub-sep">/</text>
+          <text class="strip-sub-label">长期</text>
+          <text class="strip-sub-value">{{longLiabilitiesText}}</text>
+        </view>
       </view>
     </view>
 
-    <view class="card chart-card" wx:if="{{showChart}}">
-      <view class="chart-header">
-        <text class="chart-title">净资产趋势</text>
-        <text wx:if="{{latestSnapshot}}" class="chart-date">{{chartDateLabel}}</text>
-      </view>
-      <canvas type="2d" id="homeChart" class="chart-canvas"></canvas>
-    </view>
-
-    <view class="stats-row" wx:if="{{showChart}}">
-      <view class="stat-item">
-        <text class="stat-label">首月</text>
-        <text class="stat-value">{{chartFirstNetWorth}}</text>
-      </view>
-      <view class="stat-divider"></view>
-      <view class="stat-item">
-        <text class="stat-label">当前</text>
-        <text class="stat-value">{{chartLastNetWorth}}</text>
-      </view>
-      <view class="stat-divider"></view>
-      <view class="stat-item">
-        <text class="stat-label">月均储蓄</text>
-        <text class="stat-value">{{chartMonthlySavings}}</text>
-      </view>
+    <!-- Entry Button -->
+    <view class="entry-btn" hover-class="entry-btn-hover" bindtap="onTapEntry">
+      <text>录入本月数据</text>
     </view>
   </view>
 </view>

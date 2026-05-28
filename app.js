@@ -2,7 +2,8 @@ const storage = require('./utils/storage')
 
 App({
   globalData: {
-    hasSettings: false
+    hasSettings: false,
+    shouldOpenSettings: false
   },
   onLaunch() {
     const data = storage.getData()

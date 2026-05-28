@@ -1,5 +1,5 @@
 {
-  "pages": ["pages/index/index", "pages/add/add", "pages/instance/instance", "pages/profile/profile"],
+  "pages": ["pages/index/index", "pages/add/add", "pages/charts/charts", "pages/instance/instance", "pages/profile/profile"],
   "window": {
     "navigationBarTitleText": "WeFIRE",
     "navigationBarBackgroundColor": "#FFFFFF",
@@ -10,7 +10,7 @@
   "tabBar": {
     "custom": true,
     "color": "#999999",
-    "selectedColor": "#2E7D32",
+    "selectedColor": "#EA580C",
     "backgroundColor": "#FFFFFF",
     "borderStyle": "white",
     "list": [
@@ -21,6 +21,10 @@
       {
         "pagePath": "pages/add/add",
         "text": "录入"
+      },
+      {
+        "pagePath": "pages/charts/charts",
+        "text": "图表"
       },
       {
         "pagePath": "pages/profile/profile",

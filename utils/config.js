@@ -335,6 +335,54 @@ function calcNetWorth(snapshot) {
   return calcTotalAssets(snapshot) - calcTotalLiabilities(snapshot);
 }
 
+function calcLiquidAssets(snapshot) {
+  if (!snapshot) return 0;
+  const a = snapshot.assets || {};
+  let total = 0;
+  total += parseFloat(a.cash) || 0;
+  total += sumField(a.bankCards || [], 'balance');
+  total += sumField(a.alipayAccounts || [], 'total');
+  total += (a.wechatAccounts || []).reduce(
+    (s, inst) =>
+      s + (parseFloat(inst.balance) || 0) + (parseFloat(inst.changeFund) || 0),
+    0,
+  );
+  total += parseFloat(a.medicalInsurance) || 0;
+  total += parseFloat(a.housingFund) || 0;
+  total += sumField(a.otherAssets || [], 'balance');
+  return total;
+}
+
+function calcFixedAssets(snapshot) {
+  if (!snapshot) return 0;
+  const f = snapshot.fixedAssets || {};
+  let total = 0;
+  total += parseFloat(f.selfUse) || 0;
+  total += parseFloat(f.investment) || 0;
+  total += parseFloat(f.other) || 0;
+  return total;
+}
+
+function calcShortLiabilities(snapshot) {
+  if (!snapshot) return 0;
+  const s = snapshot.shortLiabilities || {};
+  let total = 0;
+  total += sumField(s.creditCards || [], 'balance');
+  total += parseFloat(s.huabeiBaitiao) || 0;
+  total += sumField(s.otherShort || [], 'balance');
+  return total;
+}
+
+function calcLongLiabilities(snapshot) {
+  if (!snapshot) return 0;
+  const l = snapshot.longLiabilities || {};
+  let total = 0;
+  total += parseFloat(l.mortgage) || 0;
+  total += parseFloat(l.carLoan) || 0;
+  total += sumField(l.otherLong || [], 'balance');
+  return total;
+}
+
 module.exports = {
   SECTIONS,
   getItemConfig,
@@ -346,4 +394,8 @@ module.exports = {
   calcTotalAssets,
   calcTotalLiabilities,
   calcNetWorth,
+  calcLiquidAssets,
+  calcFixedAssets,
+  calcShortLiabilities,
+  calcLongLiabilities,
 };

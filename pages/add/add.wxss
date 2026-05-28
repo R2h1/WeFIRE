@@ -3,20 +3,6 @@
    ============================================ */
 
 .add-page {
-  --bg: #f3efec;
-  --card-bg: #fbf9f7;
-  --shadow-dark: #d6cfc7;
-  --shadow-light: #ffffff;
-  --text: #2d2a26;
-  --text-secondary: #8b827a;
-  --text-muted: #bfb5aa;
-  --accent: #ea580c;
-  --accent-soft: #fff5f0;
-  --accent-glow: rgba(234, 88, 12, 0.25);
-  --danger: #c06c5c;
-  --radius-sm: 10px;
-  --radius: 14px;
-
   background: #e6e0da;
   min-height: 100vh;
   padding: 0 14px calc(52px + 64px + env(safe-area-inset-bottom));

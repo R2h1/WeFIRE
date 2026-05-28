@@ -20,11 +20,19 @@ Page({
     this.initYearRange();
     this.loadData();
     this.updateTabBar();
+
+    const app = getApp();
+    if (app.globalData.shouldOpenSettings) {
+      app.globalData.shouldOpenSettings = false;
+      setTimeout(() => {
+        this.openSettingsModal();
+      }, 300);
+    }
   },
 
   updateTabBar() {
     const tabBar = typeof this.getTabBar === 'function' && this.getTabBar();
-    tabBar && tabBar.setData({ active: 2 });
+    tabBar && tabBar.setData({ active: 3 });
   },
 
   initYearRange() {
