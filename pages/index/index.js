@@ -20,6 +20,9 @@ Page({
     netWorthChangePct: '',
     netWorthChangePos: true,
     retirementYearText: '',
+    currentMonthEntered: false,
+    entryLabel: '录入本月数据',
+    entryAction: '去录入',
   },
 
   onShow() {
@@ -78,6 +81,13 @@ Page({
       }
     }
 
+    // Check if current month already entered
+    const now = new Date();
+    const currentMonthId = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+    const currentMonthEntered = sorted.some((s) => (s.id || s.month) === currentMonthId);
+    const entryLabel = currentMonthEntered ? '本月已记录' : '录入本月数据';
+    const entryAction = currentMonthEntered ? '更新' : '去录入';
+
     // Asset/liability breakdowns
     const liquidAssets = latest ? config.calcLiquidAssets(latest) : 0;
     const fixedAssets = latest ? config.calcFixedAssets(latest) : 0;
@@ -99,6 +109,9 @@ Page({
       longLiabilitiesText: fire.formatMoney(longLiabilities),
       netWorthChangePct,
       netWorthChangePos,
+      currentMonthEntered,
+      entryLabel,
+      entryAction,
       retirementYearText: settings.retirementYear + '年',
     });
   },

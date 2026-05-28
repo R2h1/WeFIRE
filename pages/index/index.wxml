@@ -69,9 +69,14 @@
       </view>
     </view>
 
-    <!-- Entry Button -->
-    <view class="entry-btn" hover-class="entry-btn-hover" bindtap="onTapEntry">
-      <text>录入本月数据</text>
+    <!-- Entry Card -->
+    <view class="card entry-card" bindtap="onTapEntry">
+      <view class="entry-status {{currentMonthEntered ? 'entered' : 'pending'}}">
+        <van-icon name="{{currentMonthEntered ? 'checked' : 'add-o'}}" size="16px" />
+      </view>
+      <text class="entry-label">{{entryLabel}}</text>
+      <text class="entry-action">{{entryAction}}</text>
+      <van-icon name="arrow" size="14px" color="#bfb5aa" />
     </view>
   </view>
 </view>

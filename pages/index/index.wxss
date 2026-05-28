@@ -84,7 +84,7 @@
 
 .hero-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #f97316, #ea580c);
+  background: linear-gradient(90deg, #f59e0b, #ea580c, #dc2626);
   border-radius: 5px;
   box-shadow: 0 0 10px var(--accent-glow);
   transition: width 0.6s cubic-bezier(0.25, 0.8, 0.25, 1.2);
@@ -135,15 +135,15 @@
 }
 
 .hero-change-chip {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   padding: 2px 8px;
   border-radius: 20px;
 }
 
 .change-up {
-  background: rgba(76, 175, 80, 0.12);
-  color: #4CAF50;
+  background: rgba(74, 158, 110, 0.12);
+  color: #4a9e6e;
 }
 
 .change-down {
@@ -170,6 +170,15 @@
   box-shadow:
     3px 3px 8px var(--shadow-dark),
     -3px -3px 8px var(--shadow-light);
+  border-top: 3px solid transparent;
+}
+
+.strip-card:first-child {
+  border-top-color: #4a9e6e;
+}
+
+.strip-card:last-child {
+  border-top-color: #c06c5c;
 }
 
 .strip-label {
@@ -188,6 +197,14 @@
   display: block;
   font-family: 'SF Mono', 'Menlo', 'Consolas', 'PingFang SC', monospace;
   letter-spacing: -0.5px;
+}
+
+.strip-card:first-child .strip-value {
+  color: #3d8b5e;
+}
+
+.strip-card:last-child .strip-value {
+  color: #b05a4e;
 }
 
 .strip-breakdown {
@@ -237,6 +254,60 @@
 .entry-btn-hover {
   transform: scale(0.97);
   opacity: 0.9;
+}
+
+/* ============================================
+   Entry Card (status-aware)
+   ============================================ */
+
+.entry-card {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  margin: 10px 0 16px;
+  border-radius: var(--radius);
+}
+
+.entry-card:active {
+  box-shadow:
+    inset 3px 3px 8px rgba(0, 0, 0, 0.05),
+    inset -3px -3px 8px rgba(255, 255, 255, 0.7);
+  background: #f8f5f2;
+}
+
+.entry-status {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.entry-status.entered {
+  background: rgba(74, 158, 110, 0.12);
+  color: #4a9e6e;
+}
+
+.entry-status.pending {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.entry-label {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-left: 12px;
+  letter-spacing: 0.3px;
+}
+
+.entry-action {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-right: 4px;
 }
 
 /* ============================================

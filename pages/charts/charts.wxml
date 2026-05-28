@@ -3,7 +3,7 @@
   <view wx:if="{{!hasSettings}}" class="empty-state">
     <view class="empty-card">
       <view class="empty-icon-bg">
-        <text class="empty-icon-text">📊</text>
+        <van-icon name="chart-trending-o" size="28px" color="#bfb5aa" />
       </view>
       <text class="empty-title">还未设定 FIRE 目标</text>
       <text class="empty-subtitle">请先到「我的」设置目标金额和退休年份</text>
@@ -14,7 +14,7 @@
   <view wx:elif="{{!hasData}}" class="empty-state">
     <view class="empty-card">
       <view class="empty-icon-bg">
-        <text class="empty-icon-text">📊</text>
+        <van-icon name="chart-trending-o" size="28px" color="#bfb5aa" />
       </view>
       <text class="empty-title">暂无数据</text>
       <text class="empty-subtitle">录入首月数据后将在此查看资产趋势与统计</text>

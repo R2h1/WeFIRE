@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "WeFIRE",
-  "usingComponents": {}
+  "usingComponents": {
+    "van-icon": "@vant/weapp/icon/index"
+  }
 }

@@ -133,7 +133,7 @@ Page({
         historyList,
       },
       () => {
-        if (dataPoints.length >= 2) {
+        if (dataPoints.length >= 1) {
           setTimeout(() => {
             chart.drawLineChart('chartsTrend', dataPoints);
           }, 300);

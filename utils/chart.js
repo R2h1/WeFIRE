@@ -11,13 +11,15 @@ function drawLineChart(canvasId, dataPoints) {
     canvas.height = height * dpr
     ctx.scale(dpr, dpr)
 
-    if (dataPoints.length < 2) {
+    if (dataPoints.length < 1) {
       ctx.fillStyle = '#BFB5AA'
       ctx.font = '14px -apple-system, sans-serif'
       ctx.textAlign = 'center'
-      ctx.fillText('至少需要2条记录', width / 2, height / 2)
+      ctx.fillText('暂无数据', width / 2, height / 2)
       return
     }
+
+    const isSingle = dataPoints.length === 1
 
     const pad = { top: 24, right: 16, bottom: 32, left: 52 }
     const chartW = width - pad.left - pad.right
@@ -26,9 +28,9 @@ function drawLineChart(canvasId, dataPoints) {
     const maxVal = Math.max(...values, 1)
     const minVal = Math.min(...values, 0)
     const range = maxVal - minVal || 1
-    const stepX = chartW / (Math.max(dataPoints.length - 1, 1))
+    const stepX = isSingle ? 0 : chartW / (dataPoints.length - 1)
 
-    function toX(i) { return pad.left + stepX * i }
+    function toX(i) { return isSingle ? pad.left + chartW / 2 : pad.left + stepX * i }
     function toY(v) { return pad.top + chartH - ((v - minVal) / range) * chartH }
 
     // --- Horizontal grid lines ---

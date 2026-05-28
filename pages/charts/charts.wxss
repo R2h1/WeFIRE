@@ -45,10 +45,6 @@
     inset -3px -3px 8px var(--shadow-light);
 }
 
-.empty-icon-text {
-  font-size: 28px;
-}
-
 .empty-title {
   font-size: 17px;
   font-weight: 700;
@@ -257,7 +253,7 @@
 }
 
 .change-up {
-  color: #4CAF50;
+  color: #4a9e6e;
 }
 
 .change-down {
