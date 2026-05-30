@@ -67,9 +67,14 @@
     </view>
   </block>
 
-  <!-- FAB Button -->
-  <view class="fab-btn" bindtap="onTapFAB" hover-class="fab-btn-hover">
+  <!-- FAB Button (current month) -->
+  <view class="fab-btn" bindtap="onTapFAB" hover-class="fab-btn-hover" wx:if="{{isCurrentMonth}}">
     <text class="fab-text">+ 记一笔</text>
+  </view>
+
+  <!-- Import Button (historical month) -->
+  <view class="fab-btn" bindtap="onOpenImport" hover-class="fab-btn-hover" wx:else>
+    <text class="fab-text">导入</text>
   </view>
 
   <!-- Add Modal -->
@@ -138,6 +143,26 @@
         </view>
         <view class="btn btn-confirm" bindtap="onConfirmAdd" hover-class="btn-confirm-hover">
           <text>确认</text>
+        </view>
+      </view>
+    </view>
+  </van-popup>
+
+  <!-- Import Modal -->
+  <van-popup show="{{showImportModal}}" position="bottom" round z-index="2000"
+    close-on-click-overlay="{{false}}" bind:close="onImportCancel">
+    <view class="modal-sheet">
+      <text class="modal-title">导入交易记录</text>
+      <text class="modal-date">粘贴JSON数据，格式：[{"date":"2026-05-30","type":"expense","category1":"餐饮","category2":"午饭","amount":25.5,"account":"","note":""}]</text>
+      <textarea class="import-textarea" value="{{importJsonText}}"
+        placeholder="粘贴JSON数据..."
+        bindinput="onImportJsonInput" auto-height maxlength="-1" />
+      <view class="modal-btn-row">
+        <view class="btn btn-cancel" bindtap="onImportCancel" hover-class="btn-cancel-hover">
+          <text>取消</text>
+        </view>
+        <view class="btn btn-confirm" bindtap="onImportConfirm" hover-class="btn-confirm-hover">
+          <text>确认导入</text>
         </view>
       </view>
     </view>

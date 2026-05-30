@@ -359,6 +359,20 @@
   margin-bottom: 4px;
 }
 
+.import-textarea {
+  width: 100%;
+  min-height: 160px;
+  border: 1.5px solid #e0d9d1;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 13px;
+  color: var(--text);
+  background: #fff;
+  box-sizing: border-box;
+  font-family: 'SF Mono', Menlo, Consolas, monospace;
+  line-height: 1.6;
+}
+
 .modal-btn-row {
   display: flex;
   gap: 10px;

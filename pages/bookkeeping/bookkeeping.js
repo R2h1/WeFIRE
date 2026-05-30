@@ -9,6 +9,7 @@ Page({
     currentMonthId: '',
     currentMonthLabel: '',
     canGoNext: false,
+    isCurrentMonth: true,
 
     incomeText: '¥0',
     expenseText: '¥0',
@@ -60,6 +61,7 @@ Page({
       currentMonthId: monthId,
       currentMonthLabel: label,
       canGoNext: false,
+      isCurrentMonth: true,
     });
   },
 
@@ -196,10 +198,12 @@ Page({
     }
     const monthId = y + '-' + String(m).padStart(2, '0');
     const canGoNext = this._computeCanGoNext(monthId);
+    const curMonthId = new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0');
     this.setData({
       currentMonthId: monthId,
       currentMonthLabel: y + '年' + m + '月',
       canGoNext,
+      isCurrentMonth: monthId === curMonthId,
     });
     this.loadData();
   },
@@ -215,10 +219,12 @@ Page({
     }
     const monthId = y + '-' + String(m).padStart(2, '0');
     const canGoNext = this._computeCanGoNext(monthId);
+    const curMonthId = new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0');
     this.setData({
       currentMonthId: monthId,
       currentMonthLabel: y + '年' + m + '月',
       canGoNext,
+      isCurrentMonth: monthId === curMonthId,
     });
     this.loadData();
   },
@@ -226,6 +232,7 @@ Page({
   // ---- Import ----
   onOpenImport() {
     this.setData({ showImportModal: true, importJsonText: '' });
+    this._toggleTabBar(false);
   },
 
   onImportJsonInput(e) {
