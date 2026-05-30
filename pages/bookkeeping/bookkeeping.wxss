@@ -31,7 +31,7 @@
     inset -2px -2px 4px var(--shadow-light);
 }
 .month-arrow-disabled {
-  opacity: 0.35;
+  opacity: 0.8;
 }
 .month-display {
   font-size: 18px;

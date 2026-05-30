@@ -198,7 +198,10 @@ Page({
     }
     const monthId = y + '-' + String(m).padStart(2, '0');
     const canGoNext = this._computeCanGoNext(monthId);
-    const curMonthId = new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0');
+    const curMonthId =
+      new Date().getFullYear() +
+      '-' +
+      String(new Date().getMonth() + 1).padStart(2, '0');
     this.setData({
       currentMonthId: monthId,
       currentMonthLabel: y + '年' + m + '月',
@@ -219,7 +222,10 @@ Page({
     }
     const monthId = y + '-' + String(m).padStart(2, '0');
     const canGoNext = this._computeCanGoNext(monthId);
-    const curMonthId = new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0');
+    const curMonthId =
+      new Date().getFullYear() +
+      '-' +
+      String(new Date().getMonth() + 1).padStart(2, '0');
     this.setData({
       currentMonthId: monthId,
       currentMonthLabel: y + '年' + m + '月',
@@ -241,6 +247,7 @@ Page({
 
   onImportCancel() {
     this.setData({ showImportModal: false });
+    this._toggleTabBar(true);
   },
 
   onImportConfirm() {
