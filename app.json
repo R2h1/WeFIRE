@@ -1,5 +1,12 @@
 {
-  "pages": ["pages/index/index", "pages/add/add", "pages/bookkeeping/bookkeeping", "pages/charts/charts", "pages/instance/instance", "pages/profile/profile"],
+  "pages": [
+    "pages/index/index",
+    "pages/add/add",
+    "pages/bookkeeping/bookkeeping",
+    "pages/charts/charts",
+    "pages/instance/instance",
+    "pages/profile/profile"
+  ],
   "window": {
     "navigationBarTitleText": "WeFIRE",
     "navigationBarBackgroundColor": "#FFFFFF",
@@ -51,6 +58,7 @@
     "van-tabbar": "@vant/weapp/tabbar/index",
     "van-tabbar-item": "@vant/weapp/tabbar-item/index"
   },
+  "lazyCodeLoading": "requiredComponents",
   "style": "v2",
   "sitemapLocation": "sitemap.json"
 }
