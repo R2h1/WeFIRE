@@ -195,27 +195,34 @@ swiper {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 120px 40px;
-  color: var(--text-secondary);
+  padding: 80px 40px;
   text-align: center;
 }
 
-.empty-state .empty-icon {
-  font-size: 48px;
-  margin-bottom: 16px;
-  opacity: 0.8;
+.empty-state-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #f0ece6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  box-shadow:
+    inset 3px 3px 8px var(--shadow-dark),
+    inset -3px -3px 8px var(--shadow-light);
 }
 
-.empty-state .empty-title {
-  font-size: 18px;
-  font-weight: 600;
+.empty-state-title {
+  font-size: 17px;
+  font-weight: 700;
   color: var(--text);
   margin-bottom: 8px;
 }
 
-.empty-state .empty-desc {
-  font-size: 15px;
-  color: var(--text-secondary);
+.empty-state-desc {
+  font-size: 14px;
+  color: var(--text-muted);
   line-height: 1.6;
 }
 
