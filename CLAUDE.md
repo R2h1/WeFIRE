@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-WeFIRE is a minimal FIRE (Financial Independence, Retire Early) progress tracking WeChat Mini Program. Users set a target amount and expected retirement year, record monthly asset/liability snapshots, and the app automatically calculates net worth and progress via progress bars and trend charts.
+FIER时光账 is a minimal FIRE (Financial Independence, Retire Early) progress tracking WeChat Mini Program. Users set a target amount and expected retirement year, record monthly asset/liability snapshots, and the app automatically calculates net worth and progress via progress bars and trend charts.
 
 All data is stored locally on the device — no registration, no backend. Supports one-click backup and restore.
 
@@ -55,6 +55,7 @@ Four storage keys:
 ## Design System
 
 Global styles in `app.wxss`:
+
 - Brand: `#2E7D32` green, mapped to `--van-primary-color`
 - Cards: `16px` border-radius, white `#FFFFFF` background, `8px 16px` margin
 - Typography: `-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif`
