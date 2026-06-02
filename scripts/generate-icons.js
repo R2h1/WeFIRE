@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
 
-const OUT_DIR = 'd:/conan/WeFIRE/images';
+const OUT_DIR = 'd:/conan/FIER时光账/images';
 const SIZE = 48;
 const COLORS = { normal: '#999999', selected: '#2E7D32' };
 
@@ -26,10 +26,12 @@ function createPNG(width, height, rgbaData) {
     const table = new Int32Array(256);
     for (let n = 0; n < 256; n++) {
       let cn = n;
-      for (let k = 0; k < 8; k++) cn = (cn & 1) ? (0xedb88320 ^ (cn >>> 1)) : (cn >>> 1);
+      for (let k = 0; k < 8; k++)
+        cn = cn & 1 ? 0xedb88320 ^ (cn >>> 1) : cn >>> 1;
       table[n] = cn;
     }
-    for (let i = 0; i < buf.length; i++) c = table[(c ^ buf[i]) & 0xff] ^ (c >>> 8);
+    for (let i = 0; i < buf.length; i++)
+      c = table[(c ^ buf[i]) & 0xff] ^ (c >>> 8);
     return (c ^ 0xffffffff) >>> 0;
   }
 
@@ -46,15 +48,25 @@ function createPNG(width, height, rgbaData) {
   const ihdr = Buffer.alloc(13);
   ihdr.writeUInt32BE(width, 0);
   ihdr.writeUInt32BE(height, 4);
-  ihdr[8] = 8; ihdr[9] = 6; ihdr[10] = 0; ihdr[11] = 0; ihdr[12] = 0;
+  ihdr[8] = 8;
+  ihdr[9] = 6;
+  ihdr[10] = 0;
+  ihdr[11] = 0;
+  ihdr[12] = 0;
   const signature = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
-  return Buffer.concat([signature, chunk('IHDR', ihdr), chunk('IDAT', deflated), chunk('IEND', Buffer.alloc(0))]);
+  return Buffer.concat([
+    signature,
+    chunk('IHDR', ihdr),
+    chunk('IDAT', deflated),
+    chunk('IEND', Buffer.alloc(0)),
+  ]);
 }
 
 // --- Signed distance functions ---
 
 function sdLineSegment(px, py, x1, y1, x2, y2) {
-  const dx = x2 - x1, dy = y2 - y1;
+  const dx = x2 - x1,
+    dy = y2 - y1;
   const lenSq = dx * dx + dy * dy;
   if (lenSq === 0) return Math.sqrt((px - x1) ** 2 + (py - y1) ** 2);
   let t = ((px - x1) * dx + (py - y1) * dy) / lenSq;
@@ -83,12 +95,13 @@ function renderIcon(size, color, lineWidth, strokes, fills) {
 
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
-      const px = x + 0.5, py = y + 0.5;
+      const px = x + 0.5,
+        py = y + 0.5;
       let alpha = 0;
 
       for (const fn of strokes) {
         const d = fn(px, py);
-        const a = 1 - Math.min(1, Math.max(0, (Math.abs(d) - halfW + 0.5)));
+        const a = 1 - Math.min(1, Math.max(0, Math.abs(d) - halfW + 0.5));
         if (a > alpha) alpha = a;
       }
 
@@ -115,34 +128,51 @@ function renderIcon(size, color, lineWidth, strokes, fills) {
 function homeIcon(color) {
   const LW = 3;
   const cx = 24;
-  return renderIcon(SIZE, color, LW, [
-    (px, py) => sdLineSegment(px, py, 5, 21, cx, 6),
-    (px, py) => sdLineSegment(px, py, cx, 6, 43, 21),
-    (px, py) => sdRoundRect(px, py, cx, 31, 30, 21, 3),
-  ], [
-    (px, py) => sdRoundRect(px, py, cx, 38, 12, 10, 3),
-  ]);
+  return renderIcon(
+    SIZE,
+    color,
+    LW,
+    [
+      (px, py) => sdLineSegment(px, py, 5, 21, cx, 6),
+      (px, py) => sdLineSegment(px, py, cx, 6, 43, 21),
+      (px, py) => sdRoundRect(px, py, cx, 31, 30, 21, 3),
+    ],
+    [(px, py) => sdRoundRect(px, py, cx, 38, 12, 10, 3)],
+  );
 }
 
 function addIcon(color) {
   const LW = 3;
-  const cx = 24, cy = 24;
-  return renderIcon(SIZE, color, LW, [
-    (px, py) => sdCircle(px, py, cx, cy, 16),
-    (px, py) => sdLineSegment(px, py, 10, cy, 38, cy),
-    (px, py) => sdLineSegment(px, py, cx, 10, cx, 38),
-  ], []);
+  const cx = 24,
+    cy = 24;
+  return renderIcon(
+    SIZE,
+    color,
+    LW,
+    [
+      (px, py) => sdCircle(px, py, cx, cy, 16),
+      (px, py) => sdLineSegment(px, py, 10, cy, 38, cy),
+      (px, py) => sdLineSegment(px, py, cx, 10, cx, 38),
+    ],
+    [],
+  );
 }
 
 function userIcon(color) {
   const LW = 3;
-  return renderIcon(SIZE, color, LW, [
-    (px, py) => sdCircle(px, py, 24, 15, 7),
-    (px, py) => sdLineSegment(px, py, 14, 26, 34, 26),
-    (px, py) => sdLineSegment(px, py, 14, 26, 18, 40),
-    (px, py) => sdLineSegment(px, py, 34, 26, 30, 40),
-    (px, py) => sdLineSegment(px, py, 18, 40, 30, 40),
-  ], []);
+  return renderIcon(
+    SIZE,
+    color,
+    LW,
+    [
+      (px, py) => sdCircle(px, py, 24, 15, 7),
+      (px, py) => sdLineSegment(px, py, 14, 26, 34, 26),
+      (px, py) => sdLineSegment(px, py, 14, 26, 18, 40),
+      (px, py) => sdLineSegment(px, py, 34, 26, 30, 40),
+      (px, py) => sdLineSegment(px, py, 18, 40, 30, 40),
+    ],
+    [],
+  );
 }
 
 // --- Generate ---
@@ -163,8 +193,8 @@ const icons = [
 
 fs.mkdirSync(OUT_DIR, { recursive: true });
 
-icons.forEach(icon => {
-  ['normal', 'selected'].forEach(state => {
+icons.forEach((icon) => {
+  ['normal', 'selected'].forEach((state) => {
     const color = hexToRgb(COLORS[state]);
     const rgba = icon.draw(color);
     const png = createPNG(SIZE, SIZE, rgba);
