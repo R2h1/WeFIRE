@@ -46,7 +46,9 @@ Page({
 
   loadData() {
     const data = storage.getData();
-    const settings = data.fireTarget ? { targetAmount: data.fireTarget, retirementYear: data.fireYear } : null;
+    const settings = data.fireTarget
+      ? { targetAmount: data.fireTarget, retirementYear: data.fireYear }
+      : null;
     this.setData({
       settings,
       targetAmountText: settings ? fire.formatMoney(settings.targetAmount) : '',
@@ -112,7 +114,7 @@ Page({
       .saveData({
         ...storage.getData(),
         fireTarget: parseFloat(editTarget),
-        fireYear: year
+        fireYear: year,
       })
       .then(() => {
         wx.showToast({ title: '保存成功' });
@@ -130,11 +132,11 @@ Page({
       wx.showToast({ title: '已订阅提醒', icon: 'none' });
       return;
     }
-    if (!tid || tid === 'YOUR_TEMPLATE_ID_HERE') {
+    if (!tid) {
       wx.showModal({
-        title: '模板 ID 未配置',
+        title: '暂未开放',
         content:
-          '请先在 utils/reminder.js 中将 SUBSCRIBE_TEMPLATE_ID 替换为你的真实模板 ID',
+          '敬请期待后续版本更新，届时将提供订阅消息提醒功能，帮助你按时记录资产数据',
         showCancel: false,
         confirmText: '知道了',
       });
