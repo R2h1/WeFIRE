@@ -26,6 +26,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 10px;
   margin-bottom: 10px;
   padding: 9px 14px;
   background: var(--accent-soft);
@@ -45,7 +46,9 @@
 
 /* ===== 分区标题 ===== */
 .section-title {
-  font-size: 11px;
+  font-size: 13px;
+  margin-bottom: 8px;
+  margin-top: 8px;
   font-weight: 700;
   color: var(--text-secondary);
   letter-spacing: 1px;

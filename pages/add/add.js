@@ -30,6 +30,7 @@ Page({
   _singleValues: {},
   _modalExistingNames: [],
   _initialInstances: null,
+  _prevSnapshot: null,
 
   _generateId() {
     return Date.now().toString(36) + Math.random().toString(36).slice(2, 8)
@@ -64,6 +65,7 @@ Page({
 
     if (snapshot) {
       this._initSingleValues(snapshot)
+      this._prevSnapshot = null
       this.setData({ loadedFromPrev: false })
     } else {
       this.loadFromPrevious(data, monthId)
@@ -76,8 +78,10 @@ Page({
     const prev = [...data.snapshots].reverse().find(s => s.month < monthId)
     if (prev) {
       this._initSingleValues(prev)
+      this._prevSnapshot = prev
       this.setData({ loadedFromPrev: true })
     } else {
+      this._prevSnapshot = null
       this.resetForm()
     }
   },
@@ -147,7 +151,8 @@ Page({
       const multiItems = []
       section.items.forEach(item => {
         if (!item.multi) return
-        const raw = snapshot ? config.getSnapshotField(snapshot, section.id, item.key) : null
+        const rawSrc = snapshot || this._prevSnapshot
+        const raw = rawSrc ? config.getSnapshotField(rawSrc, section.id, item.key) : null
         const arr = Array.isArray(raw) ? raw : []
 
         let total = 0
@@ -461,11 +466,12 @@ Page({
     const data = storage.getData()
     const existing = data.snapshots.find(s => s.month === this.data.monthId)
 
-    if (existing) {
+    const existingSrc = existing || this._prevSnapshot
+    if (existingSrc) {
       config.SECTIONS.forEach(section => {
         section.items.forEach(item => {
           if (!item.multi) return
-          const val = config.getSnapshotField(existing, section.id, item.key)
+          const val = config.getSnapshotField(existingSrc, section.id, item.key)
           if (Array.isArray(val)) {
             config.setSnapshotField(snapshot, item.key, val)
           }
@@ -540,11 +546,12 @@ Page({
 
     const data = storage.getData()
     const existing = data.snapshots.find(s => s.month === this.data.monthId)
+    const existingSrc = existing || this._prevSnapshot
     config.SECTIONS.forEach(section => {
       section.items.forEach(item => {
         if (!item.multi) return
-        if (existing) {
-          const existingVal = config.getSnapshotField(existing, section.id, item.key)
+        if (existingSrc) {
+          const existingVal = config.getSnapshotField(existingSrc, section.id, item.key)
           if (Array.isArray(existingVal)) {
             config.setSnapshotField(snapshot, item.key, existingVal)
           }
