@@ -31,7 +31,7 @@ function shouldRemindToday() {
 
 // == 开发者须知 ====
 // 将此处的模板 ID 替换为你从微信公众平台获取的真实模板 ID
-const SUBSCRIBE_TEMPLATE_ID = 'RgeuIi4lo--l5Kytk4AWJYBPUw8J1umSSSp27rKUCdc';
+const SUBSCRIBE_TEMPLATE_ID = '';
 
 function getTemplateId() {
   return SUBSCRIBE_TEMPLATE_ID;

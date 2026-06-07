@@ -1,6 +1,6 @@
-const storage = require('../../utils/storage')
-const config = require('../../utils/config')
-const fire = require('../../utils/fire')
+const storage = require('../../utils/storage');
+const config = require('../../utils/config');
+const fire = require('../../utils/fire');
 
 Page({
   data: {
@@ -33,149 +33,167 @@ Page({
   _prevSnapshot: null,
 
   _generateId() {
-    return Date.now().toString(36) + Math.random().toString(36).slice(2, 8)
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
   },
 
   // ===== 生命周期 =====
   onShow() {
-    const now = new Date()
-    const year = now.getFullYear()
-    const month = now.getMonth() + 1
-    const monthId = year + '-' + String(month).padStart(2, '0')
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+    const monthId = year + '-' + String(month).padStart(2, '0');
     this.setData({
       monthId,
-      monthLabel: year + '年' + month + '月'
-    })
+      monthLabel: year + '年' + month + '月',
+    });
     if (!this.loadDraft()) {
-      this.loadData()
+      this.loadData();
     }
-    this.updateTabBar()
+    this.updateTabBar();
   },
 
   updateTabBar() {
-    const tabBar = typeof this.getTabBar === 'function' && this.getTabBar()
-    tabBar && tabBar.setData({ active: 1 })
+    const tabBar = typeof this.getTabBar === 'function' && this.getTabBar();
+    tabBar && tabBar.setData({ active: 1 });
   },
 
   // ===== 数据加载 =====
   loadData() {
-    const data = storage.getData()
-    const monthId = this.data.monthId
-    const snapshot = data.snapshots.find(s => s.month === monthId)
+    const data = storage.getData();
+    const monthId = this.data.monthId;
+    const snapshot = data.snapshots.find((s) => s.month === monthId);
 
     if (snapshot) {
-      this._initSingleValues(snapshot)
-      this._prevSnapshot = null
-      this.setData({ loadedFromPrev: false })
+      this._initSingleValues(snapshot);
+      this._prevSnapshot = null;
+      this.setData({ loadedFromPrev: false });
     } else {
-      this.loadFromPrevious(data, monthId)
+      this.loadFromPrevious(data, monthId);
     }
-    this.buildSectionGroups()
-    this.calcNetWorth()
+    this.buildSectionGroups();
+    this.calcNetWorth();
   },
 
   loadFromPrevious(data, monthId) {
-    const prev = [...data.snapshots].reverse().find(s => s.month < monthId)
+    const prev = [...data.snapshots].reverse().find((s) => s.month < monthId);
     if (prev) {
-      this._initSingleValues(prev)
-      this._prevSnapshot = prev
-      this.setData({ loadedFromPrev: true })
+      this._initSingleValues(prev);
+      this._prevSnapshot = prev;
+      this.setData({ loadedFromPrev: true });
     } else {
-      this._prevSnapshot = null
-      this.resetForm()
+      this._prevSnapshot = null;
+      this.resetForm();
     }
   },
 
   _initSingleValues(snapshot) {
-    const vals = {}
-    config.SECTIONS.forEach(section => {
-      section.items.forEach(item => {
+    const vals = {};
+    config.SECTIONS.forEach((section) => {
+      section.items.forEach((item) => {
         if (!item.multi) {
-          const raw = config.getSnapshotField(snapshot, section.id, item.key)
-          vals[item.key] = parseFloat(raw) || 0
+          const raw = config.getSnapshotField(snapshot, section.id, item.key);
+          vals[item.key] = parseFloat(raw) || 0;
         }
-      })
-    })
-    this._singleValues = vals
+      });
+    });
+    this._singleValues = vals;
   },
 
   resetForm() {
-    const vals = {}
-    config.SECTIONS.forEach(section => {
-      section.items.forEach(item => {
-        if (!item.multi) vals[item.key] = 0
-      })
-    })
-    this._singleValues = vals
-    this.setData({ loadedFromPrev: false, expandedKey: '' })
-    this.buildSectionGroups()
-    this.calcNetWorth()
+    const vals = {};
+    config.SECTIONS.forEach((section) => {
+      section.items.forEach((item) => {
+        if (!item.multi) vals[item.key] = 0;
+      });
+    });
+    this._singleValues = vals;
+    this.setData({ loadedFromPrev: false, expandedKey: '' });
+    this.buildSectionGroups();
+    this.calcNetWorth();
   },
 
   // ===== 构建渲染数据 =====
   buildSectionGroups() {
-    const data = storage.getData()
-    const snapshot = data.snapshots.find(s => s.month === this.data.monthId)
-    const expandedKey = this.data.expandedKey
-    const prevEditing = {}
+    const data = storage.getData();
+    const snapshot = data.snapshots.find((s) => s.month === this.data.monthId);
+    const expandedKey = this.data.expandedKey;
+    const prevEditing = {};
 
     // 保留当前正在编辑的状态
-    const currGroups = this.data.sectionGroups
+    const currGroups = this.data.sectionGroups;
     if (currGroups.length) {
-      currGroups.forEach(group => {
-        group.singleItems.forEach(item => {
+      currGroups.forEach((group) => {
+        group.singleItems.forEach((item) => {
           if (item.editing) {
-            prevEditing[item.key] = { editing: true, editValue: item.editValue }
+            prevEditing[item.key] = {
+              editing: true,
+              editValue: item.editValue,
+            };
           }
-        })
-      })
+        });
+      });
     }
 
-    const groups = config.SECTIONS.map(section => {
-      const isAsset = section.id === 'liquidAssets' || section.id === 'fixedAssets'
+    const groups = config.SECTIONS.map((section) => {
+      const isAsset =
+        section.id === 'liquidAssets' || section.id === 'fixedAssets';
 
-      const singleItems = []
-      section.items.forEach(item => {
-        if (item.multi) return
-        const val = this._singleValues[item.key] || 0
-        const editState = prevEditing[item.key]
+      const singleItems = [];
+      section.items.forEach((item) => {
+        if (item.multi) return;
+        const val = this._singleValues[item.key] || 0;
+        const editState = prevEditing[item.key];
         singleItems.push({
           key: item.key,
           name: item.name,
           editing: editState ? editState.editing : false,
-          editValue: editState ? editState.editValue : (val === 0 ? '' : String(val)),
-          displayValue: fire.formatMoney(val)
-        })
-      })
+          editValue: editState
+            ? editState.editValue
+            : val === 0
+              ? ''
+              : String(val),
+          displayValue: fire.formatMoney(val),
+        });
+      });
 
-      const multiItems = []
-      section.items.forEach(item => {
-        if (!item.multi) return
-        const rawSrc = snapshot || this._prevSnapshot
-        const raw = rawSrc ? config.getSnapshotField(rawSrc, section.id, item.key) : null
-        const arr = Array.isArray(raw) ? raw : []
+      const multiItems = [];
+      section.items.forEach((item) => {
+        if (!item.multi) return;
+        const rawSrc = snapshot || this._prevSnapshot;
+        const raw = rawSrc
+          ? config.getSnapshotField(rawSrc, section.id, item.key)
+          : null;
+        const arr = Array.isArray(raw) ? raw : [];
 
-        let total = 0
+        let total = 0;
         if (item.key === 'wechatAccounts') {
-          total = arr.reduce((s, inst) => s + (parseFloat(inst.balance) || 0) + (parseFloat(inst.changeFund) || 0), 0)
+          total = arr.reduce(
+            (s, inst) =>
+              s +
+              (parseFloat(inst.balance) || 0) +
+              (parseFloat(inst.changeFund) || 0),
+            0,
+          );
         } else {
-          const fk = item.fields[0].key
-          total = arr.reduce((s, inst) => s + (parseFloat(inst[fk]) || 0), 0)
+          const fk = item.fields[0].key;
+          total = arr.reduce((s, inst) => s + (parseFloat(inst[fk]) || 0), 0);
         }
 
-        const instances = arr.map(inst => {
-          let instTotal = 0
+        const instances = arr.map((inst) => {
+          let instTotal = 0;
           if (item.key === 'wechatAccounts') {
-            instTotal = (parseFloat(inst.balance) || 0) + (parseFloat(inst.changeFund) || 0)
+            instTotal =
+              (parseFloat(inst.balance) || 0) +
+              (parseFloat(inst.changeFund) || 0);
           } else {
-            instTotal = parseFloat(inst[item.fields[0].key]) || 0
+            instTotal = parseFloat(inst[item.fields[0].key]) || 0;
           }
           return {
             id: inst.id,
             name: inst.name || '',
-            displayValue: fire.formatMoney(instTotal)
-          }
-        })
+            displayValue: fire.formatMoney(instTotal),
+          };
+        });
 
         multiItems.push({
           key: item.key,
@@ -183,107 +201,111 @@ Page({
           expanded: expandedKey === item.key,
           totalText: fire.formatMoney(total),
           count: arr.length,
-          instances
-        })
-      })
+          instances,
+        });
+      });
 
       return {
         id: section.id,
         label: section.label,
         titleClass: isAsset ? 'asset' : 'liability',
         singleItems,
-        multiItems
-      }
-    })
+        multiItems,
+      };
+    });
 
-    this.setData({ sectionGroups: groups })
+    this.setData({ sectionGroups: groups });
   },
 
   // ===== 单实例卡片交互 =====
   onSingleCardTap(e) {
-    const key = e.currentTarget.dataset.key
-    const groups = this.data.sectionGroups
+    const key = e.currentTarget.dataset.key;
+    const groups = this.data.sectionGroups;
 
-    groups.forEach(group => {
-      group.singleItems.forEach(item => {
+    groups.forEach((group) => {
+      group.singleItems.forEach((item) => {
         if (item.editing && item.key !== key) {
-          item.editing = false
+          item.editing = false;
         }
-      })
-    })
+      });
+    });
 
     for (const group of groups) {
       for (const item of group.singleItems) {
         if (item.key === key) {
-          const val = this._singleValues[key] || 0
-          item.editing = true
-          item.editValue = val === 0 ? '' : String(val)
-          this.setData({ sectionGroups: groups })
-          return
+          const val = this._singleValues[key] || 0;
+          item.editing = true;
+          item.editValue = val === 0 ? '' : String(val);
+          this.setData({ sectionGroups: groups });
+          return;
         }
       }
     }
   },
 
   onSingleInput(e) {
-    const key = e.currentTarget.dataset.key
-    this._singleValues[key] = parseFloat(e.detail.value) || 0
+    const key = e.currentTarget.dataset.key;
+    this._singleValues[key] = parseFloat(e.detail.value) || 0;
   },
 
   onSingleBlur(e) {
-    const key = e.currentTarget.dataset.key
-    const val = parseFloat(e.detail.value) || 0
-    this._singleValues[key] = val
+    const key = e.currentTarget.dataset.key;
+    const val = parseFloat(e.detail.value) || 0;
+    this._singleValues[key] = val;
 
-    const groups = this.data.sectionGroups
+    const groups = this.data.sectionGroups;
     for (const group of groups) {
       for (const item of group.singleItems) {
         if (item.key === key) {
-          item.editing = false
-          item.editValue = val === 0 ? '' : String(val)
-          item.displayValue = fire.formatMoney(val)
+          item.editing = false;
+          item.editValue = val === 0 ? '' : String(val);
+          item.displayValue = fire.formatMoney(val);
         }
       }
     }
-    this.setData({ sectionGroups: groups })
-    this.calcNetWorth()
-    this.saveDraft()
+    this.setData({ sectionGroups: groups });
+    this.calcNetWorth();
+    this.saveDraft();
   },
 
   // ===== 多实例卡片交互 =====
   onMultiToggle(e) {
-    const key = e.currentTarget.dataset.key
-    const currentExpanded = this.data.expandedKey
+    const key = e.currentTarget.dataset.key;
+    const currentExpanded = this.data.expandedKey;
 
     if (currentExpanded === key) {
-      this.setData({ expandedKey: '' })
+      this.setData({ expandedKey: '' });
     } else {
-      this.setData({ expandedKey: key })
+      this.setData({ expandedKey: key });
     }
-    this.buildSectionGroups()
+    this.buildSectionGroups();
   },
 
   // ===== 实例弹窗 =====
   onAddInstance(e) {
-    const key = e.currentTarget.dataset.key
-    const itemConfig = config.getItemConfig(key)
-    if (!itemConfig) return
+    const key = e.currentTarget.dataset.key;
+    const itemConfig = config.getItemConfig(key);
+    if (!itemConfig) return;
 
-    const data = storage.getData()
-    const snapshot = data.snapshots.find(s => s.month === this.data.monthId)
-    const raw = snapshot ? (config.getSnapshotField(snapshot, '', key) || []) : []
-    const arr = Array.isArray(raw) ? raw : []
+    const data = storage.getData();
+    const snapshot = data.snapshots.find((s) => s.month === this.data.monthId);
+    const raw = snapshot
+      ? config.getSnapshotField(snapshot, '', key) || []
+      : [];
+    const arr = Array.isArray(raw) ? raw : [];
 
     if (itemConfig.limit !== -1 && arr.length >= itemConfig.limit) {
-      this._showToast('已达到上限' + itemConfig.limit + '个')
-      return
+      this._showToast('已达到上限' + itemConfig.limit + '个');
+      return;
     }
 
-    this._modalExistingNames = arr.map(i => i.name)
-    this._initialInstances = null
+    this._modalExistingNames = arr.map((i) => i.name);
+    this._initialInstances = null;
 
-    const fieldValues = {}
-    itemConfig.fields.forEach(f => { fieldValues[f.key] = '' })
+    const fieldValues = {};
+    itemConfig.fields.forEach((f) => {
+      fieldValues[f.key] = '';
+    });
 
     this.setData({
       showInstancePopup: true,
@@ -293,31 +315,35 @@ Page({
       modalMode: 'add',
       modalName: '',
       modalFieldValues: fieldValues,
-      modalEditIndex: -1
-    })
-    this._toggleTabBar(false)
+      modalEditIndex: -1,
+    });
+    this._toggleTabBar(false);
   },
 
   onEditInstance(e) {
-    const key = e.currentTarget.dataset.key
-    const index = e.currentTarget.dataset.index
-    const itemConfig = config.getItemConfig(key)
-    if (!itemConfig) return
+    const key = e.currentTarget.dataset.key;
+    const index = e.currentTarget.dataset.index;
+    const itemConfig = config.getItemConfig(key);
+    if (!itemConfig) return;
 
-    const data = storage.getData()
-    const snapshot = data.snapshots.find(s => s.month === this.data.monthId)
-    const raw = snapshot ? (config.getSnapshotField(snapshot, '', key) || []) : []
-    const arr = Array.isArray(raw) ? raw : []
-    const inst = arr[index]
-    if (!inst) return
+    const data = storage.getData();
+    const snapshot = data.snapshots.find((s) => s.month === this.data.monthId);
+    const raw = snapshot
+      ? config.getSnapshotField(snapshot, '', key) || []
+      : [];
+    const arr = Array.isArray(raw) ? raw : [];
+    const inst = arr[index];
+    if (!inst) return;
 
-    this._modalExistingNames = arr.filter((_, i) => i !== index).map(i => i.name)
-    this._initialInstances = JSON.parse(JSON.stringify(arr))
+    this._modalExistingNames = arr
+      .filter((_, i) => i !== index)
+      .map((i) => i.name);
+    this._initialInstances = JSON.parse(JSON.stringify(arr));
 
-    const fieldValues = {}
-    itemConfig.fields.forEach(f => {
-      fieldValues[f.key] = String(parseFloat(inst[f.key]) || 0)
-    })
+    const fieldValues = {};
+    itemConfig.fields.forEach((f) => {
+      fieldValues[f.key] = String(parseFloat(inst[f.key]) || 0);
+    });
 
     this.setData({
       showInstancePopup: true,
@@ -327,174 +353,190 @@ Page({
       modalMode: 'edit',
       modalName: inst.name || '',
       modalFieldValues: fieldValues,
-      modalEditIndex: index
-    })
-    this._toggleTabBar(false)
+      modalEditIndex: index,
+    });
+    this._toggleTabBar(false);
   },
 
   onModalNameInput(e) {
-    this.setData({ modalName: e.detail.value })
+    this.setData({ modalName: e.detail.value });
   },
 
   onModalFieldInput(e) {
-    const field = e.currentTarget.dataset.field
-    const vals = { ...this.data.modalFieldValues }
-    vals[field] = e.detail.value
-    this.setData({ modalFieldValues: vals })
+    const field = e.currentTarget.dataset.field;
+    const vals = { ...this.data.modalFieldValues };
+    vals[field] = e.detail.value;
+    this.setData({ modalFieldValues: vals });
   },
 
   onModalCancel() {
     if (this.data.modalMode === 'edit' && this._initialInstances) {
-      const current = this._buildCurrentInstance()
-      const original = this._initialInstances[this.data.modalEditIndex]
+      const current = this._buildCurrentInstance();
+      const original = this._initialInstances[this.data.modalEditIndex];
       if (this._instanceChanged(current, original)) {
         wx.showModal({
           title: '确认取消',
           content: '有未保存的修改，确定放弃吗？',
           success: (res) => {
             if (res.confirm) {
-              this._closeModal()
+              this._closeModal();
             }
-          }
-        })
-        return
+          },
+        });
+        return;
       }
     }
-    this._closeModal()
+    this._closeModal();
   },
 
   _buildCurrentInstance() {
-    const { modalName, modalFieldValues, instanceFields } = this.data
-    const obj = { name: modalName }
-    instanceFields.forEach(f => {
-      obj[f.key] = parseFloat(modalFieldValues[f.key]) || 0
-    })
-    return obj
+    const { modalName, modalFieldValues, instanceFields } = this.data;
+    const obj = { name: modalName };
+    instanceFields.forEach((f) => {
+      obj[f.key] = parseFloat(modalFieldValues[f.key]) || 0;
+    });
+    return obj;
   },
 
   _instanceChanged(a, b) {
-    if (!b) return true
-    if (a.name !== (b.name || '')) return true
-    const fields = this.data.instanceFields
+    if (!b) return true;
+    if (a.name !== (b.name || '')) return true;
+    const fields = this.data.instanceFields;
     for (const f of fields) {
-      if ((parseFloat(a[f.key]) || 0) !== (parseFloat(b[f.key]) || 0)) return true
+      if ((parseFloat(a[f.key]) || 0) !== (parseFloat(b[f.key]) || 0))
+        return true;
     }
-    return false
+    return false;
   },
 
   _closeModal() {
-    this.setData({ showInstancePopup: false })
-    this._toggleTabBar(true)
-    this._initialInstances = null
+    this.setData({ showInstancePopup: false });
+    this._toggleTabBar(true);
+    this._initialInstances = null;
   },
 
   onModalConfirm() {
-    const name = this.data.modalName.trim()
+    const name = this.data.modalName.trim();
     if (!name) {
-      this._showToast('名称不能为空')
-      return
+      this._showToast('名称不能为空');
+      return;
     }
     if (this._modalExistingNames.includes(name)) {
-      this._showToast('名称已存在')
-      return
+      this._showToast('名称已存在');
+      return;
     }
 
-    const key = this.data.instanceCategory
-    const data = storage.getData()
-    let snapshot = data.snapshots.find(s => s.month === this.data.monthId)
+    const key = this.data.instanceCategory;
+    const data = storage.getData();
+    let snapshot = data.snapshots.find((s) => s.month === this.data.monthId);
     if (!snapshot) {
-      snapshot = config.createEmptySnapshot(this.data.monthId)
-      data.snapshots.push(snapshot)
+      snapshot = config.createEmptySnapshot(this.data.monthId);
+      data.snapshots.push(snapshot);
     }
 
-    const raw = config.getSnapshotField(snapshot, '', key) || []
-    const arr = Array.isArray(raw) ? JSON.parse(JSON.stringify(raw)) : []
-    const inst = this._buildCurrentInstance()
+    const raw = config.getSnapshotField(snapshot, '', key) || [];
+    const arr = Array.isArray(raw) ? JSON.parse(JSON.stringify(raw)) : [];
+    const inst = this._buildCurrentInstance();
 
     if (this.data.modalMode === 'edit') {
-      const idx = this.data.modalEditIndex
-      arr[idx] = { ...arr[idx], ...inst }
+      const idx = this.data.modalEditIndex;
+      arr[idx] = { ...arr[idx], ...inst };
     } else {
-      inst.id = this._generateId()
-      arr.push(inst)
+      inst.id = this._generateId();
+      arr.push(inst);
     }
 
-    config.setSnapshotField(snapshot, key, arr)
-    data.snapshots.sort((a, b) => a.month.localeCompare(b.month))
-    storage.saveData(data)
+    config.setSnapshotField(snapshot, key, arr);
+    data.snapshots.sort((a, b) => a.month.localeCompare(b.month));
+    storage.saveData(data).then(() => {
+      this.buildSectionGroups();
+      this.calcNetWorth();
+      this.saveDraft();
+    });
 
-    this._closeModal()
-    this.buildSectionGroups()
-    this.calcNetWorth()
-    this.saveDraft()
+    this._closeModal();
   },
 
   onModalDelete() {
-    const name = this.data.modalName || '未命名'
+    const name = this.data.modalName || '未命名';
     wx.showModal({
       title: '确认删除',
       content: '删除「' + name + '」？',
       success: (res) => {
         if (res.confirm) {
-          const key = this.data.instanceCategory
-          const data = storage.getData()
-          const snapshot = data.snapshots.find(s => s.month === this.data.monthId)
+          const key = this.data.instanceCategory;
+          const data = storage.getData();
+          const snapshot = data.snapshots.find(
+            (s) => s.month === this.data.monthId,
+          );
           if (snapshot) {
-            const raw = config.getSnapshotField(snapshot, '', key) || []
-            const arr = Array.isArray(raw) ? JSON.parse(JSON.stringify(raw)) : []
-            arr.splice(this.data.modalEditIndex, 1)
-            config.setSnapshotField(snapshot, key, arr)
-            data.snapshots.sort((a, b) => a.month.localeCompare(b.month))
-            storage.saveData(data)
+            const raw = config.getSnapshotField(snapshot, '', key) || [];
+            const arr = Array.isArray(raw)
+              ? JSON.parse(JSON.stringify(raw))
+              : [];
+            arr.splice(this.data.modalEditIndex, 1);
+            config.setSnapshotField(snapshot, key, arr);
+            data.snapshots.sort((a, b) => a.month.localeCompare(b.month));
+            try {
+              wx.setStorageSync('wefire_data', data);
+            } catch (e) {}
           }
-          this._closeModal()
-          this.buildSectionGroups()
-          this.calcNetWorth()
-          this.saveDraft()
+          this._closeModal();
+          this.buildSectionGroups();
+          this.calcNetWorth();
+          this.saveDraft();
         }
-      }
-    })
+      },
+    });
   },
 
   onInstancePopupClose() {
-    this.onModalCancel()
+    this.onModalCancel();
   },
 
   // ===== 净资产计算 =====
   calcNetWorth() {
-    const snapshot = this.buildSnapshot()
-    const data = storage.getData()
-    const existing = data.snapshots.find(s => s.month === this.data.monthId)
+    const snapshot = this.buildSnapshot();
+    const data = storage.getData();
+    const existing = data.snapshots.find((s) => s.month === this.data.monthId);
 
-    const existingSrc = existing || this._prevSnapshot
+    const existingSrc = existing || this._prevSnapshot;
     if (existingSrc) {
-      config.SECTIONS.forEach(section => {
-        section.items.forEach(item => {
-          if (!item.multi) return
-          const val = config.getSnapshotField(existingSrc, section.id, item.key)
+      config.SECTIONS.forEach((section) => {
+        section.items.forEach((item) => {
+          if (!item.multi) return;
+          const val = config.getSnapshotField(
+            existingSrc,
+            section.id,
+            item.key,
+          );
           if (Array.isArray(val)) {
-            config.setSnapshotField(snapshot, item.key, val)
+            config.setSnapshotField(snapshot, item.key, val);
           }
-        })
-      })
+        });
+      });
     }
 
-    const netWorth = config.calcNetWorth(snapshot)
-    this.setData({ netWorthText: fire.formatMoney(netWorth) })
+    const netWorth = config.calcNetWorth(snapshot);
+    this.setData({ netWorthText: fire.formatMoney(netWorth) });
   },
 
   buildSnapshot() {
-    const snapshot = config.createEmptySnapshot(this.data.monthId)
-    const vals = this._singleValues
+    const snapshot = config.createEmptySnapshot(this.data.monthId);
+    const vals = this._singleValues;
 
-    config.SECTIONS.forEach(section => {
-      section.items.forEach(item => {
-        if (item.multi) return
-        config.setSnapshotField(snapshot, item.key, parseFloat(vals[item.key]) || 0)
-      })
-    })
+    config.SECTIONS.forEach((section) => {
+      section.items.forEach((item) => {
+        if (item.multi) return;
+        config.setSnapshotField(
+          snapshot,
+          item.key,
+          parseFloat(vals[item.key]) || 0,
+        );
+      });
+    });
 
-    return snapshot
+    return snapshot;
   },
 
   // ===== 草稿 =====
@@ -502,26 +544,28 @@ Page({
     try {
       wx.setStorageSync('add_draft', {
         monthId: this.data.monthId,
-        singleValues: this._singleValues
-      })
+        singleValues: this._singleValues,
+      });
     } catch (e) {}
   },
 
   loadDraft() {
     try {
-      const draft = wx.getStorageSync('add_draft')
+      const draft = wx.getStorageSync('add_draft');
       if (draft && draft.monthId === this.data.monthId && draft.singleValues) {
-        this._singleValues = draft.singleValues
-        this.buildSectionGroups()
-        this.calcNetWorth()
-        return true
+        this._singleValues = draft.singleValues;
+        this.buildSectionGroups();
+        this.calcNetWorth();
+        return true;
       }
     } catch (e) {}
-    return false
+    return false;
   },
 
   clearDraft() {
-    try { wx.removeStorageSync('add_draft') } catch (e) {}
+    try {
+      wx.removeStorageSync('add_draft');
+    } catch (e) {}
   },
 
   // ===== 清空 =====
@@ -531,36 +575,40 @@ Page({
       content: '确定要清空所有已填入的数据吗？',
       success: (res) => {
         if (res.confirm) {
-          this.clearDraft()
-          this.setData({ expandedKey: '' })
-          this.resetForm()
-          this.calcNetWorth()
+          this.clearDraft();
+          this.setData({ expandedKey: '' });
+          this.resetForm();
+          this.calcNetWorth();
         }
-      }
-    })
+      },
+    });
   },
 
   // ===== 提交 =====
   onSubmit() {
-    const snapshot = this.buildSnapshot()
+    const snapshot = this.buildSnapshot();
 
-    const data = storage.getData()
-    const existing = data.snapshots.find(s => s.month === this.data.monthId)
-    const existingSrc = existing || this._prevSnapshot
-    config.SECTIONS.forEach(section => {
-      section.items.forEach(item => {
-        if (!item.multi) return
+    const data = storage.getData();
+    const existing = data.snapshots.find((s) => s.month === this.data.monthId);
+    const existingSrc = existing || this._prevSnapshot;
+    config.SECTIONS.forEach((section) => {
+      section.items.forEach((item) => {
+        if (!item.multi) return;
         if (existingSrc) {
-          const existingVal = config.getSnapshotField(existingSrc, section.id, item.key)
+          const existingVal = config.getSnapshotField(
+            existingSrc,
+            section.id,
+            item.key,
+          );
           if (Array.isArray(existingVal)) {
-            config.setSnapshotField(snapshot, item.key, existingVal)
+            config.setSnapshotField(snapshot, item.key, existingVal);
           }
         }
-      })
-    })
+      });
+    });
 
-    snapshot.netWorth = config.calcNetWorth(snapshot)
-    const netWorthText = fire.formatMoney(snapshot.netWorth)
+    snapshot.netWorth = config.calcNetWorth(snapshot);
+    const netWorthText = fire.formatMoney(snapshot.netWorth);
 
     wx.showModal({
       title: '确认录入',
@@ -568,28 +616,28 @@ Page({
       success: (res) => {
         if (res.confirm) {
           storage.saveSnapshot(snapshot).then(() => {
-            this.clearDraft()
-            wx.showToast({ title: '本月记录已保存' })
-            wx.switchTab({ url: '/pages/index/index' })
-          })
+            this.clearDraft();
+            wx.showToast({ title: '本月记录已保存' });
+            wx.switchTab({ url: '/pages/index/index' });
+          });
         }
-      }
-    })
+      },
+    });
   },
 
   // ===== 工具 =====
   _toggleTabBar(visible) {
-    const tabBar = typeof this.getTabBar === 'function' && this.getTabBar()
-    tabBar && tabBar.setData({ hidden: !visible })
+    const tabBar = typeof this.getTabBar === 'function' && this.getTabBar();
+    tabBar && tabBar.setData({ hidden: !visible });
   },
 
   _showToast(msg) {
-    this.setData({ toastShow: true, toastMsg: msg })
-    clearTimeout(this._toastTimer)
+    this.setData({ toastShow: true, toastMsg: msg });
+    clearTimeout(this._toastTimer);
     this._toastTimer = setTimeout(() => {
-      this.setData({ toastShow: false })
-    }, 1600)
+      this.setData({ toastShow: false });
+    }, 1600);
   },
 
-  noop() {}
-})
+  noop() {},
+});
