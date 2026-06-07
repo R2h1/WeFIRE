@@ -83,9 +83,9 @@ const SECTIONS = [
       {
         key: 'other',
         name: '其他固定资产',
-        multi: false,
-        placeholder: '估值',
-        fields: [{ key: 'value', label: '金额' }],
+        multi: true,
+        limit: -1,
+        fields: [{ key: 'balance', label: '金额' }],
       },
     ],
   },
@@ -191,7 +191,7 @@ function createEmptySnapshot(monthId) {
     fixedAssets: {
       selfUse: 0,
       investment: 0,
-      other: 0,
+      other: [],
     },
     shortLiabilities: {
       creditCards: [],
@@ -313,7 +313,7 @@ function calcTotalAssets(snapshot) {
   // fixed
   total += parseFloat(f.selfUse) || 0;
   total += parseFloat(f.investment) || 0;
-  total += parseFloat(f.other) || 0;
+  total += sumField(f.other || [], 'balance');
   return total;
 }
 
@@ -359,7 +359,7 @@ function calcFixedAssets(snapshot) {
   let total = 0;
   total += parseFloat(f.selfUse) || 0;
   total += parseFloat(f.investment) || 0;
-  total += parseFloat(f.other) || 0;
+  total += sumField(f.other || [], 'balance');
   return total;
 }
 
