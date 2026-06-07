@@ -217,6 +217,9 @@
 }
 
 .fab-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   position: fixed;
   bottom: calc(52px + env(safe-area-inset-bottom) + 16px);
   right: 16px;
@@ -230,6 +233,13 @@
   z-index: 50;
   letter-spacing: 0.5px;
   line-height: 1.2;
+}
+.fab-btn-left {
+  right: auto;
+  left: 16px;
+}
+.fab-btn-left .import {
+  transform: rotate(180deg);
 }
 .fab-btn-hover {
   transform: scale(0.95);
@@ -362,6 +372,7 @@
 .import-textarea {
   width: 100%;
   min-height: 160px;
+  max-height: 360px;
   border: 1.5px solid #e0d9d1;
   border-radius: 10px;
   padding: 12px;

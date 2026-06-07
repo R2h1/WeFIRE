@@ -3,6 +3,7 @@ const categoryData = require('../../utils/categories');
 const storage = require('../../utils/storage');
 const fire = require('../../utils/fire');
 const configModule = require('../../utils/config');
+const backup = require('../../utils/backup');
 
 Page({
   data: {
@@ -242,7 +243,7 @@ Page({
   },
 
   onImportJsonInput(e) {
-    this.setData({ importJsonText: e.detail });
+    this.setData({ importJsonText: e.detail.value });
   },
 
   onImportCancel() {
@@ -297,6 +298,11 @@ Page({
     this.setData({ showImportModal: false });
     this.loadData();
     this._showToast('已导入' + added + '条记录');
+  },
+
+  // ---- Export ----
+  onExport() {
+    backup.exportData();
   },
 
   // ---- Modal ----

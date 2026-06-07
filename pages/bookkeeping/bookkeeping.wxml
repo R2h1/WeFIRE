@@ -72,8 +72,9 @@
     <text class="fab-text">+ 记一笔</text>
   </view>
 
-  <!-- Import Button (historical month) -->
-  <view class="fab-btn" bindtap="onOpenImport" hover-class="fab-btn-hover" wx:else>
+  <!-- Import Button -->
+  <view class="fab-btn fab-btn-left" bindtap="onOpenImport" hover-class="fab-btn-hover">
+    <van-icon name="down" class="import" size="16px" />
     <text class="fab-text">导入</text>
   </view>
 

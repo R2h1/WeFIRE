@@ -13,7 +13,8 @@ function getData() {
   try {
     const data = wx.getStorageSync(STORAGE_KEY)
     if (data && data.snapshots) {
-      return Object.assign(getDefaultData(), data)
+      const merged = Object.assign(getDefaultData(), data)
+      return merged
     }
     // First launch or data missing
     const defaultData = getDefaultData()

@@ -1,11 +1,14 @@
 const storage = require('./storage')
+const transactionStore = require('./transaction-store')
 
 function exportData() {
   const data = storage.getData()
+  const transactions = transactionStore.getTransactions()
   const exportObj = {
-    version: 2,
+    version: 3,
     exportedAt: new Date().toISOString(),
-    data: data
+    data: data,
+    transactions: transactions
   }
   wx.setClipboardData({
     data: JSON.stringify(exportObj),
@@ -21,13 +24,16 @@ function exportData() {
 function importData(jsonStr) {
   try {
     const parsed = JSON.parse(jsonStr)
-    if (parsed.version === 2 && parsed.data) {
-      return storage.saveData(parsed.data).then(() => {
-        wx.showToast({ title: '恢复成功' })
-      })
+    if (!parsed.data) {
+      wx.showToast({ title: '数据格式错误', icon: 'none' })
+      return Promise.reject(new Error('Invalid format'))
     }
-    wx.showToast({ title: '数据格式错误', icon: 'none' })
-    return Promise.reject(new Error('Invalid format'))
+    return storage.saveData(parsed.data).then(() => {
+      if (parsed.transactions) {
+        transactionStore.saveTransactions(parsed.transactions)
+      }
+      wx.showToast({ title: '恢复成功' })
+    })
   } catch (e) {
     wx.showToast({ title: 'JSON 解析失败', icon: 'none' })
     return Promise.reject(e)
