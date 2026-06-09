@@ -9,8 +9,6 @@ Page({
     targetAmountText: '',
     showModal: false,
     showYearPicker: false,
-    showImportModal: false,
-    importJsonText: '',
     editTarget: '',
     editYear: null,
     yearRange: [],
@@ -164,27 +162,7 @@ Page({
   },
 
   onImport() {
-    this.setData({ showImportModal: true, importJsonText: '' });
-  },
-
-  onImportJsonInput(e) {
-    this.setData({ importJsonText: e.detail });
-  },
-
-  onImportCancel() {
-    this.setData({ showImportModal: false });
-  },
-
-  onImportConfirm() {
-    const json = this.data.importJsonText;
-    if (!json || !json.trim()) {
-      wx.showToast({ title: '请粘贴备份数据', icon: 'none' });
-      return;
-    }
-    backup.importData(json.trim()).then(() => {
-      this.setData({ showImportModal: false });
-      this.loadData();
-    });
+    backup.importData();
   },
 
   noop() {},

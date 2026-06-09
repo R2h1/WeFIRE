@@ -83,31 +83,6 @@
   </view>
 </van-dialog>
 
-<!-- 导入恢复弹窗 -->
-<van-dialog
-  show="{{showImportModal}}"
-  use-slot
-  show-cancel-button
-  transition="fade"
-  confirm-button-color="#EA580C"
-  bind:confirm="onImportConfirm"
-  bind:cancel="onImportCancel"
->
-  <view class="van-dialog-content">
-    <text class="van-dialog-title">导入恢复</text>
-    <view class="import-tip">请粘贴备份的 JSON 数据</view>
-    <van-field
-      value="{{importJsonText}}"
-      type="textarea"
-      placeholder="在此粘贴 JSON 数据..."
-      bind:input="onImportJsonInput"
-      style="import-textarea"
-      autosize="{{ { maxHeight: 200 } }}"
-      border
-    />
-  </view>
-</van-dialog>
-
 <!-- 年份选择器 -->
 <van-popup z-index="2001" show="{{showYearPicker}}" position="bottom" round bind:close="onCloseYearPicker">
   <van-picker
