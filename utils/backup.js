@@ -36,39 +36,49 @@ function exportData() {
 }
 
 function importData() {
-  wx.chooseMessageFile({
-    count: 1,
-    type: 'file',
-    success(res) {
-      const file = res.tempFiles[0]
-      if (!file.name.endsWith('.json')) {
-        wx.showToast({ title: '请选择 .json 备份文件', icon: 'none' })
-        return
-      }
-      const fs = wx.getFileSystemManager()
-      try {
-        const content = fs.readFileSync(file.path, 'utf-8')
-        const parsed = JSON.parse(content)
-        if (!parsed.data) {
-          wx.showToast({ title: '数据格式错误', icon: 'none' })
+  return new Promise((resolve) => {
+    wx.chooseMessageFile({
+      count: 1,
+      type: 'file',
+      success(res) {
+        const file = res.tempFiles[0]
+        if (!file.name.endsWith('.json')) {
+          wx.showToast({ title: '请选择 .json 备份文件', icon: 'none' })
+          resolve()
           return
         }
-        storage.saveData(parsed.data).then(() => {
-          if (parsed.transactions) {
-            transactionStore.saveTransactions(parsed.transactions)
+        const fs = wx.getFileSystemManager()
+        try {
+          const content = fs.readFileSync(file.path, 'utf-8')
+          const parsed = JSON.parse(content)
+          if (!parsed.data) {
+            wx.showToast({ title: '数据格式错误', icon: 'none' })
+            resolve()
+            return
           }
-          wx.showToast({ title: '恢复成功' })
-        })
-      } catch (e) {
-        wx.showToast({ title: '文件读取失败', icon: 'none' })
-        console.error('importData error', e)
+          storage.saveData(parsed.data).then(() => {
+            if (parsed.transactions) {
+              transactionStore.saveTransactions(parsed.transactions)
+            }
+            wx.showToast({ title: '恢复成功' })
+            resolve()
+          }).catch(() => resolve())
+        } catch (e) {
+          wx.showToast({ title: '文件读取失败', icon: 'none' })
+          console.error('importData error', e)
+          resolve()
+        }
+      },
+      fail(err) {
+        if (err.errMsg && err.errMsg.indexOf('cancel') > -1) {
+          resolve()
+          return
+        }
+        wx.showToast({ title: '选择文件失败', icon: 'none' })
+        console.error('chooseMessageFile fail', err)
+        resolve()
       }
-    },
-    fail(err) {
-      if (err.errMsg && err.errMsg.indexOf('cancel') > -1) return
-      wx.showToast({ title: '选择文件失败', icon: 'none' })
-      console.error('chooseMessageFile fail', err)
-    }
+    })
   })
 }
 

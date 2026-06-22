@@ -251,7 +251,7 @@ Page({
     this._toggleTabBar(true);
   },
 
-  onImportConfirm() {
+  async onImportConfirm() {
     const json = this.data.importJsonText.trim();
     if (!json) {
       this._showToast('请粘贴JSON数据');
@@ -294,7 +294,7 @@ Page({
       return;
     }
     txns.sort((a, b) => b.date.localeCompare(a.date));
-    transactionStore.saveTransactions(txns);
+    await transactionStore.saveTransactions(txns);
     this.setData({ showImportModal: false });
     this.loadData();
     this._showToast('已导入' + added + '条记录');
@@ -547,9 +547,10 @@ Page({
       confirmColor: '#ea580c',
       success: (res) => {
         if (res.confirm) {
-          transactionStore.deleteTransaction(id);
-          this.loadData();
-          this._showToast('已删除');
+          transactionStore.deleteTransaction(id).then(() => {
+            this.loadData();
+            this._showToast('已删除');
+          });
         }
       },
     });
@@ -560,7 +561,7 @@ Page({
     this._toggleTabBar(true);
   },
 
-  onConfirmAdd() {
+  async onConfirmAdd() {
     const cat1 = this.data.addCat1List[this.data.addCat1Index];
     const cat2 = this.data.addCat2List[this.data.addCat2Index];
     if (!cat2) {
@@ -590,10 +591,10 @@ Page({
     };
 
     if (this.data.editingId) {
-      transactionStore.updateTransaction(this.data.editingId, txnData);
+      await transactionStore.updateTransaction(this.data.editingId, txnData);
     } else {
       txnData.date = this._buildDateString();
-      transactionStore.addTransaction(txnData);
+      await transactionStore.addTransaction(txnData);
     }
     this.onCancelAdd();
     this.loadData();

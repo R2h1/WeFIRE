@@ -162,7 +162,18 @@ Page({
   },
 
   onImport() {
-    backup.importData();
+    wx.showModal({
+      title: '导入备份',
+      content: '请选择之前导出的 .json 备份文件',
+      confirmText: '选择文件',
+      cancelText: '取消',
+      success: (res) => {
+        if (!res.confirm) return;
+        backup.importData().then(() => {
+          this.loadData();
+        });
+      },
+    });
   },
 
   noop() {},

@@ -27,26 +27,23 @@ function addTransaction(txn) {
   }
   txns.push(txn);
   txns.sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
-  saveTransactions(txns);
-  return txn;
+  return saveTransactions(txns);
 }
 
 function updateTransaction(id, updates) {
   const txns = getTransactions();
   const idx = txns.findIndex(t => t.id === id);
-  if (idx === -1) return null;
+  if (idx === -1) return Promise.resolve(null);
   txns[idx] = Object.assign({}, txns[idx], updates);
-  saveTransactions(txns);
-  return txns[idx];
+  return saveTransactions(txns);
 }
 
 function deleteTransaction(id) {
   const txns = getTransactions();
   const idx = txns.findIndex(t => t.id === id);
-  if (idx === -1) return false;
+  if (idx === -1) return Promise.resolve(false);
   txns.splice(idx, 1);
-  saveTransactions(txns);
-  return true;
+  return saveTransactions(txns);
 }
 
 function getByMonth(monthId, txns) {
