@@ -640,4 +640,12 @@ Page({
   },
 
   noop() {},
+
+  onShareAppMessage() {
+    return { title: '记录我的月度资产数据 - WeFIRE', path: '/pages/add/add' };
+  },
+
+  onShareTimeline() {
+    return { title: '记录我的月度资产数据 - WeFIRE' };
+  },
 });

@@ -141,4 +141,12 @@ Page({
       },
     );
   },
+
+  onShareAppMessage() {
+    return { title: '查看我的净资产趋势 - WeFIRE', path: '/pages/charts/charts' };
+  },
+
+  onShareTimeline() {
+    return { title: '查看我的净资产趋势 - WeFIRE' };
+  },
 });

@@ -151,5 +151,13 @@ Page({
     })
   },
 
-  noop() {}
+  noop() {},
+
+  onShareAppMessage() {
+    return { title: '资产管理 - WeFIRE', path: '/pages/instance/instance' };
+  },
+
+  onShareTimeline() {
+    return { title: '资产管理 - WeFIRE' };
+  },
 })

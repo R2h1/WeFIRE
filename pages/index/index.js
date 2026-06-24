@@ -129,4 +129,23 @@ Page({
   onTapNetWorth() {
     wx.switchTab({ url: '/pages/charts/charts' });
   },
+
+  onShareAppMessage() {
+    const data = this.data;
+    return {
+      title: data.hasSettings
+        ? '我的FIRE进度：' + data.progressPercent + '% · 净资产' + data.netWorthText
+        : '我在用FIER时光账追踪财务自由进度',
+      path: '/pages/index/index',
+    };
+  },
+
+  onShareTimeline() {
+    const data = this.data;
+    return {
+      title: data.hasSettings
+        ? '我的FIRE进度：' + data.progressPercent + '% · 净资产' + data.netWorthText
+        : 'FIER时光账 - 财务自由进度追踪',
+    };
+  },
 });

@@ -199,4 +199,12 @@ Page({
       },
     });
   },
+
+  onShareAppMessage() {
+    return { title: 'WeFIRE - 财务自由进度追踪', path: '/pages/profile/profile' };
+  },
+
+  onShareTimeline() {
+    return { title: 'WeFIRE - 财务自由进度追踪' };
+  },
 });
