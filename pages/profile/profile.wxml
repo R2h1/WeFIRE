@@ -52,7 +52,7 @@
       <view slot="title" class="danger-text">清除所有数据</view>
     </van-cell>
   </view>
-  <view class="version-info">FIER时光账 v1.0.0 · 财务独立，提早退休</view>
+  <view class="version-info">FIER时光账 v1.0.4 · 财务独立，提早退休</view>
 </view>
 
 <!-- 设置 FIRE 目标弹窗 -->
